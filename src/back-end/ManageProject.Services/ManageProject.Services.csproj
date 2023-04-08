@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ManageProject.Core\ManageProject.Core.csproj" />
+    <ProjectReference Include="..\ManageProject.Data\ManageProject.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Media\" />
+    <Folder Include="Rss\" />
+    <Folder Include="Manage\" />
+    <Folder Include="Extenstions\" />
+  </ItemGroup>
+
+</Project>

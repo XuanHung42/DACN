@@ -1,0 +1,113 @@
+{
+  "version": 3,
+  "targets": {
+    "net7.0": {
+      "ManageProject.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/ManageProject.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ManageProject.Core.dll": {}
+        }
+      },
+      "ManageProject.Data/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "ManageProject.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ManageProject.Data.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ManageProject.Data.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ManageProject.Core/1.0.0": {
+      "type": "project",
+      "path": "../ManageProject.Core/ManageProject.Core.csproj",
+      "msbuildProject": "../ManageProject.Core/ManageProject.Core.csproj"
+    },
+    "ManageProject.Data/1.0.0": {
+      "type": "project",
+      "path": "../ManageProject.Data/ManageProject.Data.csproj",
+      "msbuildProject": "../ManageProject.Data/ManageProject.Data.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net7.0": [
+      "ManageProject.Core >= 1.0.0",
+      "ManageProject.Data >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\ADMIN\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\Study\\3\\DoAnChuyenNganh_2023\\src\\back-end\\ManageProject.Services\\ManageProject.Services.csproj",
+      "projectName": "ManageProject.Services",
+      "projectPath": "D:\\Study\\3\\DoAnChuyenNganh_2023\\src\\back-end\\ManageProject.Services\\ManageProject.Services.csproj",
+      "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
+      "outputPath": "D:\\Study\\3\\DoAnChuyenNganh_2023\\src\\back-end\\ManageProject.Services\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net7.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "projectReferences": {
+            "D:\\Study\\3\\DoAnChuyenNganh_2023\\src\\back-end\\ManageProject.Core\\ManageProject.Core.csproj": {
+              "projectPath": "D:\\Study\\3\\DoAnChuyenNganh_2023\\src\\back-end\\ManageProject.Core\\ManageProject.Core.csproj"
+            },
+            "D:\\Study\\3\\DoAnChuyenNganh_2023\\src\\back-end\\ManageProject.Data\\ManageProject.Data.csproj": {
+              "projectPath": "D:\\Study\\3\\DoAnChuyenNganh_2023\\src\\back-end\\ManageProject.Data\\ManageProject.Data.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net7.0": {
+        "targetAlias": "net7.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

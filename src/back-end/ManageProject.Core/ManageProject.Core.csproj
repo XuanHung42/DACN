@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+    <Folder Include="Entities\" />
+    <Folder Include="Settings\" />
+    <Folder Include="DTO\" />
+    <Folder Include="Constants\" />
+    <Folder Include="Collections\" />
+  </ItemGroup>
+
+</Project>
