@@ -46,7 +46,7 @@ public class PostMap :IEntityTypeConfiguration<Post>
 			.HasConstraintName("FK_Posts_Users");
 		//.OnDelete(DeleteBehavior.Cascade);
 
-		builder.HasOne(p => p.Projects)
+		builder.HasOne(p => p.Project)
 			.WithMany(pj => pj.Posts)
 			.HasForeignKey(p => p.ProjectId)
 			.HasConstraintName("FK_Post_Project");
@@ -55,6 +55,6 @@ public class PostMap :IEntityTypeConfiguration<Post>
 			.WithMany(d => d.Posts)
 			.UsingEntity(dp => dp.ToTable("DepartmentPosts"));
 
-		builder.HasMany(p => p.Projects)
+		
 	}
 }
