@@ -23,5 +23,6 @@ namespace ManageProject.Core.Entities
         public Department Department { get; set; }
         public IList<Post> Posts { get; set; }
 
+        // checkout test branch new
     }
 }
