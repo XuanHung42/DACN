@@ -15,5 +15,6 @@ namespace ManageProject.Core.Entities
         public IList<User> Users { get; set; }
         public IList<Project> Projects { get; set; }
     
+        public IList<Post> Posts
     }
 }
