@@ -19,6 +19,8 @@ namespace ManageProject.Core.Entities
         public string CostProject { get; set; }
         public int ProcessId { get; set; }
         public User User { get; set; }
+        public IList<Post> Posts { get; set; }
+        public IList<Process> Process { get; set; }
 
 
     }

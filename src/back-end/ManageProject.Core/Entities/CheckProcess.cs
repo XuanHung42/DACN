@@ -13,7 +13,6 @@ namespace ManageProject.Core.Entities
         public bool Start { get; set; }
         public bool StartMaking { get; set; }
         public bool WriteReport { get; set; }
-
         public bool Complete { get; set; }
         public bool Status { get; set; }
         

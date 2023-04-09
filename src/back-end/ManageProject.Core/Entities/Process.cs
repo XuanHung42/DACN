@@ -14,5 +14,6 @@ namespace ManageProject.Core.Entities
         public string ExcutionTime { get; set; }
         public int CheckProcessId { get; set; }
         public CheckProcess CheckProcess { get; set; }
+        public Process Process { get; set; }
     }
 }
