@@ -44,10 +44,19 @@ namespace ManageProject.Data.Mappings
             builder.HasOne(p => p.User)
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.UserId)
-                .HasConstraintName("FK_Posts_Users");
-            //.OnDelete(DeleteBehavior.Cascade);
+                .HasConstraintName("FK_Posts_Users")
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(p => p.Departments)
+                .WithMany(d => d.Posts)
+                .HasConstraintName("FK_Post_Department");
 
-            
+            builder.HasMany(p => p.Projects)
+                .WithMany(pr => pr.Posts)
+                .UsingEntity(pd => pd.ToTable("Directory"));
+
+
+
+
 
 
         }

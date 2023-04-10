@@ -33,10 +33,7 @@ namespace ManageProject.Data.Mappings
             builder.Property(p => p.UserNumber)
               .IsRequired()
               .HasDefaultValue(0);
-            builder.HasOne(p => p.User)
-                  .WithMany(u => u.Projects)
-                  .HasForeignKey(p => p.UserId)
-                  .HasConstraintName("FK_Projects_Users");
+           
 
 
 
