@@ -1,56 +1,57 @@
 ﻿using ManageProject.Core.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ManageProject.Data.Mappings;
-
-public class UserMap : IEntityTypeConfiguration<User>
+namespace ManageProject.Data.Mappings
 {
-	public void Configure(EntityTypeBuilder<User> builder)
-	{
-		builder.ToTable("Users");
+    public class UserMap : IEntityTypeConfiguration<User>
+    {
+        public void Configure(EntityTypeBuilder<User> builder)
+        {
+            builder.ToTable("Users");
 
-		builder.HasKey(u => u.Id);
+            builder.HasKey(u => u.Id);
 
-		builder.Property(u => u.Name)
-			.HasMaxLength(100)
-			.IsRequired();
+            builder.Property(u => u.Name)
+                .HasMaxLength(100)
+                .IsRequired();
 
-		builder.Property(u => u.Email)
-			.HasMaxLength(100)
-			.IsRequired();
+            builder.Property(u => u.Email)
+                .HasMaxLength(100)
+                .IsRequired();
 
-		builder.Property(u => u.Password)
-			.HasMaxLength(100)
-			.IsRequired();
+            builder.Property(u => u.Password)
+                .HasMaxLength(100)
+                .IsRequired();
 
-		builder.Property(u => u.ImageUrl)
-			.HasMaxLength(200)
-			.IsRequired();
+            builder.Property(u => u.ImageUrl)
+                .HasMaxLength(200)
+                .IsRequired();
 
-		builder.Property(u => u.UrlSlug)
-			.HasMaxLength(100)
-			.IsRequired();
+            builder.Property(u => u.UrlSlug)
+                .HasMaxLength(100)
+                .IsRequired();
 
-		builder.Property(u => u.BirthDate)
-			.HasColumnType("datetime");
+            builder.Property(u => u.BirthDate)
+                .HasColumnType("datetime");
 
-		builder.HasOne(u => u.Role)
-			.WithMany(pj => pj.Users)
-			.HasForeignKey(u => u.RoleId)
-			.HasConstraintName("FK_Users_Roles");
+            builder.HasOne(u => u.Role)
+                .WithMany(pj => pj.Users)
+                .HasForeignKey(u => u.RoleId)
+                .HasConstraintName("FK_Users_Roles");
 
-		builder.HasOne(u => u.Department)
-			.WithMany(d => d.Users)
-			.HasForeignKey(u => u.DepartmentId)
-			.HasConstraintName("FK_Users_Departments");
+            builder.HasOne(u => u.Department)
+                .WithMany(d => d.Users)
+                .HasForeignKey(u => u.DepartmentId)
+                .HasConstraintName("FK_Users_Departments");
 
-		
 
-	}
+            // test code
+        }
+    }
 }

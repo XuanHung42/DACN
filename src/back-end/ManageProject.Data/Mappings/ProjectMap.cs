@@ -7,42 +7,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ManageProject.Data.Mappings;
-
-public class ProjectMap :IEntityTypeConfiguration<Project>
+namespace ManageProject.Data.Mappings
 {
-	public void Configure(EntityTypeBuilder<Project> builder)
-	{
-		builder.ToTable("Projects");
+    public class ProjectMap : IEntityTypeConfiguration<Project>
 
-		builder.HasKey(pj => pj.Id);
+    {
+        public void Configure(EntityTypeBuilder<Project> builder)
+        {
+            builder.ToTable("Project");
+            builder.HasKey(p => p.Id);
+            builder.Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(100);
+            builder.Property(p => p.Description)
+                .IsRequired()
+                .HasMaxLength(500);
+            builder.Property(p=> p.UrlSlug) 
+                .IsRequired()
+                .HasMaxLength(100);
+            builder.Property(p => p.CostProject)
+            .HasMaxLength(300)
+            .IsRequired();
 
-		builder.Property(pj => pj.Name)
-			.HasMaxLength(300)
-			.IsRequired();
-
-		builder.Property(pj => pj.Description)
-			.HasMaxLength(1000)
-			.IsRequired();
-
-		builder.Property(pj => pj.UrlSlug)
-			.HasMaxLength(300)
-			.IsRequired();
-
-		builder.Property(pj => pj.CostProject)
-			.HasMaxLength(300)
-			.IsRequired();
-
-		// số lượng user làm dự án
-		builder.Property(pj => pj.UserNumber)
-		  .IsRequired()
-		  .HasDefaultValue(0);
-
-		builder.HasOne(pj => pj.User)
-			.WithMany(u => u.Projects)
-			.HasForeignKey(pj => pj.UserId)
-			.HasForeignKey("FK_Projects_User");
+          
+            builder.Property(p => p.UserNumber)
+              .IsRequired()
+              .HasDefaultValue(0);
+            builder.HasOne(p => p.User)
+                  .WithMany(u => u.Projects)
+                  .HasForeignKey(p => p.UserId)
+                  .HasConstraintName("FK_Projects_Users");
 
 
-	}
+
+
+
+        }
+    }
 }

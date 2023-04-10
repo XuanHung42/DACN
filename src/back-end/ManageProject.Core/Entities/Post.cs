@@ -19,13 +19,8 @@ namespace ManageProject.Core.Entities
         public int ProjectId { get; set; }
         public bool Status { get; set; }
         public DateTime Created { get; set; }
-
-
-        //public Department Department { get; set; }
-		public IList<Department> Departments { get; set; }
-
-		public User User { get; set; }
+        public Department Department { get; set; }
         public Project Project { get; set; }
-
+        public User User { get; set; }
     }
 }

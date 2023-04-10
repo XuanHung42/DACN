@@ -22,36 +22,6 @@ namespace ManageProject.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CheckProcessProcess", b =>
-                {
-                    b.Property<int>("CheckProcessesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProcessesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CheckProcessesId", "ProcessesId");
-
-                    b.HasIndex("ProcessesId");
-
-                    b.ToTable("CheckProcessProcess");
-                });
-
-            modelBuilder.Entity("DepartmentPost", b =>
-                {
-                    b.Property<int>("DepartmentsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DepartmentsId", "PostsId");
-
-                    b.HasIndex("PostsId");
-
-                    b.ToTable("DepartmentPosts", (string)null);
-                });
-
             modelBuilder.Entity("ManageProject.Core.Entities.CheckProcess", b =>
                 {
                     b.Property<int>("Id")
@@ -124,12 +94,15 @@ namespace ManageProject.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime");
 
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("File")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("ProjectId")
+                    b.Property<int?>("ProjectId")
                         .HasColumnType("int");
 
                     b.Property<string>("ShortDecription")
@@ -157,6 +130,8 @@ namespace ManageProject.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DepartmentId");
+
                     b.HasIndex("ProjectId");
 
                     b.HasIndex("UserId");
@@ -180,9 +155,15 @@ namespace ManageProject.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CheckProcessId");
+                    b.HasIndex("CheckProcessId")
+                        .IsUnique();
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Processes", (string)null);
                 });
@@ -200,21 +181,15 @@ namespace ManageProject.Data.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<int>("FK_Projects_User")
-                        .HasColumnType("int");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("ProcessId")
                         .HasColumnType("int");
@@ -224,8 +199,8 @@ namespace ManageProject.Data.Migrations
 
                     b.Property<string>("UrlSlug")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -237,11 +212,9 @@ namespace ManageProject.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("FK_Projects_User");
-
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Project", (string)null);
                 });
 
             modelBuilder.Entity("ManageProject.Core.Entities.Role", b =>
@@ -301,12 +274,6 @@ namespace ManageProject.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProjectId1")
-                        .HasColumnType("int");
-
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
@@ -319,51 +286,20 @@ namespace ManageProject.Data.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("ProjectId1");
-
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("CheckProcessProcess", b =>
-                {
-                    b.HasOne("ManageProject.Core.Entities.CheckProcess", null)
-                        .WithMany()
-                        .HasForeignKey("CheckProcessesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ManageProject.Core.Entities.Process", null)
-                        .WithMany()
-                        .HasForeignKey("ProcessesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DepartmentPost", b =>
-                {
-                    b.HasOne("ManageProject.Core.Entities.Department", null)
-                        .WithMany()
-                        .HasForeignKey("DepartmentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ManageProject.Core.Entities.Post", null)
-                        .WithMany()
-                        .HasForeignKey("PostsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ManageProject.Core.Entities.Post", b =>
                 {
+                    b.HasOne("ManageProject.Core.Entities.Department", "Department")
+                        .WithMany("Posts")
+                        .HasForeignKey("DepartmentId");
+
                     b.HasOne("ManageProject.Core.Entities.Project", "Project")
                         .WithMany("Posts")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Post_Project");
+                        .HasForeignKey("ProjectId");
 
                     b.HasOne("ManageProject.Core.Entities.User", "User")
                         .WithMany("Posts")
@@ -372,6 +308,8 @@ namespace ManageProject.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Posts_Users");
 
+                    b.Navigation("Department");
+
                     b.Navigation("Project");
 
                     b.Navigation("User");
@@ -379,27 +317,29 @@ namespace ManageProject.Data.Migrations
 
             modelBuilder.Entity("ManageProject.Core.Entities.Process", b =>
                 {
-                    b.HasOne("ManageProject.Core.Entities.Project", "Project")
-                        .WithMany("Process")
-                        .HasForeignKey("CheckProcessId")
+                    b.HasOne("ManageProject.Core.Entities.CheckProcess", "CheckProcess")
+                        .WithOne("Process")
+                        .HasForeignKey("ManageProject.Core.Entities.Process", "CheckProcessId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Process_CheckProces");
+                        .IsRequired();
+
+                    b.HasOne("ManageProject.Core.Entities.Project", "Project")
+                        .WithMany("Processes")
+                        .HasForeignKey("ProjectId");
+
+                    b.Navigation("CheckProcess");
 
                     b.Navigation("Project");
                 });
 
             modelBuilder.Entity("ManageProject.Core.Entities.Project", b =>
                 {
-                    b.HasOne("ManageProject.Core.Entities.Department", null)
-                        .WithMany("Projects")
-                        .HasForeignKey("DepartmentId");
-
                     b.HasOne("ManageProject.Core.Entities.User", "User")
                         .WithMany("Projects")
-                        .HasForeignKey("FK_Projects_User")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Projects_Users");
 
                     b.Navigation("User");
                 });
@@ -413,10 +353,6 @@ namespace ManageProject.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Users_Departments");
 
-                    b.HasOne("ManageProject.Core.Entities.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId1");
-
                     b.HasOne("ManageProject.Core.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
@@ -426,14 +362,17 @@ namespace ManageProject.Data.Migrations
 
                     b.Navigation("Department");
 
-                    b.Navigation("Project");
-
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("ManageProject.Core.Entities.CheckProcess", b =>
+                {
+                    b.Navigation("Process");
                 });
 
             modelBuilder.Entity("ManageProject.Core.Entities.Department", b =>
                 {
-                    b.Navigation("Projects");
+                    b.Navigation("Posts");
 
                     b.Navigation("Users");
                 });
@@ -442,7 +381,7 @@ namespace ManageProject.Data.Migrations
                 {
                     b.Navigation("Posts");
 
-                    b.Navigation("Process");
+                    b.Navigation("Processes");
                 });
 
             modelBuilder.Entity("ManageProject.Core.Entities.Role", b =>

@@ -18,10 +18,10 @@ namespace ManageProject.Core.Entities
         public string UrlSlug { get; set; }
         public int DepartmentId { get; set; }
         public int RoleId { get; set; }
-        public int ProjectId { get; set; }
-        public Project Project { get; set; }    
-        public Role Role { get; set; }
+ 
         public Department Department { get; set; }
+        public IList<Project> Projects { get; set; }
+        public Role Role { get; set; }
         public IList<Post> Posts { get; set; }
         public IList<Project> Projects { get;set; }
 

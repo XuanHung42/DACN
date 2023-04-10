@@ -15,10 +15,7 @@ namespace ManageProject.Core.Entities
         public bool WriteReport { get; set; }
         public bool Complete { get; set; }
         public bool Status { get; set; }
-
-
-        // khoa ngoai tham chieu bang Process (dau 1)
-		public IList<Process> Processes { get; set; }
-
-	}
+        public Process Process { get; set; }
+        
+    }
 }
