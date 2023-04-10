@@ -29,7 +29,7 @@ namespace ManageProject.Data.Contexts
             DbContextOptionsBuilder optionsBuilder)
         {
             // sau này ko dùng tới chỗ này 
-            optionsBuilder.UseSqlServer(@"Server=XUANHUNG;Database=NCKHGV;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-JS68JVN\SQLEXPRESS;Database=NCKHGV;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;");
             //    // server name : DESKTOP-JS68JVN\SQLEXPRESS
         }
 
