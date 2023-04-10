@@ -94,16 +94,13 @@ namespace ManageProject.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("DepartmentId")
+                    b.Property<int?>("DepartmentsId")
                         .HasColumnType("int");
 
                     b.Property<string>("File")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<int?>("ProjectId")
-                        .HasColumnType("int");
 
                     b.Property<string>("ShortDecription")
                         .IsRequired()
@@ -130,9 +127,7 @@ namespace ManageProject.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("DepartmentsId");
 
                     b.HasIndex("UserId");
 
@@ -212,8 +207,6 @@ namespace ManageProject.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Project", (string)null);
                 });
 
@@ -291,15 +284,42 @@ namespace ManageProject.Data.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("PostProject", b =>
+                {
+                    b.Property<int>("PostsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostsId", "ProjectsId");
+
+                    b.HasIndex("ProjectsId");
+
+                    b.ToTable("Directory", (string)null);
+                });
+
+            modelBuilder.Entity("ProjectUser", b =>
+                {
+                    b.Property<int>("ProjectsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProjectsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("Selected", (string)null);
+                });
+
             modelBuilder.Entity("ManageProject.Core.Entities.Post", b =>
                 {
-                    b.HasOne("ManageProject.Core.Entities.Department", "Department")
+                    b.HasOne("ManageProject.Core.Entities.Department", "Departments")
                         .WithMany("Posts")
-                        .HasForeignKey("DepartmentId");
-
-                    b.HasOne("ManageProject.Core.Entities.Project", "Project")
-                        .WithMany("Posts")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("DepartmentsId")
+                        .HasConstraintName("FK_Post_Department");
 
                     b.HasOne("ManageProject.Core.Entities.User", "User")
                         .WithMany("Posts")
@@ -308,9 +328,7 @@ namespace ManageProject.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Posts_Users");
 
-                    b.Navigation("Department");
-
-                    b.Navigation("Project");
+                    b.Navigation("Departments");
 
                     b.Navigation("User");
                 });
@@ -330,18 +348,6 @@ namespace ManageProject.Data.Migrations
                     b.Navigation("CheckProcess");
 
                     b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("ManageProject.Core.Entities.Project", b =>
-                {
-                    b.HasOne("ManageProject.Core.Entities.User", "User")
-                        .WithMany("Projects")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Projects_Users");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ManageProject.Core.Entities.User", b =>
@@ -365,6 +371,36 @@ namespace ManageProject.Data.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("PostProject", b =>
+                {
+                    b.HasOne("ManageProject.Core.Entities.Post", null)
+                        .WithMany()
+                        .HasForeignKey("PostsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ManageProject.Core.Entities.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectUser", b =>
+                {
+                    b.HasOne("ManageProject.Core.Entities.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ManageProject.Core.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ManageProject.Core.Entities.CheckProcess", b =>
                 {
                     b.Navigation("Process");
@@ -379,8 +415,6 @@ namespace ManageProject.Data.Migrations
 
             modelBuilder.Entity("ManageProject.Core.Entities.Project", b =>
                 {
-                    b.Navigation("Posts");
-
                     b.Navigation("Processes");
                 });
 
@@ -392,8 +426,6 @@ namespace ManageProject.Data.Migrations
             modelBuilder.Entity("ManageProject.Core.Entities.User", b =>
                 {
                     b.Navigation("Posts");
-
-                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }

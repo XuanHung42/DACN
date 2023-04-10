@@ -43,12 +43,18 @@ namespace ManageProject.Data.Mappings
             builder.HasOne(u => u.Role)
                 .WithMany(pj => pj.Users)
                 .HasForeignKey(u => u.RoleId)
-                .HasConstraintName("FK_Users_Roles");
+                .HasConstraintName("FK_Users_Roles")
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(u => u.Department)
                 .WithMany(d => d.Users)
                 .HasForeignKey(u => u.DepartmentId)
-                .HasConstraintName("FK_Users_Departments");
+                .HasConstraintName("FK_Users_Departments")
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(u => u.Projects)
+                  .WithMany(pr => pr.Users)
+                  .UsingEntity(s => s.ToTable("Selected"));
+                
 
 
             // test code
