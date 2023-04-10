@@ -23,7 +23,6 @@ namespace ManageProject.Core.Entities
         public IList<Project> Projects { get; set; }
         public Role Role { get; set; }
         public IList<Post> Posts { get; set; }
-        public IList<Project> Projects { get;set; }
 
         // checkout test branch new
     }
