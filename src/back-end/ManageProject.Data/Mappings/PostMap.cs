@@ -54,7 +54,7 @@ namespace ManageProject.Data.Mappings
                 .WithMany(pr => pr.Posts)
                 .UsingEntity(pd => pd.ToTable("Directory"));
 
-
+            // test code
 
 
 
