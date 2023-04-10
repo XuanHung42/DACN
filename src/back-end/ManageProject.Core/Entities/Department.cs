@@ -13,7 +13,6 @@ namespace ManageProject.Core.Entities
         public string Name { get; set; }
         public string UrlSlug { get; set; }
         public IList<User> Users { get; set; }
-        public IList<Project> Projects { get; set; }
-    
+        public IList<Post> Posts { get; set; }
     }
 }

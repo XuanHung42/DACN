@@ -18,10 +18,10 @@ namespace ManageProject.Core.Entities
         public int UserNumber { get; set; }
         public string CostProject { get; set; }
         public int ProcessId { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; }
         public IList<Post> Posts { get; set; }
-        public IList<Process> Process { get; set; }
-
+        public IList<Process> Processes { get; set; }
 
     }
 }

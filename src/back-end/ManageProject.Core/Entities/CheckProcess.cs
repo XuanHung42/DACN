@@ -15,6 +15,7 @@ namespace ManageProject.Core.Entities
         public bool WriteReport { get; set; }
         public bool Complete { get; set; }
         public bool Status { get; set; }
+        public Process Process { get; set; }
         
     }
 }

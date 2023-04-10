@@ -13,6 +13,7 @@ namespace ManageProject.Core.Entities
         public int Id { get; set; }
         public string ExcutionTime { get; set; }
         public int CheckProcessId { get; set; }
+        public Project Project { get; set; }
         public CheckProcess CheckProcess { get; set; }
         //Hello
     }
