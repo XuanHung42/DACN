@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ManageProject.Data.Contexts
 {
-    public class BlogDbContext : DbContext
+    public class ManageDbContext : DbContext
     {
         public DbSet<CheckProcess> CheckProcesses { get; set; }
 
@@ -25,12 +25,16 @@ namespace ManageProject.Data.Contexts
 
         public DbSet<User> Users { get; set; }
 
-        protected override void OnConfiguring(
-            DbContextOptionsBuilder optionsBuilder)
+        public ManageDbContext(DbContextOptions<ManageDbContext> options):base(options) {
+        
+        }
+        public ManageDbContext()
         {
-            // sau này ko dùng tới chỗ này 
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-JS68JVN\SQLEXPRESS;Database=NCKHGV;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;");
-            //    // server name : DESKTOP-JS68JVN\SQLEXPRESS
+
+      
+            optionsBuilder.UseSqlServer(@"Server=XUANHUNG;Database=NCKHGV;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;");
+
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,6 +42,8 @@ namespace ManageProject.Data.Contexts
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DepartmentMap).Assembly);
         }
 
+
+        // test
 
     }
 }
