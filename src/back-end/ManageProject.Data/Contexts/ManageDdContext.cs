@@ -31,6 +31,10 @@ namespace ManageProject.Data.Contexts
         public ManageDbContext()
         {
 
+      
+            optionsBuilder.UseSqlServer(@"Server=XUANHUNG;Database=NCKHGV;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;");
+
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,6 +42,8 @@ namespace ManageProject.Data.Contexts
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DepartmentMap).Assembly);
         }
 
+
+        // test
 
     }
 }
