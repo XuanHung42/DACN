@@ -25,16 +25,11 @@ namespace ManageProject.Data.Contexts
 
         public DbSet<User> Users { get; set; }
 
-        public ManageDbContext(DbContextOptions<ManageDbContext> options):base(options) {
         
-        }
+        public ManageDbContext(DbContextOptions<ManageDbContext> options) : base(options) { }
+
         public ManageDbContext()
         {
-
-      
-            optionsBuilder.UseSqlServer(@"Server=XUANHUNG;Database=NCKHGV;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;");
-
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

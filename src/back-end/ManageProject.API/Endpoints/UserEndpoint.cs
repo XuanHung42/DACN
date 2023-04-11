@@ -83,7 +83,6 @@ namespace ManageProject.API.Endpoints
             return await userRepository.DeleteUserAsync(id)
                 ? Results.Ok(ApiResponse.Success("User is delete  ", HttpStatusCode.NoContent))
                 : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Could not find user"));
-
         }
     }
 }
