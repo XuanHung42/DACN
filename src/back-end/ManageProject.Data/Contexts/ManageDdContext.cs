@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ManageProject.Data.Contexts
 {
-    public class BlogDbContext : DbContext
+    public class ManageDbContext : DbContext
     {
         public DbSet<CheckProcess> CheckProcesses { get; set; }
 
@@ -25,12 +25,12 @@ namespace ManageProject.Data.Contexts
 
         public DbSet<User> Users { get; set; }
 
-        protected override void OnConfiguring(
-            DbContextOptionsBuilder optionsBuilder)
+        public ManageDbContext(DbContextOptions<ManageDbContext> options):base(options) {
+        
+        }
+        public ManageDbContext()
         {
-            // sau này ko dùng tới chỗ này 
-            optionsBuilder.UseSqlServer(@"Server=XUANHUNG;Database=NCKHGV;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;");
-            //    // server name : DESKTOP-JS68JVN\SQLEXPRESS
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
