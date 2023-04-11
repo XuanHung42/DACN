@@ -13,7 +13,11 @@
 
   <ItemGroup>
     <Folder Include="Rss\" />
-    <Folder Include="Extenstions\" />
   </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="SlugGenerator" Version="2.0.2" />
+		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.25" />
+	</ItemGroup>
 
 </Project>
