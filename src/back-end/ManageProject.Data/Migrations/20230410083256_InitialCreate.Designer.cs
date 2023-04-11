@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ManageProject.Data.Migrations
 {
-    [DbContext(typeof(BlogDbContext))]
+    [DbContext(typeof(ManageDbContext))]
     [Migration("20230410083256_InitialCreate")]
     partial class InitialCreate
     {
