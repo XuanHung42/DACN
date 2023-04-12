@@ -3,6 +3,7 @@ using ManageProject.Data.Contexts;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace ManageProject.Data.Seeders
         public void Initialize()
         {
             _dbContext.Database.EnsureCreated();
-            if (_dbContext.Projects.Any()) return;
+            //if (_dbContext.Projects.Any()) return;
 
 
             var checkProcesses = AddCheckProcesses();
@@ -54,7 +55,13 @@ namespace ManageProject.Data.Seeders
 
             }
         };
-            _dbContext.Roles.AddRange(roles);
+           foreach(var role in roles)
+            {
+                if(!_dbContext.Roles.Any(a=> a.Name == role.Name))
+                {
+                    _dbContext.Roles.Add(role);
+                }
+            }
             _dbContext.SaveChanges();
             return roles;
         }
@@ -107,7 +114,13 @@ namespace ManageProject.Data.Seeders
 
                 }
             };
-            _dbContext.Users.AddRange(users);
+            foreach (var user in users)
+            {
+                if (!_dbContext.Users.Any(a => a.UrlSlug == user.UrlSlug && a.Id==user.Id))
+                {
+                    _dbContext.Users.Add(user);
+                }
+            }
             _dbContext.SaveChanges();
             return users;
         }
@@ -132,7 +145,13 @@ namespace ManageProject.Data.Seeders
                     CheckProcess= checkProcesses[2]
                 }
             };
-            _dbContext.AddRange(processes);
+            foreach (var process in processes)
+            {
+                if (!_dbContext.Processs.Any(a => a.ExcutionTime == process.ExcutionTime && a.Id == a.Id))
+                {
+                    _dbContext.Processs.Add(process);
+                }
+            }
             _dbContext.SaveChanges();
             return processes;
         }
@@ -164,7 +183,13 @@ namespace ManageProject.Data.Seeders
                 },
                 
             };
-            _dbContext.AddRange(deparments);
+            foreach (var deparment in deparments)
+            {
+                if (!_dbContext.Departments.Any(a => a.Id == deparment.Id && a.UrlSlug== deparment.UrlSlug))
+                {
+                    _dbContext.Departments.Add(deparment);
+                }
+            }
             _dbContext.SaveChanges();
             return deparments;
         }
@@ -232,7 +257,13 @@ namespace ManageProject.Data.Seeders
 
                 }
             };
-            _dbContext.AddRange(projects);
+            foreach (var project in projects)
+            {
+                if (!_dbContext.Projects.Any(a => a.UrlSlug == project.UrlSlug))
+                {
+                    _dbContext.Projects.Add(project);
+                }
+            }
             _dbContext.SaveChanges();
             return projects;
         }
@@ -264,7 +295,13 @@ namespace ManageProject.Data.Seeders
                     WriteReport= false,
                 }
             };
-            _dbContext.AddRange(checkProcesses);
+            foreach (var checkProcess in checkProcesses)
+            {
+                if (!_dbContext.CheckProcesses.Any(a => a.Id == checkProcess.Id))
+                {
+                    _dbContext.CheckProcesses.Add(checkProcess);
+                }
+            }
             _dbContext.SaveChanges();
             return checkProcesses;
         }
@@ -279,6 +316,8 @@ namespace ManageProject.Data.Seeders
                 Status= true,
                 User= users[1],
                 UrlSlug="post1",
+                    File="",
+                  Created= DateTime.Now,
                 Projects= new List<Project>()
                 {
                     projects[1],
@@ -291,8 +330,10 @@ namespace ManageProject.Data.Seeders
                 Title="Post2",
                 ShortDecription="Testing data",
                 Status= true,
-                User= users[2],
+                User= users[1],
                 UrlSlug="post2",
+                File="",
+                  Created= DateTime.Now,
                 Projects= new List<Project>()
                 {
                     projects[1],
@@ -306,17 +347,26 @@ namespace ManageProject.Data.Seeders
                 ShortDecription="Testing data",
                 Status= true,
                 User= users[0],
+                    File="",
                 UrlSlug="post3",
+                Created= DateTime.Now,
                 Projects= new List<Project>()
                 {
                     projects[1],
-                    projects[2]
+                    
                 }
+               
 
             },
 
         };
-            _dbContext.AddRange(posts);
+            foreach (var post in posts)
+            {
+                if (!_dbContext.Posts.Any(a => a.UrlSlug == post.UrlSlug && a.Id==post.Id))
+                {
+                    _dbContext.Posts.Add(post);
+                }
+            }
             _dbContext.SaveChanges(); 
             
             return posts;
