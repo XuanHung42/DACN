@@ -158,7 +158,7 @@ namespace ManageProject.Data.Migrations
                         principalTable: "Departments",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Posts_Users",
+                        name: "FK_Posts_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",

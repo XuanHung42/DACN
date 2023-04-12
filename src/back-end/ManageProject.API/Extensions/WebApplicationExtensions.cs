@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ManageProject.Services.Media;
 using ManageProject.Services.Timing;
+using ManageProject.Data.Seeders;
 
 namespace ManageProject.API.Extensions
 {
@@ -16,7 +17,10 @@ namespace ManageProject.API.Extensions
         {
             builder.Services.AddMemoryCache();
             builder.Services.AddDbContext<ManageDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+             options.UseSqlServer(
+               builder.Configuration
+                 .GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<IDataSeeder, DataSeeder>();
             builder.Services.AddScoped<ITimeProvider, LocalTimeProvider>();
             builder.Services.AddScoped<IMediaManager, LocalFileSystemMediaManager>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();

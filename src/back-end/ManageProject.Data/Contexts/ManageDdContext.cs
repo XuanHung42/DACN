@@ -32,6 +32,12 @@ namespace ManageProject.Data.Contexts
         {
         }
 
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server=XUANHUNG;Database=NCKHGV;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;");
+
+        //}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DepartmentMap).Assembly);
