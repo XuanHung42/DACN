@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using ManageProject.Services.Media;
 using ManageProject.Services.Timing;
 using ManageProject.Data.Seeders;
+using ManageProject.Services.Manage.Departments;
+
 
 namespace ManageProject.API.Extensions
 {
@@ -24,6 +26,10 @@ namespace ManageProject.API.Extensions
             builder.Services.AddScoped<ITimeProvider, LocalTimeProvider>();
             builder.Services.AddScoped<IMediaManager, LocalFileSystemMediaManager>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            // department
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
+
             return builder;
         }
         public static WebApplicationBuilder ConfigureCors(this WebApplicationBuilder builder)
@@ -35,7 +41,16 @@ namespace ManageProject.API.Extensions
             });
             return builder;
         }
-        public static WebApplicationBuilder ConfigureSwaggerOpenApi(
+        // cau hinh viec su dung NLog
+  //      public static WebApplicationBuilder ConfigureNLog(this WebApplicationBuilder builder)
+  //      {
+  //          builder.Logging.ClearProviders();
+		//	builder.Host.UseNLog();
+  //          return builder;
+
+		//}
+
+		public static WebApplicationBuilder ConfigureSwaggerOpenApi(
             this WebApplicationBuilder builder)
         {
             builder.Services.AddEndpointsApiExplorer();

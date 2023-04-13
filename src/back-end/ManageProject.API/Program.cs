@@ -19,7 +19,12 @@ var app = builder.Build();
 {
     app.SetupRequestPipeline();
     app.MapUserEnpoints();
-    using (var scope = app.Services.CreateScope())
+
+    app.MapDepartmentEndpoints();
+
+
+
+	using (var scope = app.Services.CreateScope())
     {
         var seeder = scope.ServiceProvider.GetRequiredService<IDataSeeder>();
         seeder.Initialize();

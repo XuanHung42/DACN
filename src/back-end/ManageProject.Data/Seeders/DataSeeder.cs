@@ -22,7 +22,7 @@ namespace ManageProject.Data.Seeders
         public void Initialize()
         {
             _dbContext.Database.EnsureCreated();
-            //if (_dbContext.Projects.Any()) return;
+            if (_dbContext.Projects.Any()) return;
 
 
             var checkProcesses = AddCheckProcesses();
@@ -79,7 +79,6 @@ namespace ManageProject.Data.Seeders
                     BirthDate= new DateTime(2022,9,30),
                     UrlSlug= "admin1",
                     Department = departments[0],
-                    ImageUrl="",
 
                     
 
@@ -93,7 +92,6 @@ namespace ManageProject.Data.Seeders
                     BirthDate= new DateTime(2022,10,30),
                     UrlSlug= "admin2",
                     Department = departments[0],
-                    ImageUrl="",
                    
 
 
@@ -108,7 +106,6 @@ namespace ManageProject.Data.Seeders
                     BirthDate= new DateTime(2022,9,30),
                     UrlSlug= "test-user",
                     Department = departments[1],
-                    ImageUrl="",
                    
 
 
