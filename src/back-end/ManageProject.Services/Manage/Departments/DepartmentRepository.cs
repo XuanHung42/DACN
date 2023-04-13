@@ -1,6 +1,8 @@
-﻿using ManageProject.Core.DTO;
+﻿using ManageProject.Core.Contracts;
+using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
 using ManageProject.Data.Contexts;
+using ManageProject.Services.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System;
@@ -34,6 +36,26 @@ namespace ManageProject.Services.Manage.Departments
 			}).ToListAsync(cancellationToken);
 		}
 
-		// code
+		// get department required paging
+		public async Task<IPagedList<DepartmentItem>> GetPagedDepartmentAsync(IPagingParams pagingParams, string name = null, CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Department>()
+				.AsNoTracking()
+				.WhereIf(!string.IsNullOrWhiteSpace(name),
+				x => x.Name.Contains(name))
+				.Select(d => new DepartmentItem()
+				{
+					Id = d.Id,
+					Name = d.Name,
+					UrlSlug = d.UrlSlug
+				}).ToPagedListAsync(pagingParams, cancellationToken);
+		}
+
+		public async Task<Department> GetDepartmentByIdAsync(int id, CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Department>().FindAsync(id);
+		}
+
+
 	}
 }
