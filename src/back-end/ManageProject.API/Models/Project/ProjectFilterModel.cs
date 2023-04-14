@@ -7,8 +7,8 @@ namespace ManageProject.API.Models.Project
 		[DisplayName("Tên")]
 		public string Name { get; set; }
 
-		[DisplayName("Người dùng")]
-		public int? UserId { get; set; }
+		//[DisplayName("Người dùng")]
+		//public int? UserId { get; set; }
 
 
 	}

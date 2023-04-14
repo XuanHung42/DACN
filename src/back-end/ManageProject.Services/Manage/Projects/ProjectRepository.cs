@@ -1,6 +1,8 @@
-﻿using ManageProject.Core.DTO;
+﻿using ManageProject.Core.Contracts;
+using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
 using ManageProject.Data.Contexts;
+using ManageProject.Services.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System;
@@ -28,18 +30,40 @@ namespace ManageProject.Services.Manage.Projects
 				.OrderBy(pr => pr.Id)
 				.Select(pr => new ProjectItem()
 				{
-					Id= pr.Id,
+					Id = pr.Id,
 					Name = pr.Name,
 					Description = pr.Description,
 					ShortDescription = pr.ShortDescription,
-					UrlSlug= pr.UrlSlug,
+					UrlSlug = pr.UrlSlug,
 					CostProject = pr.CostProject,
 					UserNumber = pr.UserNumber,
 					Register = pr.Register
 				}).ToListAsync(cancellationToken);
 		}
 
-		// write code in here
 
+		public async Task<IPagedList<ProjectItem>> GetPagedProjectsAsync(IPagingParams pagingParams, string name = null, CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Project>()
+				.AsNoTracking()
+				.WhereIf(!string.IsNullOrWhiteSpace(name),
+				x => x.Name.Contains(name))
+				.Select(pr => new ProjectItem()
+				{
+					Id = pr.Id,
+					Name = pr.Name,
+					Description = pr.Description,
+					ShortDescription = pr.ShortDescription,
+					UrlSlug = pr.UrlSlug,
+					CostProject = pr.CostProject,
+					UserNumber = pr.UserNumber,
+					Register = pr.Register
+				}).ToPagedListAsync(pagingParams, cancellationToken);
+		}
+
+		public async Task<Project> GetProjectByIdAsync(int id, CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Project>().FindAsync(id);
+		}
 	}
 }
