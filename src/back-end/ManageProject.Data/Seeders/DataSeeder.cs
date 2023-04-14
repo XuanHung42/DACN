@@ -33,7 +33,7 @@ namespace ManageProject.Data.Seeders
             var processes = AddProcesses(checkProcesses);
             var project = AddProjects(users,processes);
           
-            var posts = AddPosts(users,project);
+            var posts = AddPosts(users,project, departments);
             
             
 
@@ -79,7 +79,7 @@ namespace ManageProject.Data.Seeders
                     BirthDate= new DateTime(2022,9,30),
                     UrlSlug= "admin1",
                     Department = departments[0],
-                    ImageUrl="",
+                   ImageUrl="/uploads/pictures.jpg"
 
                     
 
@@ -93,8 +93,8 @@ namespace ManageProject.Data.Seeders
                     BirthDate= new DateTime(2022,10,30),
                     UrlSlug= "admin2",
                     Department = departments[0],
-                    ImageUrl="",
-                   
+                   ImageUrl="/uploads/pictures.jpg"
+
 
 
 
@@ -108,8 +108,8 @@ namespace ManageProject.Data.Seeders
                     BirthDate= new DateTime(2022,9,30),
                     UrlSlug= "test-user",
                     Department = departments[1],
-                    ImageUrl="",
-                   
+                    ImageUrl="/uploads/pictures.jpg"
+
 
 
                 }
@@ -306,7 +306,7 @@ namespace ManageProject.Data.Seeders
             return checkProcesses;
         }
         
-        private IList<Post> AddPosts(IList<User> users, IList<Project> projects) {
+        private IList<Post> AddPosts(IList<User> users, IList<Project> projects, IList<Department> department) {
         var posts = new List<Post>()
         {
             new()
@@ -318,6 +318,7 @@ namespace ManageProject.Data.Seeders
                 UrlSlug="post1",
                     File="",
                   Created= DateTime.Now,
+                Department= department[0],
                 Projects= new List<Project>()
                 {
                     projects[1],
@@ -334,6 +335,7 @@ namespace ManageProject.Data.Seeders
                 UrlSlug="post2",
                 File="",
                   Created= DateTime.Now,
+                   Department= department[1],
                 Projects= new List<Project>()
                 {
                     projects[1],
@@ -350,6 +352,7 @@ namespace ManageProject.Data.Seeders
                     File="",
                 UrlSlug="post3",
                 Created= DateTime.Now,
+                 Department= department[2],
                 Projects= new List<Project>()
                 {
                     projects[1],

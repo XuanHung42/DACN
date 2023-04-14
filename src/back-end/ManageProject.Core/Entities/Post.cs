@@ -18,7 +18,7 @@ namespace ManageProject.Core.Entities
         public int UserId { get; set; }
         public bool Status { get; set; }
         public DateTime Created { get; set; }
-        public Department Departments { get; set; }
+        public Department Department { get; set; }
         public IList<Project> Projects { get; set; }
         public User User { get; set; }
     }

@@ -46,7 +46,7 @@ namespace ManageProject.Data.Mappings
             //    .HasForeignKey(p => p.UserId)
             //    .HasConstraintName("FK_Posts_Users")
             //    .OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne(p => p.Departments)
+            builder.HasOne(p => p.Department)
                 .WithMany(d => d.Posts)
                 .HasConstraintName("FK_Post_Department");
 
