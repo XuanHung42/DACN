@@ -118,5 +118,26 @@ namespace ManageProject.Services.Manage.Departments
 			}
 			return postQuery;
 		}
+
+		public async Task<bool> AddOrUpdateDepartment(Department department, CancellationToken cancellationToken = default)
+		{
+			if (department.Id > 0)
+			{
+				_context.Departments.Update(department);
+				_memoryCache.Remove($"department.by-id.{department.Id}");
+			}
+			else
+			{
+				_context.Departments.Add(department);
+				// check error
+			}
+
+			return await _context.SaveChangesAsync(cancellationToken) > 0;
+		}
+
+		public async Task<bool> IsDepartmentSlugExistedAsync(int departmentId, string slug, CancellationToken cancellationToken = default)
+		{
+			return await _context.Departments.AnyAsync(x => x.Id != departmentId && x.UrlSlug == slug, cancellationToken);
+		}
 	}
 }

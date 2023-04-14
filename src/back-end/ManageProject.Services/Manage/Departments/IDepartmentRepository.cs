@@ -27,12 +27,19 @@ namespace ManageProject.Services.Manage.Departments
 
 		Task<IPagedList<T>> GetPagedUserAsync<T>(
 			UserQuery query, IPagingParams pagingParams, Func<IQueryable<User>, IQueryable<T>> mapper,
-			CancellationToken cancellationToken = default
-			);
+			CancellationToken cancellationToken = default);
 
 		Task<IPagedList<T>> GetPagedPostAsync<T>(
 			PostQuery query, IPagingParams pagingParams, Func<IQueryable<Post>, IQueryable<T>> mapper,
-			CancellationToken cancellationToken = default
-			);
+			CancellationToken cancellationToken = default);
+
+		// put new department
+		Task<bool> AddOrUpdateDepartment(Department department, CancellationToken cancellationToken = default);
+
+		// check slug existed: kiem tra slug da ton tai hay chua
+		Task<bool> IsDepartmentSlugExistedAsync(
+			int departmentId, string slug, CancellationToken cancellationToken = default);
+
+
 	}
 }

@@ -4,8 +4,10 @@ using ManageProject.API.Models.Post;
 using ManageProject.API.Models.Users;
 using ManageProject.Core.Collections;
 using ManageProject.Core.DTO;
+using ManageProject.Core.Entities;
 using ManageProject.Services.Manage.Departments;
 using ManageProject.Services.Manage.Users;
+using ManageProject.WebApi.Filters;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +50,12 @@ public static class DepartmentEndpoint
 			.WithName("GetPostByDepartmentSlug")
 			.Produces<ApiResponse<PaginationResult<PostDto>>>();
 
+		// put add new department
+		routeGroupBuilder.MapPost("/", AddNewDepartment)
+			.WithName("AddNewDepartment")
+			.AddEndpointFilter<ValidatorFilter<DepartmentEditModel>>()
+			.Produces(401)	// thieu thong tin xac thuc hop le voi cac truong can nhap vao
+			.Produces<ApiResponse<DepartmentItem>>();
 
 		return app;
 	}
@@ -124,5 +132,23 @@ public static class DepartmentEndpoint
 		var paginationResut = new PaginationResult<PostDto>(postList);
 
 		return Results.Ok(ApiResponse.Success(paginationResut));
+	}
+
+	// add new department
+	private static async Task<IResult> AddNewDepartment(
+		DepartmentEditModel model, IDepartmentRepository departmentRepository,
+		IMapper mapper
+		)
+	{
+		if (await departmentRepository.IsDepartmentSlugExistedAsync(0, model.UrlSlug))
+		{
+			return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict,
+				$"Slug '{model.UrlSlug}' này đã được sử dụng "));
+		}
+
+		var department = mapper.Map<Department>(model);
+		await departmentRepository.AddOrUpdateDepartment(department);
+
+		return Results.Ok(ApiResponse.Success(mapper.Map<DepartmentItem>(department), HttpStatusCode.Created));
 	}
 }
