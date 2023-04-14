@@ -1,6 +1,7 @@
 ﻿using ManageProject.Core.Entities;
 using ManageProject.Data.Contexts;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -202,7 +203,9 @@ namespace ManageProject.Data.Seeders
                     CostProject= "1000000 VND",
                     UserNumber=1,
                     Users= users,
-                     Processes = new List<Process>()
+					Register = false,
+
+					 Processes = new List<Process>()
                     {
                        processes[1]
                     }
@@ -217,7 +220,8 @@ namespace ManageProject.Data.Seeders
                     CostProject= "1000000 VND",
                     UserNumber=1,
                     Users= users,
-                    Processes = new List<Process>()
+					Register = false,
+					Processes = new List<Process>()
                     {
                        processes[1]
                     }
@@ -232,7 +236,8 @@ namespace ManageProject.Data.Seeders
                     CostProject= "1100000 VND",
                     UserNumber=1,
                     Users= users,
-                    Processes = new List<Process>()
+					Register = false,
+					Processes = new List<Process>()
                     {
                        processes[0]
                     }
@@ -247,7 +252,8 @@ namespace ManageProject.Data.Seeders
                     CostProject= "200000 VND",
                     UserNumber=1,
                     Users= users,
-                    Processes = new List<Process>()
+					Register = true,
+					Processes = new List<Process>()
                     {
                        processes[2]
                     }
