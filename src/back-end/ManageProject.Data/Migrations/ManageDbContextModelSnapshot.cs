@@ -80,7 +80,7 @@ namespace ManageProject.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments", (string)null);
+                    b.ToTable("Department", (string)null);
                 });
 
             modelBuilder.Entity("ManageProject.Core.Entities.Post", b =>
@@ -316,7 +316,7 @@ namespace ManageProject.Data.Migrations
 
             modelBuilder.Entity("ManageProject.Core.Entities.Post", b =>
                 {
-                    b.HasOne("ManageProject.Core.Entities.Department", "Departments")
+                    b.HasOne("ManageProject.Core.Entities.Department", "Department")
                         .WithMany("Posts")
                         .HasForeignKey("DepartmentsId")
                         .HasConstraintName("FK_Post_Department");
@@ -327,7 +327,7 @@ namespace ManageProject.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Departments");
+                    b.Navigation("Department");
 
                     b.Navigation("User");
                 });

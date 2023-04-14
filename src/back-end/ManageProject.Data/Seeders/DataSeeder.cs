@@ -33,7 +33,7 @@ namespace ManageProject.Data.Seeders
             var processes = AddProcesses(checkProcesses);
             var project = AddProjects(users,processes);
           
-            var posts = AddPosts(users,project);
+            var posts = AddPosts(users,project, departments);
             
             
 
@@ -303,18 +303,19 @@ namespace ManageProject.Data.Seeders
             return checkProcesses;
         }
         
-        private IList<Post> AddPosts(IList<User> users, IList<Project> projects) {
+        private IList<Post> AddPosts(IList<User> users, IList<Project> projects, IList<Department> department) {
         var posts = new List<Post>()
         {
             new()
             {
                 Title="Post1",
-                ShortDecription="Testing data",
+                ShortDescription="Testing data",
                 Status= true,
                 User= users[1],
                 UrlSlug="post1",
-                    File="",
+                    //File="",
                   Created= DateTime.Now,
+                Department = department[0],
                 Projects= new List<Project>()
                 {
                     projects[1],
@@ -325,13 +326,14 @@ namespace ManageProject.Data.Seeders
              new()
             {
                 Title="Post2",
-                ShortDecription="Testing data",
+                ShortDescription="Testing data",
                 Status= true,
                 User= users[1],
                 UrlSlug="post2",
-                File="",
+                //File="",
                   Created= DateTime.Now,
-                Projects= new List<Project>()
+				Department = department[1],
+				Projects= new List<Project>()
                 {
                     projects[1],
                     projects[0]
@@ -341,13 +343,14 @@ namespace ManageProject.Data.Seeders
              new()
             {
                 Title="Post3",
-                ShortDecription="Testing data",
+                ShortDescription="Testing data",
                 Status= true,
                 User= users[0],
-                    File="",
+                    //File="",
                 UrlSlug="post3",
                 Created= DateTime.Now,
-                Projects= new List<Project>()
+				Department = department[2],
+				Projects= new List<Project>()
                 {
                     projects[1],
                     

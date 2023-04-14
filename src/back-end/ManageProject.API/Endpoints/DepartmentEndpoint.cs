@@ -1,5 +1,6 @@
 ﻿using ManageProject.API.Models;
 using ManageProject.API.Models.Departments;
+using ManageProject.API.Models.Post;
 using ManageProject.API.Models.Users;
 using ManageProject.Core.Collections;
 using ManageProject.Core.DTO;
@@ -36,12 +37,16 @@ public static class DepartmentEndpoint
 			.WithName("GetDepartmentById")
 			.Produces<ApiResponse<DepartmentItem>>();
 
-		// get by slug
+		// get user by slug department
 
 		routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/user", GetUserByDepartmentSlug)
 			.WithName("GetUserByDepartmentSlug")
 			.Produces<ApiResponse<PaginationResult<UserDto>>>();
 
+		// get post by slug department
+		routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/post", GetPostByDepartmentSlug)
+			.WithName("GetPostByDepartmentSlug")
+			.Produces<ApiResponse<PaginationResult<PostDto>>>();
 
 
 		return app;
@@ -96,9 +101,28 @@ public static class DepartmentEndpoint
 
 		var paginationResut = new PaginationResult<UserDto>(userList);
 
-		return Results.Ok(ApiResponse.Success(paginationResut));
+		//return Results.Ok(ApiResponse.Success(paginationResut));
 
+		return userList == null
+			? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Ko tồn tại slug '{slug}'"))
+			: Results.Ok(ApiResponse.Success(paginationResut));
 	}
 
-	
+	// get post by slug department
+	private static async Task<IResult> GetPostByDepartmentSlug(
+		[FromRoute] string slug,
+		[AsParameters] PagingModel pagingModel,
+		IDepartmentRepository departmentRepository
+		)
+	{
+		var postQuery = new PostQuery()
+		{
+			DepartmentSlug = slug
+		};
+		var postList = await departmentRepository.GetPagedPostAsync(
+			postQuery, pagingModel, post => post.ProjectToType<PostDto>());
+		var paginationResut = new PaginationResult<PostDto>(postList);
+
+		return Results.Ok(ApiResponse.Success(paginationResut));
+	}
 }

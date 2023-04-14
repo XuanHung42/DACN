@@ -30,6 +30,9 @@ namespace ManageProject.Services.Manage.Departments
 			CancellationToken cancellationToken = default
 			);
 
-
+		Task<IPagedList<T>> GetPagedPostAsync<T>(
+			PostQuery query, IPagingParams pagingParams, Func<IQueryable<Post>, IQueryable<T>> mapper,
+			CancellationToken cancellationToken = default
+			);
 	}
 }

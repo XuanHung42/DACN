@@ -88,5 +88,35 @@ namespace ManageProject.Services.Manage.Departments
 
 
 		}
+
+		public async Task<IPagedList<T>> GetPagedPostAsync<T>(PostQuery query, IPagingParams pagingParams, Func<IQueryable<Post>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+		{
+			IQueryable<Post> postFindQuery = FilterPost(query);
+			IQueryable<T> queryResut = mapper(postFindQuery);
+			return await queryResut.ToPagedListAsync(pagingParams, cancellationToken); 
+		}
+
+		private IQueryable<Post> FilterPost(PostQuery query)
+		{
+			IQueryable<Post> postQuery = _context.Set<Post>()
+				.Include(p => p.Department)
+				.Include(p => p.Projects)
+				.Include(p => p.User);
+
+			if (!string.IsNullOrEmpty(query.Keyword))
+			{
+				postQuery = postQuery.Where(
+				   p => p.Title.Contains(query.Keyword)
+				|| p.UrlSlug.Contains(query.Keyword)
+				|| p.ShortDescription.Contains(query.Keyword)
+				|| p.Projects.Any(p => p.Name.Contains(query.Keyword)));
+			}
+
+			if (!string.IsNullOrWhiteSpace(query.DepartmentSlug))
+			{
+				postQuery = postQuery.Where(p => p.Department.UrlSlug == query.DepartmentSlug);
+			}
+			return postQuery;
+		}
 	}
 }

@@ -13,7 +13,7 @@ namespace ManageProject.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Department> builder)
         {
-            builder.ToTable("Departments");
+            builder.ToTable("Department");
 
             builder.HasKey(d => d.Id);
 

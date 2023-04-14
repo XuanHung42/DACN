@@ -22,7 +22,7 @@ namespace ManageProject.Data.Mappings
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(p => p.ShortDecription)
+            builder.Property(p => p.ShortDescription)
                 .IsRequired()
                 .HasMaxLength(200);
 
@@ -31,7 +31,7 @@ namespace ManageProject.Data.Mappings
                 .HasMaxLength(50);
 
             builder.Property(p => p.File)
-                .IsRequired()
+                //.IsRequired()
                 .HasMaxLength(200);
 
             builder.Property(p => p.Status)
@@ -46,7 +46,7 @@ namespace ManageProject.Data.Mappings
             //    .HasForeignKey(p => p.UserId)
             //    .HasConstraintName("FK_Posts_Users")
             //    .OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne(p => p.Departments)
+            builder.HasOne(p => p.Department)
                 .WithMany(d => d.Posts)
                 .HasConstraintName("FK_Post_Department");
 
