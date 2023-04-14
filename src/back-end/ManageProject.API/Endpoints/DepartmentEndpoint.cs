@@ -1,4 +1,5 @@
-﻿using ManageProject.API.Models;
+﻿using FluentValidation;
+using ManageProject.API.Models;
 using ManageProject.API.Models.Departments;
 using ManageProject.API.Models.Post;
 using ManageProject.API.Models.Users;
@@ -56,6 +57,12 @@ public static class DepartmentEndpoint
 			.AddEndpointFilter<ValidatorFilter<DepartmentEditModel>>()
 			.Produces(401)	// thieu thong tin xac thuc hop le voi cac truong can nhap vao
 			.Produces<ApiResponse<DepartmentItem>>();
+
+		// update a department
+		routeGroupBuilder.MapPut("/{id:int}", UpdateDepartment)
+			.WithName("UpdateDepartment")
+			.Produces(401)
+			.Produces<ApiResponse<string>>();
 
 		return app;
 	}
@@ -151,4 +158,35 @@ public static class DepartmentEndpoint
 
 		return Results.Ok(ApiResponse.Success(mapper.Map<DepartmentItem>(department), HttpStatusCode.Created));
 	}
+
+	private static async Task<IResult> UpdateDepartment(
+		int id, DepartmentEditModel model,
+		IValidator<DepartmentEditModel> validator,
+		IDepartmentRepository departmentRepository,
+		IMapper mapper
+		)
+	{
+		var validatorResult = await validator.ValidateAsync(model);
+		if (!validatorResult.IsValid)
+		{
+			return Results.Ok(ApiResponse.Fail(HttpStatusCode.BadRequest, validatorResult));
+		}
+
+		if (await departmentRepository.IsDepartmentSlugExistedAsync(0, model.UrlSlug))
+		{
+			return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict,
+				$"Slug '{model.UrlSlug}' này đã được sử dụng "));
+		}
+
+		var department = mapper.Map<Department>(model);
+		department.Id = id;
+
+		return await departmentRepository.AddOrUpdateDepartment(department)
+			? Results.Ok(ApiResponse.Success("Department cập nhật thành công", HttpStatusCode.NoContent))
+			: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy department có Id ='{id}'"));
+
+
+
+	}
+
 }
