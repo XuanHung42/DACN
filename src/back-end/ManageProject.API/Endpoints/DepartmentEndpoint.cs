@@ -64,6 +64,11 @@ public static class DepartmentEndpoint
 			.Produces(401)
 			.Produces<ApiResponse<string>>();
 
+		// delete department
+		routeGroupBuilder.MapDelete("/{id:int}", DeleteDepartment)
+			.WithName("DeleteDepartment")
+			.Produces(401)
+			.Produces<ApiResponse<string>>();
 		return app;
 	}
 
@@ -159,6 +164,8 @@ public static class DepartmentEndpoint
 		return Results.Ok(ApiResponse.Success(mapper.Map<DepartmentItem>(department), HttpStatusCode.Created));
 	}
 
+
+	// update department by id
 	private static async Task<IResult> UpdateDepartment(
 		int id, DepartmentEditModel model,
 		IValidator<DepartmentEditModel> validator,
@@ -183,10 +190,18 @@ public static class DepartmentEndpoint
 
 		return await departmentRepository.AddOrUpdateDepartment(department)
 			? Results.Ok(ApiResponse.Success("Department cập nhật thành công", HttpStatusCode.NoContent))
-			: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy department có Id ='{id}'"));
+			: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy department"));
 
+	}
 
-
+	// delete department by id
+	private static async Task<IResult> DeleteDepartment(
+		int id, IDepartmentRepository departmentRepository
+		)
+	{
+		return await departmentRepository.DeleteDepartmentByIdAsync(id)
+			? Results.Ok(ApiResponse.Success("Department đã được xoá", HttpStatusCode.NoContent))
+			: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Không tìm thấy department"));
 	}
 
 }

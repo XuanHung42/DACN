@@ -139,5 +139,12 @@ namespace ManageProject.Services.Manage.Departments
 		{
 			return await _context.Departments.AnyAsync(x => x.Id != departmentId && x.UrlSlug == slug, cancellationToken);
 		}
+
+		public async Task<bool> DeleteDepartmentByIdAsync(int departmentId, CancellationToken cancellationToken = default)
+		{
+			return await _context.Departments
+				.Where(d => d.Id == departmentId)
+				.ExecuteDeleteAsync(cancellationToken) > 0;
+		}
 	}
 }

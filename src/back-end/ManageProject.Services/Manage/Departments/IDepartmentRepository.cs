@@ -40,6 +40,7 @@ namespace ManageProject.Services.Manage.Departments
 		Task<bool> IsDepartmentSlugExistedAsync(
 			int departmentId, string slug, CancellationToken cancellationToken = default);
 
-
+		// delete department by id
+		Task<bool> DeleteDepartmentByIdAsync(int departmentId, CancellationToken cancellationToken = default);
 	}
 }
