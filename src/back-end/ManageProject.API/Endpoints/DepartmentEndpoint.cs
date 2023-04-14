@@ -1,9 +1,13 @@
 ﻿using ManageProject.API.Models;
 using ManageProject.API.Models.Departments;
+using ManageProject.API.Models.Users;
 using ManageProject.Core.Collections;
 using ManageProject.Core.DTO;
 using ManageProject.Services.Manage.Departments;
+using ManageProject.Services.Manage.Users;
+using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace ManageProject.API.Endpoints;
@@ -33,6 +37,12 @@ public static class DepartmentEndpoint
 			.Produces<ApiResponse<DepartmentItem>>();
 
 		// get by slug
+
+		routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/user", GetUserByDepartmentSlug)
+			.WithName("GetUserByDepartmentSlug")
+			.Produces<ApiResponse<PaginationResult<UserDto>>>();
+
+
 
 		return app;
 	}
@@ -69,6 +79,26 @@ public static class DepartmentEndpoint
 			:Results.Ok(ApiResponse.Success(mapper.Map<DepartmentItem>(department)));
 	}
 
-	// get by slug
+	// get user by slug department
+	private static async Task<IResult> GetUserByDepartmentSlug(
+		[FromRoute] string slug,
+		[AsParameters] PagingModel pagingModel,
+		IDepartmentRepository departmentRepository
+		)
+	{
+		var userQuery = new UserQuery()
+		{
+			DepartmentSlug = slug
+		};
+		var userList = await departmentRepository.GetPagedUserAsync(
+			userQuery, pagingModel,
+			user => user.ProjectToType<UserDto>());
 
+		var paginationResut = new PaginationResult<UserDto>(userList);
+
+		return Results.Ok(ApiResponse.Success(paginationResut));
+
+	}
+
+	
 }

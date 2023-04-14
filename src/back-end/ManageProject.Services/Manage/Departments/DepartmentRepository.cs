@@ -56,6 +56,37 @@ namespace ManageProject.Services.Manage.Departments
 			return await _context.Set<Department>().FindAsync(id);
 		}
 
+		public async Task<IPagedList<T>> GetPagedUserAsync<T>(UserQuery query, IPagingParams pagingParams, Func<IQueryable<User>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+		{
+			IQueryable<User> userFindQuery = FilterUser(query);
+			IQueryable<T> queryResult = mapper(userFindQuery);
+			return await queryResult.ToPagedListAsync(pagingParams, cancellationToken);
+		}
 
+		private IQueryable<User> FilterUser(UserQuery query)
+		{
+			IQueryable<User> userQuery = _context.Set<User>()
+				.Include(u => u.Department)
+				.Include(u => u.Posts)
+				.Include(u => u.Projects);
+
+			if (!string.IsNullOrEmpty(query.Keyword))
+			{
+				userQuery = userQuery.Where(u => u.Name.Contains(query.Keyword)
+				|| u.Email.Contains(query.Keyword)
+				|| u.UrlSlug.Contains(query.Keyword)
+				|| u.Projects.Any(p => p.Name.Contains(query.Keyword))
+				);
+			}
+
+			if (!string.IsNullOrWhiteSpace(query.DepartmentSlug))
+			{
+				userQuery = userQuery.Where(u => u.Department.UrlSlug == query.DepartmentSlug);
+			}
+
+			return userQuery;
+
+
+		}
 	}
 }

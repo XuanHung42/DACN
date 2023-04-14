@@ -25,6 +25,11 @@ namespace ManageProject.Services.Manage.Departments
 		Task<Department> GetDepartmentByIdAsync(int id, CancellationToken cancellationToken = default);
 
 
+		Task<IPagedList<T>> GetPagedUserAsync<T>(
+			UserQuery query, IPagingParams pagingParams, Func<IQueryable<User>, IQueryable<T>> mapper,
+			CancellationToken cancellationToken = default
+			);
+
 
 	}
 }
