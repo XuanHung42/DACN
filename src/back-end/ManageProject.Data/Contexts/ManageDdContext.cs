@@ -12,7 +12,6 @@ namespace ManageProject.Data.Contexts
 {
 	public class ManageDbContext : DbContext
 	{
-		public DbSet<CheckProcess> CheckProcesses { get; set; }
 
 		public DbSet<Department> Departments { get; set; }
 

@@ -24,21 +24,14 @@ namespace ManageProject.Services.Manage.Projects
 			_memoryCache = memoryCache;
 		}
 
-		public async Task<IList<ProjectItem>> GetProjectAsync(CancellationToken cancellationToken = default)
+		public async Task<IList<T>> GetProjectAsync<T>(
+			Func<IQueryable<Project>, IQueryable<T>> mapper,
+			CancellationToken cancellationToken = default)
 		{
-			return await _context.Set<Project>()
-				.OrderBy(pr => pr.Id)
-				.Select(pr => new ProjectItem()
-				{
-					Id = pr.Id,
-					Name = pr.Name,
-					Description = pr.Description,
-					ShortDescription = pr.ShortDescription,
-					UrlSlug = pr.UrlSlug,
-					CostProject = pr.CostProject,
-					UserNumber = pr.UserNumber,
-					Register = pr.Register
-				}).ToListAsync(cancellationToken);
+			IQueryable<Project> projects = _context.Set<Project>()
+					.Include(p => p.Users)
+					.OrderBy(pr => pr.Id);
+			return await mapper(projects).ToListAsync(cancellationToken);
 		}
 
 

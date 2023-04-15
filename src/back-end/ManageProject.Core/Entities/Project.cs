@@ -1,6 +1,7 @@
 ﻿using ManageProject.Core.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -17,12 +18,11 @@ namespace ManageProject.Core.Entities
         public string UrlSlug { get; set; }
         public string CostProject { get; set; }
         public int UserNumber { get; set; }
-        public int ProcessId { get; set; }
-		public bool Register { get; set; }
-		public int UserId { get; set; }
+        public bool Register { get; set; }
+		//public int UserId { get; set; }
         public IList<User> Users { get; set; }
         public IList<Post> Posts { get; set; }
-        public IList<Process> Processes { get; set; }
+		public IList<Process> Processes { get; set; }
 
-    }
+	}
 }

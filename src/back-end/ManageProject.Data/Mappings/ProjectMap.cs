@@ -38,6 +38,7 @@ namespace ManageProject.Data.Mappings
 			 .IsRequired()
 			 .HasDefaultValue(false);
 
+			
 
 
 

@@ -3,6 +3,7 @@ using ManageProject.API.Models.Project;
 using ManageProject.Core.Collections;
 using ManageProject.Core.DTO;
 using ManageProject.Services.Manage.Projects;
+using Mapster;
 using MapsterMapper;
 using System.Net;
 
@@ -18,7 +19,7 @@ public static class ProjectEndpoint
 		// get project not required
 		routeGroupBuilder.MapGet("/notpaging", GetProjectNotRequired)
 			.WithName("GetProjectNotRequired")
-			.Produces<ApiResponse<PaginationResult<ProjectItem>>>();
+			.Produces<ApiResponse<PaginationResult<ProjectDto>>>();
 
 		// get required paging
 		routeGroupBuilder.MapGet("/", GetProjects)
@@ -36,7 +37,8 @@ public static class ProjectEndpoint
 	// get project not required
 	public static async Task<IResult> GetProjectNotRequired(IProjectRepository projectRepository)
 	{
-		var project = await projectRepository.GetProjectAsync();
+		var project = await projectRepository
+			.GetProjectAsync(projects => projects.ProjectToType<ProjectDto>());
 		return Results.Ok(ApiResponse.Success(project));
 	}
 

@@ -12,7 +12,9 @@ namespace ManageProject.Services.Manage.Projects
 	public interface IProjectRepository
 	{
 		// write code
-		Task<IList<ProjectItem>> GetProjectAsync(CancellationToken cancellationToken = default);
+		Task<IList<T>> GetProjectAsync<T>(
+			Func<IQueryable<Project>, IQueryable<T>> mapper,
+			CancellationToken cancellationToken = default);
 
 		// get include paging
 		Task<IPagedList<ProjectItem>> GetPagedProjectsAsync(

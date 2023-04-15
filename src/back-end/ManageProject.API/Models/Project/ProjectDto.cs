@@ -1,4 +1,6 @@
-﻿namespace ManageProject.API.Models.Project
+﻿using ManageProject.API.Models.Users;
+
+namespace ManageProject.API.Models.Project
 {
 	public class ProjectDto
 	{
@@ -10,6 +12,8 @@
 		public string CostProject { get; set; }
 		public int UserNumber { get; set; }
 		public bool Register { get; set; }
+		public IList<UserDto> Users { get; set; }
+
 
 	}
 }
