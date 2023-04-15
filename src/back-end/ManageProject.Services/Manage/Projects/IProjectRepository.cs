@@ -17,13 +17,11 @@ namespace ManageProject.Services.Manage.Projects
 			CancellationToken cancellationToken = default);
 
 		// get include paging
-		Task<IPagedList<ProjectItem>> GetPagedProjectsAsync(
+		Task<IPagedList<T>> GetPagedProjectAsync<T>(
+			ProjectQuery query,
 			IPagingParams pagingParams,
-			string name = null,
+			Func<IQueryable<Project>, 
+			IQueryable<T>> mapper,
 			CancellationToken cancellationToken = default);
-
-		// get project by id
-		Task<Project> GetProjectByIdAsync (int id, CancellationToken cancellationToken = default);
-
 	}
 }

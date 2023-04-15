@@ -21,15 +21,10 @@ public static class ProjectEndpoint
 			.WithName("GetProjectNotRequired")
 			.Produces<ApiResponse<PaginationResult<ProjectDto>>>();
 
-		// get required paging
-		routeGroupBuilder.MapGet("/", GetProjects)
-			.WithName("GetProjects")
-			.Produces<ApiResponse<ProjectItem>>();
-
-		// get project by id
-		routeGroupBuilder.MapGet("/{id:int}", GetProjectById)
-			.WithName("GetProjectById")
-			.Produces < ApiResponse<ProjectItem>>();
+		routeGroupBuilder.MapGet("/", GetProjectAsync)
+			.WithName("GetProjectAsync")
+			.Produces<ApiResponse<ProjectDto>>();
+		
 
 		return app;
 	}
@@ -42,27 +37,21 @@ public static class ProjectEndpoint
 		return Results.Ok(ApiResponse.Success(project));
 	}
 
-	// get project required paging
-	private static async Task<IResult> GetProjects(
-		[AsParameters] ProjectFilterModel model,
-		IProjectRepository projectRepository
+	private static async Task<IResult> GetProjectAsync(
+		[AsParameters] ProjectFilterModel model, 
+		IProjectRepository projectRepository,
+		IMapper mapper
 		)
 	{
-		var projectList = await projectRepository.GetPagedProjectsAsync(model, model.Name);
+		var projectQuery = mapper.Map<ProjectQuery>(model);
 
-		var pagingnationResult = new PaginationResult<ProjectItem>(projectList);
+		var projectList = await projectRepository.GetPagedProjectAsync(projectQuery, model,
+			projects => projects.ProjectToType<ProjectDto>());
+
+		var pagingnationResult = new PaginationResult<ProjectDto>(projectList);
+
 		return Results.Ok(ApiResponse.Success(pagingnationResult));
 	}
 	
-	// get project by id
-	private static async Task<IResult> GetProjectById(int id, IProjectRepository projectRepository, IMapper mapper)
-	{
-		var project = await projectRepository.GetProjectByIdAsync(id);
-
-		return project == null
-			? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Không tìm project có id nhập vào"))
-			: Results.Ok(ApiResponse.Success(mapper.Map<ProjectItem>(project)));
-	}
-
 
 }
