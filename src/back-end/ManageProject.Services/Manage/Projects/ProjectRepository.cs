@@ -99,5 +99,33 @@ namespace ManageProject.Services.Manage.Projects
 			return projectQuery;
 
 		}
+
+		public async Task<Project> GetCachedProjectByIdAsync(int projectId, bool projectDetai = false, CancellationToken cancellationToken = default)
+		{
+			return await _memoryCache.GetOrCreateAsync($"projects.by-id.{projectId}",
+				async (entry) =>
+				{
+					entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
+					return await GetProjectByIdAsync(projectId, projectDetai);
+				});
+		}
+
+		public async Task<Project> GetProjectByIdAsync(int projectId, bool includeDetails = false, CancellationToken cancellationToken = default)
+		{
+			if (!includeDetails)
+			{
+				return await _context.Set<Project>().FindAsync(projectId);
+			}
+			return await _context.Set<Project>()
+				.Include(x => x.Users)
+				.FirstOrDefaultAsync(x => x.Id == projectId, cancellationToken);
+
+		}
+
+
+
+
+		// get project by id
+
 	}
 }

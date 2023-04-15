@@ -23,5 +23,14 @@ namespace ManageProject.Services.Manage.Projects
 			Func<IQueryable<Project>, 
 			IQueryable<T>> mapper,
 			CancellationToken cancellationToken = default);
+
+		// get by id
+		Task<Project> GetCachedProjectByIdAsync(int projectId, bool projectDetai = false, CancellationToken cancellationToken = default);
+
+		// get project
+		public Task<Project> GetProjectByIdAsync(
+			int projectId, bool includeDetails = false, 
+			CancellationToken cancellationToken = default);
+
 	}
 }

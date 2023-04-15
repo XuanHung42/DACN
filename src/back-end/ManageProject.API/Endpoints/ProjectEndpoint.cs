@@ -21,8 +21,14 @@ public static class ProjectEndpoint
 			.WithName("GetProjectNotRequired")
 			.Produces<ApiResponse<PaginationResult<ProjectDto>>>();
 
+		// get required paging
 		routeGroupBuilder.MapGet("/", GetProjectAsync)
 			.WithName("GetProjectAsync")
+			.Produces<ApiResponse<ProjectDto>>();
+
+		//  get by id
+		routeGroupBuilder.MapGet("/{id:int}", GetDetailProjectById)
+			.WithName("GetDetailProjectById")
 			.Produces<ApiResponse<ProjectDto>>();
 		
 
@@ -53,5 +59,16 @@ public static class ProjectEndpoint
 		return Results.Ok(ApiResponse.Success(pagingnationResult));
 	}
 	
+	// get project by id
+	private static async Task<IResult> GetDetailProjectById(
+		int id, IProjectRepository projectRepository, IMapper mapper)
+	{
+		var project = await projectRepository.GetCachedProjectByIdAsync(id, true);
 
+		var projectQuery = mapper.Map<ProjectDto>(project);
+
+		return projectQuery == null
+			? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy id"))
+			: Results.Ok(ApiResponse.Success(mapper.Map<ProjectDto>(project)));
+	}
 }
