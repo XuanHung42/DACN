@@ -46,6 +46,13 @@ public static class ProjectEndpoint
 			.Produces(401)
 			.Produces<ApiResponse<ProjectDetail>>();
 
+		// delete project
+		routeGroupBuilder.MapDelete("/{id:int}", DeleteProject)
+			.WithName("DeleteProject")
+			.Produces(401)
+			.Produces<ApiResponse<string>>();
+
+
 		return app;
 	}
 
@@ -130,4 +137,14 @@ public static class ProjectEndpoint
 		return Results.Ok(ApiResponse.Success(mapper.Map<ProjectDetail>(project), HttpStatusCode.Created));
 	}
 
+
+	// delete project by id
+	private static async Task<IResult> DeleteProject(
+		int id, IProjectRepository projectRepository)
+	{
+		return await projectRepository.DeleteProjectByIdAsync(id)
+			? Results.Ok(ApiResponse.Success("Project đã được xoá ", HttpStatusCode.NoContent))
+			: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Khong tim thay project"));
+	}
+	
 }

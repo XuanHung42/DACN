@@ -50,5 +50,10 @@ namespace ManageProject.Services.Manage.Projects
 			Project project, IEnumerable<string> user, CancellationToken cancellationToken = default);
 
 		
+		// delete project by id
+		Task<bool> DeleteProjectByIdAsync(int projectId, CancellationToken cancellationToken = default);
+
+
+
 	}
 }

@@ -202,5 +202,12 @@ namespace ManageProject.Services.Manage.Projects
 
 			return await userQuery.FirstOrDefaultAsync(cancellationToken);
 		}
+
+		public async Task<bool> DeleteProjectByIdAsync(int projectId, CancellationToken cancellationToken = default)
+		{
+			return await _context.Projects
+				.Where(p => p.Id == projectId)
+				.ExecuteDeleteAsync(cancellationToken) > 0;
+		}
 	}
 }
