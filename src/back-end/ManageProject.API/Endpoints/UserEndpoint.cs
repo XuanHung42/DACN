@@ -1,12 +1,16 @@
 ﻿using FluentValidation;
 using ManageProject.API.Models;
+using ManageProject.API.Models.Post;
+using ManageProject.API.Models.Project;
 using ManageProject.API.Models.Users;
 using ManageProject.Core.Collections;
 using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
 using ManageProject.Services.Manage.Users;
 using ManageProject.WebApi.Filters;
+using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace ManageProject.API.Endpoints
@@ -23,11 +27,14 @@ namespace ManageProject.API.Endpoints
                .WithName("GetUserById")
                .Produces<ApiResponse<UserItem>>();
             routeGroupBuilder.MapPut("/{id:int}", UpdateUser)
-            .WithName("UpdateAUser")
+            .WithName("UpdateAnUser")
             .AddEndpointFilter<ValidatorFilter<UserEditModel>>()
 
             .Produces(401)
             .Produces<ApiResponse<string>>();
+            routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/projects", GetProjectByUserSlug)
+                .WithName("GetProjectByUserSlug")
+                 .Produces<ApiResponse<PaginationResult<ProjectDto>>>();
             routeGroupBuilder.MapDelete("/", DeleteUser)
             .WithName("DeleteAnAuthor")
             .Produces(401)
@@ -83,6 +90,17 @@ namespace ManageProject.API.Endpoints
             return await userRepository.DeleteUserAsync(id)
                 ? Results.Ok(ApiResponse.Success("User is delete  ", HttpStatusCode.NoContent))
                 : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Could not find user"));
+        }
+        private static async Task<IResult> GetProjectByUserSlug([FromRoute] string slug, 
+            [AsParameters] PagingModel pagingModel, IUserRepository userRepository)
+        {
+           var projectQuery = new ProjectQuery()
+           {
+               UserSlug = slug
+           };
+            var projectList = await userRepository.GetPagedProjectsAsync(projectQuery, pagingModel, project => project.ProjectToType<ProjectDto>());
+            var paginationResult = new PaginationResult<ProjectDto>(projectList);
+            return Results.Ok(ApiResponse.Success(paginationResult));
         }
     }
 }

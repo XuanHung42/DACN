@@ -22,7 +22,7 @@ namespace ManageProject.Data.Seeders
         public void Initialize()
         {
             _dbContext.Database.EnsureCreated();
-            //if (_dbContext.Projects.Any()) return;
+            if (_dbContext.Projects.Any()) return;
 
 
             var checkProcesses = AddCheckProcesses();
@@ -38,6 +38,46 @@ namespace ManageProject.Data.Seeders
             
 
 
+        }
+        private IList<CheckProcess> AddCheckProcesses()
+        {
+            var checkProcesses = new List<CheckProcess>()
+            {
+                new()
+                {
+                    Complete= true,
+                    Start= true,
+                    StartMaking= true,
+                    Status= true,
+                    WriteReport= true,
+
+                },
+                 new()
+                {
+                    Complete= false,
+                    Start= true,
+                    StartMaking= true,
+                    Status= true,
+                    WriteReport= false,
+                },
+                  new()
+                {
+                    Complete= false,
+                    Start= false,
+                    StartMaking= false,
+                    Status= true,
+                    WriteReport= false,
+                }
+            };
+            foreach (var checkProcess in checkProcesses)
+            {
+                if (!_dbContext.CheckProcesses.Any(a => a.Id == checkProcess.Id))
+                {
+                    _dbContext.CheckProcesses.Add(checkProcess);
+                }
+            }
+            _dbContext.SaveChanges();
+            return checkProcesses;
         }
         private IList<Role> AddRoles() { 
         var roles = new List<Role>()
@@ -79,7 +119,9 @@ namespace ManageProject.Data.Seeders
                     BirthDate= new DateTime(2022,9,30),
                     UrlSlug= "admin1",
                     Department = departments[0],
+
                    ImageUrl="/uploads/pictures.jpg"
+
 
                     
 
@@ -93,7 +135,9 @@ namespace ManageProject.Data.Seeders
                     BirthDate= new DateTime(2022,10,30),
                     UrlSlug= "admin2",
                     Department = departments[0],
+
                    ImageUrl="/uploads/pictures.jpg"
+
 
 
 
@@ -108,7 +152,9 @@ namespace ManageProject.Data.Seeders
                     BirthDate= new DateTime(2022,9,30),
                     UrlSlug= "test-user",
                     Department = departments[1],
+
                     ImageUrl="/uploads/pictures.jpg"
+
 
 
 
@@ -193,6 +239,7 @@ namespace ManageProject.Data.Seeders
             _dbContext.SaveChanges();
             return deparments;
         }
+
         private IList<Project> AddProjects(IList<User> users, IList<Process> processes) {
             var projects = new List<Project>()
             {
@@ -267,44 +314,7 @@ namespace ManageProject.Data.Seeders
             _dbContext.SaveChanges();
             return projects;
         }
-        private IList<CheckProcess> AddCheckProcesses() { 
-            var checkProcesses = new List<CheckProcess>()
-            {
-                new()
-                {
-                    Complete= true,
-                    Start= true,
-                    StartMaking= true,
-                    Status= true,
-                    WriteReport= true,
-                },
-                 new()
-                {
-                    Complete= false,
-                    Start= true,
-                    StartMaking= true,
-                    Status= true,
-                    WriteReport= false,
-                },
-                  new()
-                {
-                    Complete= false,
-                    Start= false,
-                    StartMaking= false,
-                    Status= true,
-                    WriteReport= false,
-                }
-            };
-            foreach (var checkProcess in checkProcesses)
-            {
-                if (!_dbContext.CheckProcesses.Any(a => a.Id == checkProcess.Id))
-                {
-                    _dbContext.CheckProcesses.Add(checkProcess);
-                }
-            }
-            _dbContext.SaveChanges();
-            return checkProcesses;
-        }
+
         
         private IList<Post> AddPosts(IList<User> users, IList<Project> projects, IList<Department> department) {
         var posts = new List<Post>()
@@ -312,13 +322,16 @@ namespace ManageProject.Data.Seeders
             new()
             {
                 Title="Post1",
-                ShortDecription="Testing data",
+                ShortDescription="Testing data",
                 Status= true,
                 User= users[1],
                 UrlSlug="post1",
-                    File="",
+                    //File="",
                   Created= DateTime.Now,
+
                 Department= department[0],
+
+
                 Projects= new List<Project>()
                 {
                     projects[1],
@@ -329,14 +342,18 @@ namespace ManageProject.Data.Seeders
              new()
             {
                 Title="Post2",
-                ShortDecription="Testing data",
+                ShortDescription="Testing data",
                 Status= true,
                 User= users[1],
                 UrlSlug="post2",
-                File="",
+                //File="",
                   Created= DateTime.Now,
+
                    Department= department[1],
                 Projects= new List<Project>()
+
+				
+
                 {
                     projects[1],
                     projects[0]
@@ -346,14 +363,16 @@ namespace ManageProject.Data.Seeders
              new()
             {
                 Title="Post3",
-                ShortDecription="Testing data",
+                ShortDescription="Testing data",
                 Status= true,
                 User= users[0],
-                    File="",
+                    //File="",
                 UrlSlug="post3",
                 Created= DateTime.Now,
+
                  Department= department[2],
                 Projects= new List<Project>()
+
                 {
                     projects[1],
                     

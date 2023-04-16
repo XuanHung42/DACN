@@ -30,8 +30,7 @@ namespace ManageProject.Data.Mappings
                 .IsRequired();
 
             builder.Property(u => u.ImageUrl)
-                .HasMaxLength(200)
-                .IsRequired();
+                .HasMaxLength(200);
 
             builder.Property(u => u.UrlSlug)
                 .HasMaxLength(100)
@@ -57,7 +56,7 @@ namespace ManageProject.Data.Mappings
                 
 
 
-
+            // test code
         }
     }
 }

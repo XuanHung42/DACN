@@ -11,6 +11,7 @@ using ManageProject.Services.Extensions;
 
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ManageProject.Services.Manage.Users
 {
@@ -88,7 +89,7 @@ namespace ManageProject.Services.Manage.Users
             if (user.Id > 0)
             {
                 _context.Users.Update(user);
-                _memoryCache.Remove($"user.by-id.{user.Id}");
+                _memoryCache.Remove($"User.by-id.{user.Id}");
             }
             else
             {
@@ -125,7 +126,42 @@ namespace ManageProject.Services.Manage.Users
                     x.SetProperty(a => a.ImageUrl, a => imageUrl),
                     cancellationToken) > 0;
         }
-       
+
+        private IQueryable<Project> FilterProjects(ProjectQuery condtion)
+        {
+            IQueryable<Project> projects = _context.Set<Project>()
+                .Include(x => x.Users)
+                .Include(x => x.Posts)
+                .Include(x => x.Processes);
+            if (!string.IsNullOrWhiteSpace(condtion.UserSlug))
+            {
+                projects = projects.Where(x => x.Users.Any(u => u.UrlSlug == condtion.UserSlug));
+            }
+            if (!string.IsNullOrWhiteSpace(condtion.PostsSlug))
+            {
+                projects = projects.Where(x => x.Posts.Any(u => u.UrlSlug == condtion.PostsSlug));
+            }
+            if (!string.IsNullOrWhiteSpace(condtion.Keyword))
+                {
+                projects = projects.Where(x => x.Name.Contains(condtion.Keyword) ||
+                                            x.Description.Contains(condtion.Keyword)||
+                                            x.CostProject.Contains(condtion.Keyword));
+            }
+            return projects;
+        }
+
+        public async Task<IPagedList<T>> GetPagedProjectsAsync<T>(ProjectQuery query,
+        IPagingParams pagingParams,
+        Func<IQueryable<Project>,
+        IQueryable<T>> mapper,
+        CancellationToken cancellationToken = default)
+        {
+            IQueryable<Project> projectFindQuery = FilterProjects(query);
+            IQueryable<T> tQueryResult = mapper(projectFindQuery);
+            return await tQueryResult.ToPagedListAsync(pagingParams, cancellationToken);
+        }
+
+
 
     }
 }

@@ -29,7 +29,7 @@ namespace ManageProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Departments",
+                name: "Department",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -123,7 +123,7 @@ namespace ManageProject.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Users_Departments",
                         column: x => x.DepartmentId,
-                        principalTable: "Departments",
+                        principalTable: "Department",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -155,7 +155,7 @@ namespace ManageProject.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Post_Department",
                         column: x => x.DepartmentsId,
-                        principalTable: "Departments",
+                        principalTable: "Department",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Posts_Users_UserId",
@@ -280,7 +280,7 @@ namespace ManageProject.Data.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Departments");
+                name: "Department");
 
             migrationBuilder.DropTable(
                 name: "Roles");

@@ -24,5 +24,6 @@ namespace ManageProject.Core.Entities
         public Role Role { get; set; }
         public IList<Post> Posts { get; set; }
 
+        // checkout test branch new
     }
 }

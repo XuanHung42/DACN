@@ -20,8 +20,13 @@ namespace ManageProject.Data.Mappings
             builder.Property(pc => pc.ExcutionTime)
              .HasMaxLength(500)
              .IsRequired();
+            builder.HasOne(pr => pr.Project)
+                .WithMany(p => p.Processes)
+                .HasConstraintName("FK_Processes_Project");
 
-           
+
+
+
 
 
         }

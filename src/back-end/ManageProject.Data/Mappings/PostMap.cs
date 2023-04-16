@@ -22,7 +22,7 @@ namespace ManageProject.Data.Mappings
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(p => p.ShortDecription)
+            builder.Property(p => p.ShortDescription)
                 .IsRequired()
                 .HasMaxLength(200);
 
@@ -31,7 +31,7 @@ namespace ManageProject.Data.Mappings
                 .HasMaxLength(50);
 
             builder.Property(p => p.File)
-                .IsRequired()
+                //.IsRequired()
                 .HasMaxLength(200);
 
             builder.Property(p => p.Status)
@@ -54,7 +54,7 @@ namespace ManageProject.Data.Mappings
                 .WithMany(pr => pr.Posts)
                 .UsingEntity(pd => pd.ToTable("Directory"));
 
-
+            // test code
 
 
 

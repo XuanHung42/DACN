@@ -15,8 +15,8 @@ namespace ManageProject.Core.Entities
         public string Description { get; set; }
         public string ShortDescription { get; set; }
         public string UrlSlug { get; set; }
-        public int UserNumber { get; set; }
         public string CostProject { get; set; }
+        public int UserNumber { get; set; }
         public int ProcessId { get; set; }
         public int UserId { get; set; }
         public IList<User> Users { get; set; }
