@@ -5,6 +5,7 @@ using ManageProject.Core.DTO;
 using ManageProject.Services.Manage.Projects;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace ManageProject.API.Endpoints;
@@ -31,6 +32,10 @@ public static class ProjectEndpoint
 			.WithName("GetDetailProjectById")
 			.Produces<ApiResponse<ProjectDto>>();
 		
+		// get by slug
+		routeGroupBuilder.MapGet("/byslug/{slug:regex(^[a-z0-9_-]+$)}", GetDetailProjectBySlug)
+			.WithName("GetDetailProjectBySlug")
+			.Produces<ApiResponse<ProjectDto>>();
 
 		return app;
 	}
@@ -70,5 +75,19 @@ public static class ProjectEndpoint
 		return projectQuery == null
 			? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy id"))
 			: Results.Ok(ApiResponse.Success(mapper.Map<ProjectDto>(project)));
+	}
+
+	// get project by slug
+
+	private static async Task<IResult> GetDetailProjectBySlug(
+		[FromRoute] string slug,
+		IProjectRepository projectRepository,
+		IMapper mapper)
+	{
+		var projectList = await projectRepository.GetProjectBySlugAsync(slug);
+
+		return projectList == null
+			? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Không tìm thấy slug"))
+			: Results.Ok(ApiResponse.Success(mapper.Map<ProjectDto>(projectList)));
 	}
 }

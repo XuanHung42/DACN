@@ -44,7 +44,7 @@ namespace ManageProject.Services.Manage.Projects
 		//		}).ToListAsync(cancellationToken);
 		//}
 
-		
+
 		/// <summary>
 		/// Get not required
 		/// </summary>
@@ -58,6 +58,7 @@ namespace ManageProject.Services.Manage.Projects
 		{
 			IQueryable<Project> projects = _context.Set<Project>()
 					.Include(p => p.Users)
+					.Include(p => p.Processes)
 					.OrderBy(pr => pr.Id);
 			return await mapper(projects).ToListAsync(cancellationToken);
 		}
@@ -118,7 +119,22 @@ namespace ManageProject.Services.Manage.Projects
 			}
 			return await _context.Set<Project>()
 				.Include(x => x.Users)
+				.Include(x => x.Processes)
 				.FirstOrDefaultAsync(x => x.Id == projectId, cancellationToken);
+
+		}
+
+		public async Task<Project> GetProjectBySlugAsync(string slug, CancellationToken cancellationToken = default)
+		{
+			IQueryable<Project> projectQuery = _context.Set<Project>()
+				.Include(pr => pr.Users)
+				.Include(pr => pr.Processes);
+
+			if (!string.IsNullOrEmpty(slug))
+			{
+				projectQuery = projectQuery.Where(pr => pr.UrlSlug == slug);
+			}
+			return await projectQuery.FirstOrDefaultAsync(cancellationToken);
 
 		}
 

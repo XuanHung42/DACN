@@ -32,5 +32,8 @@ namespace ManageProject.Services.Manage.Projects
 			int projectId, bool includeDetails = false, 
 			CancellationToken cancellationToken = default);
 
+
+		// get project by slug
+		Task<Project> GetProjectBySlugAsync(string slug, CancellationToken cancellationToken = default);
 	}
 }
