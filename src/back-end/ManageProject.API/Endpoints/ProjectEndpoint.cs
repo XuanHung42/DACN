@@ -3,9 +3,11 @@ using ManageProject.API.Models.Project;
 using ManageProject.Core.Collections;
 using ManageProject.Core.DTO;
 using ManageProject.Services.Manage.Projects;
+using ManageProject.Services.Media;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
+using SlugGenerator;
 using System.Net;
 
 namespace ManageProject.API.Endpoints;
@@ -36,6 +38,13 @@ public static class ProjectEndpoint
 		routeGroupBuilder.MapGet("/byslug/{slug:regex(^[a-z0-9_-]+$)}", GetDetailProjectBySlug)
 			.WithName("GetDetailProjectBySlug")
 			.Produces<ApiResponse<ProjectDto>>();
+
+		// add or update post
+		routeGroupBuilder.MapPost("/", AddOrUpdateProject)
+			.WithName("AddOrUpdateProject")
+			.Accepts<ProjectEditModel>("multipart/form-data")
+			.Produces(401)
+			.Produces<ApiResponse<ProjectDetail>>();
 
 		return app;
 	}
@@ -90,4 +99,35 @@ public static class ProjectEndpoint
 			? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Không tìm thấy slug"))
 			: Results.Ok(ApiResponse.Success(mapper.Map<ProjectDto>(projectList)));
 	}
+
+	// create new project or update
+	private static async Task<IResult> AddOrUpdateProject (HttpContext context,
+		IProjectRepository projectRepository, IMapper mapper
+		)
+	{
+		var model = await ProjectEditModel.BindAsync(context);
+		var slug = model.Name.GenerateSlug();
+		if (await projectRepository.CheckSlugExistedAsync(model.Id, slug))
+		{
+			return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict,
+				$"Slug '{slug}' da duoc su dung cho project khac"));
+		}
+
+		var project = model.Id > 0
+			? await projectRepository.GetProjectByIdAsync(model.Id) : null;
+
+		project.Name = model.Name;
+		project.UrlSlug = model.Name.GenerateSlug();
+		project.Description = model.Description;
+		project.ShortDescription = model.ShortDescription;
+		project.CostProject = model.CostProject;
+		project.UserNumber = model.UseNumber;
+		project.Register = model.Register;
+
+
+		await projectRepository.CreateOrUpdateProjectAsync(project, model.GetSlectedUser());
+
+		return Results.Ok(ApiResponse.Success(mapper.Map<ProjectDetail>(project), HttpStatusCode.Created));
+	}
+
 }

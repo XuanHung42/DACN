@@ -35,5 +35,20 @@ namespace ManageProject.Services.Manage.Projects
 
 		// get project by slug
 		Task<Project> GetProjectBySlugAsync(string slug, CancellationToken cancellationToken = default);
+
+
+		//// check slug existed: kiem tra slug da ton tai hay chua
+		Task<bool> CheckSlugExistedAsync(int projectId, string slug, CancellationToken cancellationToken = default);
+
+		//// create or update project
+		//public Task<bool> CreateOrUpdateProjectAsync(
+		//	Project project, IEnumerable<string> user, CancellationToken cancellationToken = default);
+
+		Task<User> GetUserSlugAsync(string slug, CancellationToken cancellationToken = default);
+
+		public Task<bool> CreateOrUpdateProjectAsync(
+			Project project, IEnumerable<string> user, CancellationToken cancellationToken = default);
+
+		
 	}
 }

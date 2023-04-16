@@ -13,11 +13,11 @@ namespace ManageProject.API.Validations
 				.MaximumLength(100)
 				.WithMessage("Tên khoa tối đa 100 ký tự");
 
-			RuleFor(p => p.UrlSlug)
-				.NotEmpty()
-				.WithMessage("UrlSlug không được để trống")
-				.MaximumLength(100)
-				.WithMessage("UrlSlug tối đa 100 ký tự");
+			//RuleFor(p => p.UrlSlug)
+			//	.NotEmpty()
+			//	.WithMessage("UrlSlug không được để trống")
+			//	.MaximumLength(100)
+			//	.WithMessage("UrlSlug tối đa 100 ký tự");
 
 			RuleFor(p => p.Description)
 				.NotEmpty()

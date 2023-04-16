@@ -6,6 +6,8 @@ using ManageProject.Services.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.Extensions.Caching.Memory;
+using SlugGenerator;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -138,10 +140,67 @@ namespace ManageProject.Services.Manage.Projects
 
 		}
 
+		// kiem tra slug da ton tai hay chua
+		public async Task<bool> CheckSlugExistedAsync(int projectId, string slug, CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Project>()
+				.AnyAsync(x => x.Id != projectId && x.UrlSlug == slug, cancellationToken);
+		}
 
 
+		public async Task<bool> CreateOrUpdateProjectAsync(Project project, IEnumerable<string> user, CancellationToken cancellationToken = default)
+		{
+			if (project.Id > 0)
+			{
+				await _context.Entry(project).Collection(x => x.Users).LoadAsync(cancellationToken);
+			}
+			else
+			{
+				project.Users = new List<User>();
+			}
 
-		// get project by id
+			var validUser = user.Where(x => !string.IsNullOrEmpty(x))
+				.Select(x => new
+				{
+					Name = x,
+					Slug = x.GenerateSlug(),
+				})
+				.GroupBy(x => x.Slug)
+				.ToDictionary(g => g.Key, g => g.First().Name);
 
+			foreach (var kv in validUser)
+			{
+				if (project.Users.Any(x => string.Compare(x.UrlSlug, kv.Key, StringComparison.InvariantCultureIgnoreCase) == 0)) continue;
+
+				var users = await GetUserSlugAsync(kv.Key, cancellationToken) ?? new User()
+				{
+					Name = kv.Value,
+					Email = kv.Value,
+					UrlSlug = kv.Key,
+				};
+
+				project.Users.Add(users);
+			}
+
+			project.Users = project.Users.Where(u => validUser.ContainsKey(u.UrlSlug)).ToList();
+
+			if (project.Id > 0)
+			{
+				_context.Update(project);
+			}
+			else
+			{
+				_context.Add(project);
+			}
+			return await _context.SaveChangesAsync(cancellationToken) > 0;
+		}
+
+		public async Task<User> GetUserSlugAsync(string slug, CancellationToken cancellationToken = default)
+		{
+			IQueryable<User> userQuery = _context.Set<User>()
+				.Where(p => p.UrlSlug == slug);
+
+			return await userQuery.FirstOrDefaultAsync(cancellationToken);
+		}
 	}
 }
