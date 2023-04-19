@@ -129,7 +129,22 @@ namespace ManageProject.Services.Manage.Users
                     x.SetProperty(a => a.ImageUrl, a => imageUrl),
                     cancellationToken) > 0;
         }
+        private IQueryable<Role> FilterRole(RoleQuery query)
+        {
+            IQueryable<Role> roleQuery = _context.Set<Role>()
+                .Include(r => r.Users);
 
+
+                if (!string.IsNullOrWhiteSpace(query.UserSlug))
+            {
+                roleQuery= roleQuery.Where(r=> r.Users.Any(u=> u.UrlSlug == query.UserSlug));
+            }
+            if (query.UserId> 0)
+            {
+                roleQuery = roleQuery.Where(r => r.Users.Any(u => u.Id == query.UserId));
+            }
+            return roleQuery;
+        }
         private IQueryable<Project> FilterProject(ProjectQuery query)
         {
             IQueryable<Project> projectQuery = _context.Set<Project>()
@@ -171,6 +186,18 @@ namespace ManageProject.Services.Manage.Users
             IQueryable<Project> projectFindQuery = FilterProject(query);
             IQueryable<T> tQueryResult = mapper(projectFindQuery);
             return await tQueryResult.ToPagedListAsync(pagingParams, cancellationToken);
+        }
+
+        public async Task<IPagedList<T>> GetPageRolesAsync<T>(
+            RoleQuery query,
+            IPagingParams pagingParams,
+            Func<IQueryable<Role>, 
+            IQueryable<T>> mapper, 
+            CancellationToken cancellationToken= default)
+        {
+            IQueryable<Role> roleQuery = FilterRole(query);
+            IQueryable<T> queryResult = mapper(roleQuery);
+            return await queryResult.ToPagedListAsync(pagingParams, cancellationToken);
         }
 
 

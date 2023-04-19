@@ -6,6 +6,7 @@ using ManageProject.API.Models.Users;
 using ManageProject.Core.Collections;
 using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
+using ManageProject.Data.Mappings;
 using ManageProject.Services.Manage.Departments;
 using ManageProject.Services.Manage.Users;
 using ManageProject.WebApi.Filters;
@@ -13,6 +14,7 @@ using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using ManageProject.API.Models.Role;
 
 namespace ManageProject.API.Endpoints
 {
@@ -42,6 +44,9 @@ namespace ManageProject.API.Endpoints
             routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/projects", GetProjectByUserSlug)
                 .WithName("GetProjectByUserSlug")
                  .Produces<ApiResponse<PaginationResult<ProjectDto>>>();
+            routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/role", GetRoleByUserSlug)
+                .WithName("GetRoleByUserSlug")
+                 .Produces<ApiResponse<PaginationResult<RoleDto>>>();
             routeGroupBuilder.MapPost("/", AddUser)
                 .WithName("AddANewUser")
                 .AddEndpointFilter<ValidatorFilter<UserEditModel>>()
@@ -134,7 +139,23 @@ namespace ManageProject.API.Endpoints
               ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Ko tồn tại slug '{slug}'"))
               : Results.Ok(ApiResponse.Success(paginationResult));
         }
-         private static async Task<IResult> GetUserBySlug(
+        private static async Task<IResult> GetRoleByUserSlug([FromRoute] string slug,
+           [AsParameters] PagingModel pagingModel, IUserRepository userRepository)
+        {
+            var roleQuery = new RoleQuery()
+            {
+                UserSlug = slug
+            };
+            var roleList = await userRepository.GetPageRolesAsync(
+                roleQuery,
+                pagingModel,
+                project => project.ProjectToType<RoleDto>());
+            var paginationResult = new PaginationResult<RoleDto>(roleList);
+            return roleList == null
+              ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Ko tồn tại slug '{slug}'"))
+              : Results.Ok(ApiResponse.Success(paginationResult));
+        }
+        private static async Task<IResult> GetUserBySlug(
              string slug, IUserRepository userRepository, IMapper mapper)
         {
             var user = await userRepository.GetUserBySlugAsync(slug);

@@ -30,6 +30,11 @@ namespace ManageProject.Services.Manage.Users
        Func<IQueryable<Project>,
        IQueryable<T>> mapper,
        CancellationToken cancellationToken = default);
+        Task<IPagedList<T>> GetPageRolesAsync<T>(
+            RoleQuery query,
+            IPagingParams pagingParams,
+            Func<IQueryable<Role>, IQueryable<T>> mapper,
+            CancellationToken cancellationToken= default);
 
     }
 }
