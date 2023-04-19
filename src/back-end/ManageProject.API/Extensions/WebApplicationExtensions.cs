@@ -12,7 +12,7 @@ using ManageProject.Data.Seeders;
 using Microsoft.Extensions.Options;
 
 using ManageProject.Services.Manage.Departments;
-
+using ManageProject.Services.Manage.Projects;
 
 
 namespace ManageProject.API.Extensions
@@ -33,6 +33,8 @@ namespace ManageProject.API.Extensions
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             // department
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            // project
+            builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
 
             return builder;

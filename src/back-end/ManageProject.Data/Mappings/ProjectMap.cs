@@ -1,5 +1,4 @@
 ﻿using ManageProject.Core.Entities;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -23,26 +22,22 @@ namespace ManageProject.Data.Mappings
             builder.Property(p => p.Description)
                 .IsRequired()
                 .HasMaxLength(500);
-            builder.Property(p=> p.UrlSlug) 
+            builder.Property(p => p.UrlSlug)
                 .IsRequired()
                 .HasMaxLength(100);
             builder.Property(p => p.CostProject)
-            .HasMaxLength(300)
-            .IsRequired();
-           
-          
+                .HasMaxLength(300)
+                .IsRequired();
+
+
             builder.Property(p => p.UserNumber)
               .IsRequired()
               .HasDefaultValue(0);
-            builder.HasMany(p => p.Processes)
-                .WithOne(pr => pr.Project)
-                .HasForeignKey(p => p.CheckProcessId)
-                .HasConstraintName("FK_Project_Processes")
-                .OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(p => p.Users)
-                .WithMany(u => u.Projects)
 
-                .UsingEntity(p => p.ToTable("Selected"));
+            builder.Property(p => p.Register)
+             .IsRequired()
+             .HasDefaultValue(false);
+
 
 
 

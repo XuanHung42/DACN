@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace ManageProject.Core.DTO
 {
-    public class ProjectQuery
-    {
-        public string Keyword { get; set; } = "";
-        public string UserSlug { get; set; } = " ";
-        public string PostsSlug { get; set; }=" ";
-    }
+
+
+	public class ProjectQuery
+	{
+		public string Name { get; set; } = "";
+		public string UrlSlug { get; set; } = "";
+		public int? UserId { get; set; }
+		public string UserSlug { get; set; } = "";
+
+	}
+
 }

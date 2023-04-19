@@ -1,6 +1,7 @@
 ﻿using ManageProject.Core.Entities;
 using ManageProject.Data.Contexts;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,62 +26,22 @@ namespace ManageProject.Data.Seeders
             if (_dbContext.Projects.Any()) return;
 
 
-            var checkProcesses = AddCheckProcesses();
             var roles = AddRoles();
             var departments = AddDeparments();
             var users = AddUsers(roles, departments);
-            
-            var processes = AddProcesses(checkProcesses);
-            var project = AddProjects(users,processes);
-          
-            var posts = AddPosts(users,project, departments);
-            
-            
+
+            var project = AddProjects(users);
+            var processes = AddProcesses(project);
+
+            var posts = AddPosts(users, project, departments);
+
+
 
 
         }
-        private IList<CheckProcess> AddCheckProcesses()
+        private IList<Role> AddRoles()
         {
-            var checkProcesses = new List<CheckProcess>()
-            {
-                new()
-                {
-                    Complete= true,
-                    Start= true,
-                    StartMaking= true,
-                    Status= true,
-                    WriteReport= true,
-
-                },
-                 new()
-                {
-                    Complete= false,
-                    Start= true,
-                    StartMaking= true,
-                    Status= true,
-                    WriteReport= false,
-                },
-                  new()
-                {
-                    Complete= false,
-                    Start= false,
-                    StartMaking= false,
-                    Status= true,
-                    WriteReport= false,
-                }
-            };
-            foreach (var checkProcess in checkProcesses)
-            {
-                if (!_dbContext.CheckProcesses.Any(a => a.Id == checkProcess.Id))
-                {
-                    _dbContext.CheckProcesses.Add(checkProcess);
-                }
-            }
-            _dbContext.SaveChanges();
-            return checkProcesses;
-        }
-        private IList<Role> AddRoles() { 
-        var roles = new List<Role>()
+            var roles = new List<Role>()
         {
             new()
             {
@@ -95,9 +56,9 @@ namespace ManageProject.Data.Seeders
 
             }
         };
-           foreach(var role in roles)
+            foreach (var role in roles)
             {
-                if(!_dbContext.Roles.Any(a=> a.Name == role.Name))
+                if (!_dbContext.Roles.Any(a => a.Name == role.Name))
                 {
                     _dbContext.Roles.Add(role);
                 }
@@ -106,8 +67,9 @@ namespace ManageProject.Data.Seeders
             return roles;
         }
         private IList<User> AddUsers(
-            IList<Role> roles, 
-            IList<Department> departments) {
+            IList<Role> roles,
+            IList<Department> departments)
+        {
             var users = new List<User>()
             {
                 new()
@@ -120,10 +82,7 @@ namespace ManageProject.Data.Seeders
                     UrlSlug= "admin1",
                     Department = departments[0],
 
-                   ImageUrl="/uploads/pictures.jpg"
 
-
-                    
 
                 },
                  new()
@@ -135,9 +94,6 @@ namespace ManageProject.Data.Seeders
                     BirthDate= new DateTime(2022,10,30),
                     UrlSlug= "admin2",
                     Department = departments[0],
-
-                   ImageUrl="/uploads/pictures.jpg"
-
 
 
 
@@ -153,16 +109,13 @@ namespace ManageProject.Data.Seeders
                     UrlSlug= "test-user",
                     Department = departments[1],
 
-                    ImageUrl="/uploads/pictures.jpg"
-
-
 
 
                 }
             };
             foreach (var user in users)
             {
-                if (!_dbContext.Users.Any(a => a.UrlSlug == user.UrlSlug && a.Id==user.Id))
+                if (!_dbContext.Users.Any(a => a.UrlSlug == user.UrlSlug && a.Id == user.Id))
                 {
                     _dbContext.Users.Add(user);
                 }
@@ -171,25 +124,43 @@ namespace ManageProject.Data.Seeders
             return users;
         }
 
-        private IList<Process> AddProcesses(IList<CheckProcess> checkProcesses) {
+        private IList<Process> AddProcesses(IList<Project> projects)
+        {
             var processes = new List<Process>()
             {
                 new()
                 {
-                    
-                    ExcutionTime= "2 mouth",
-                    CheckProcess= checkProcesses[0]
+                    Project = projects[2],
+                    ExcutionTime= "2 month",
+                   Complete= true,
+                    Start= true,
+                    StartMaking= true,
+                    Status= true,
+                    WriteReport= true,
                 },
                  new()
                 {
-                    ExcutionTime= "1 mouth",
-                    CheckProcess= checkProcesses[1]
+                    Project = projects[2],
+
+                    ExcutionTime= "1 month",
+                    Complete= false,
+                    Start= true,
+                    StartMaking= true,
+                    Status= true,
+                    WriteReport= false,
                 },
                   new()
                 {
-                    ExcutionTime= "3 mouth",
-                    CheckProcess= checkProcesses[2]
+                    Project = projects[1],
+                    ExcutionTime= "3 month",
+                    Complete= false,
+                    Start= false,
+                    StartMaking= false,
+                    Status= true,
+                    WriteReport= false,
                 }
+
+
             };
             foreach (var process in processes)
             {
@@ -201,13 +172,14 @@ namespace ManageProject.Data.Seeders
             _dbContext.SaveChanges();
             return processes;
         }
-        private IList<Department> AddDeparments() {
+        private IList<Department> AddDeparments()
+        {
             var deparments = new List<Department>() {
                 new()
                 {
                     Name= "Công nghệ thông tin",
                     UrlSlug="cong-nghe-thong-tin",
-                    
+
                 },
                new()
                 {
@@ -227,11 +199,11 @@ namespace ManageProject.Data.Seeders
                     UrlSlug="su-pham",
 
                 },
-                
+
             };
             foreach (var deparment in deparments)
             {
-                if (!_dbContext.Departments.Any(a => a.Id == deparment.Id && a.UrlSlug== deparment.UrlSlug))
+                if (!_dbContext.Departments.Any(a => a.Id == deparment.Id && a.UrlSlug == deparment.UrlSlug))
                 {
                     _dbContext.Departments.Add(deparment);
                 }
@@ -239,8 +211,8 @@ namespace ManageProject.Data.Seeders
             _dbContext.SaveChanges();
             return deparments;
         }
-
-        private IList<Project> AddProjects(IList<User> users, IList<Process> processes) {
+        private IList<Project> AddProjects(IList<User> users)
+        {
             var projects = new List<Project>()
             {
                 new()
@@ -251,11 +223,13 @@ namespace ManageProject.Data.Seeders
                     ShortDescription="Quản lý công việc",
                     CostProject= "1000000 VND",
                     UserNumber=1,
-                    Users= users,
-                     Processes = new List<Process>()
+                    Users=  new List<User>()
                     {
-                       processes[1]
-                    }
+                        users[1], users[2]
+                    },
+                    Register = false,
+
+
 
                 },
                  new()
@@ -266,11 +240,12 @@ namespace ManageProject.Data.Seeders
                     ShortDescription="Quản lý công việc",
                     CostProject= "1000000 VND",
                     UserNumber=1,
-                    Users= users,
-                    Processes = new List<Process>()
+                    Users=  new List<User>()
                     {
-                       processes[1]
-                    }
+                        users[1], users[2]
+                    },
+                    Register = false,
+
 
                 },
                   new()
@@ -281,11 +256,12 @@ namespace ManageProject.Data.Seeders
                     ShortDescription="Quản lý thu hoạch",
                     CostProject= "1100000 VND",
                     UserNumber=1,
-                    Users= users,
-                    Processes = new List<Process>()
-                    {
-                       processes[0]
-                    }
+                    Users= new List < User >() {
+                        users[1]
+
+                    },
+                    Register = false,
+
 
                 },
                    new()
@@ -296,11 +272,9 @@ namespace ManageProject.Data.Seeders
                     ShortDescription="Quản lý công việc",
                     CostProject= "200000 VND",
                     UserNumber=1,
-                    Users= users,
-                    Processes = new List<Process>()
-                    {
-                       processes[2]
-                    }
+                    Users= new List < User >() { users[1], users[2] },
+                    Register = true,
+
 
                 }
             };
@@ -315,9 +289,9 @@ namespace ManageProject.Data.Seeders
             return projects;
         }
 
-        
-        private IList<Post> AddPosts(IList<User> users, IList<Project> projects, IList<Department> department) {
-        var posts = new List<Post>()
+        private IList<Post> AddPosts(IList<User> users, IList<Project> projects, IList<Department> department)
+        {
+            var posts = new List<Post>()
         {
             new()
             {
@@ -326,18 +300,14 @@ namespace ManageProject.Data.Seeders
                 Status= true,
                 User= users[1],
                 UrlSlug="post1",
-                    //File="",
                   Created= DateTime.Now,
-
-                Department= department[0],
-
-
+                Department = department[0],
                 Projects= new List<Project>()
                 {
                     projects[1],
                     projects[0]
                 }
-                
+
             },
              new()
             {
@@ -346,14 +316,9 @@ namespace ManageProject.Data.Seeders
                 Status= true,
                 User= users[1],
                 UrlSlug="post2",
-                //File="",
                   Created= DateTime.Now,
-
-                   Department= department[1],
+                Department = department[1],
                 Projects= new List<Project>()
-
-				
-
                 {
                     projects[1],
                     projects[0]
@@ -366,31 +331,28 @@ namespace ManageProject.Data.Seeders
                 ShortDescription="Testing data",
                 Status= true,
                 User= users[0],
-                    //File="",
                 UrlSlug="post3",
                 Created= DateTime.Now,
-
-                 Department= department[2],
+                Department = department[2],
                 Projects= new List<Project>()
-
                 {
                     projects[1],
-                    
+
                 }
-               
+
 
             },
 
         };
             foreach (var post in posts)
             {
-                if (!_dbContext.Posts.Any(a => a.UrlSlug == post.UrlSlug && a.Id==post.Id))
+                if (!_dbContext.Posts.Any(a => a.UrlSlug == post.UrlSlug && a.Id == post.Id))
                 {
                     _dbContext.Posts.Add(post);
                 }
             }
-            _dbContext.SaveChanges(); 
-            
+            _dbContext.SaveChanges();
+
             return posts;
         }
 

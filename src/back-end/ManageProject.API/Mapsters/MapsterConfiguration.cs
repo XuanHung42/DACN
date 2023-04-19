@@ -1,5 +1,6 @@
 ﻿
 using ManageProject.API.Models.Departments;
+using ManageProject.API.Models.Project;
 using ManageProject.API.Models.Users;
 using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
@@ -22,6 +23,16 @@ namespace ManageProject.API.Mapsters
             config.NewConfig<Department, DepartmentItem>()
                 .Map(dest => dest.Id , src => src.Id);
             config.NewConfig<DepartmentEditModel, Department>();
+
+            config.NewConfig<Project, ProjectDto>();
+            //config.NewConfig<Project, ProjectQuery>()
+            //    .Map(dest => dest.UserSlug, src => src.Users.Any(u => u.UrlSlug));
+            config.NewConfig<Project, ProjectItem>()
+                .Map(dest => dest.Id , src => src .Id);
+            config.NewConfig<ProjectEditModel, Project>()
+                .Ignore(dest => dest.Users);
+
+            
 
         }
     }

@@ -1,10 +1,8 @@
-﻿using ManageProject.API.Models.Process;
-using ManageProject.API.Models.Users;
-using ManageProject.Core.Entities;
+﻿using ManageProject.API.Models.Users;
 
 namespace ManageProject.API.Models.Project
 {
-	public class ProjectDto
+	public class ProjectDetail
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
@@ -15,8 +13,5 @@ namespace ManageProject.API.Models.Project
 		public int UserNumber { get; set; }
 		public bool Register { get; set; }
 		public IList<UserDto> Users { get; set; }
-		public IList<ProcessDto> Processes { get; set; }
-
-
 	}
 }

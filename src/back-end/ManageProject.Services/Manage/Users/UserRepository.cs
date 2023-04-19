@@ -32,6 +32,7 @@ namespace ManageProject.Services.Manage.Users
                 .OrderBy(u => u.Name)
                 .Select(u => new UserItem()
                 {
+                    Id= u.Id,
 
                     Name = u.Name,
                     DepartmentId = u.Department.Id,
@@ -39,7 +40,9 @@ namespace ManageProject.Services.Manage.Users
                     Email = u.Email,
                     RoleId = u.Role.Id,
                     UrlSlug = u.UrlSlug,
-                    Password = u.Password
+                    Password = u.Password,
+                    Projects = u.Projects
+                    
                 })
                 .ToListAsync(cancellationToken);
         }
@@ -66,12 +69,12 @@ namespace ManageProject.Services.Manage.Users
         }
         public async Task<User> GetUserBySlugAsync(string slug, CancellationToken cancellationToken= default)
         {
-            return await _context.Set<User>()
+            return await _context.Set<User>().Include(u=> u.Department)
                 .FirstOrDefaultAsync(a=> a.UrlSlug ==slug,cancellationToken);
         }
         public async Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken= default)
         {
-            return await _context.Set<User>().FindAsync(id);
+            return await _context.Set<User>().Include(u=> u.Department).FirstOrDefaultAsync(a=> a.Id==id, cancellationToken);
         }
 
         public async Task<User> GetUserByIdIsDetailAsync(int userId, bool isDetail = false, CancellationToken cancellationToken = default)
@@ -127,28 +130,37 @@ namespace ManageProject.Services.Manage.Users
                     cancellationToken) > 0;
         }
 
-        private IQueryable<Project> FilterProjects(ProjectQuery condtion)
+        private IQueryable<Project> FilterProject(ProjectQuery query)
         {
-            IQueryable<Project> projects = _context.Set<Project>()
-                .Include(x => x.Users)
-                .Include(x => x.Posts)
-                .Include(x => x.Processes);
-            if (!string.IsNullOrWhiteSpace(condtion.UserSlug))
+            IQueryable<Project> projectQuery = _context.Set<Project>()
+                .Include(pr => pr.Users)
+                .Include(pr => pr.Processes)
+                .Include(pr => pr.Posts);
+            if (!string.IsNullOrEmpty(query.Name))
             {
-                projects = projects.Where(x => x.Users.Any(u => u.UrlSlug == condtion.UserSlug));
+                projectQuery = projectQuery.Where(pr => pr.Name.Contains(query.Name)
+                || pr.ShortDescription.Contains(query.Name)
+                || pr.UrlSlug.Contains(query.Name)
+                || pr.Description.Contains(query.Name)
+                );
             }
-            if (!string.IsNullOrWhiteSpace(condtion.PostsSlug))
+
+            if (!string.IsNullOrWhiteSpace(query.UserSlug))
             {
-                projects = projects.Where(x => x.Posts.Any(u => u.UrlSlug == condtion.PostsSlug));
+                projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.UrlSlug == query.UserSlug));
             }
-            if (!string.IsNullOrWhiteSpace(condtion.Keyword))
-                {
-                projects = projects.Where(x => x.Name.Contains(condtion.Keyword) ||
-                                            x.Description.Contains(condtion.Keyword)||
-                                            x.CostProject.Contains(condtion.Keyword));
+
+            if (query.UserId > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.Id == query.UserId));
             }
-            return projects;
+          
+
+            return projectQuery;
+
         }
+
+    
 
         public async Task<IPagedList<T>> GetPagedProjectsAsync<T>(ProjectQuery query,
         IPagingParams pagingParams,
@@ -156,7 +168,7 @@ namespace ManageProject.Services.Manage.Users
         IQueryable<T>> mapper,
         CancellationToken cancellationToken = default)
         {
-            IQueryable<Project> projectFindQuery = FilterProjects(query);
+            IQueryable<Project> projectFindQuery = FilterProject(query);
             IQueryable<T> tQueryResult = mapper(projectFindQuery);
             return await tQueryResult.ToPagedListAsync(pagingParams, cancellationToken);
         }

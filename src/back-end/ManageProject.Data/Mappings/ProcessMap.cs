@@ -20,14 +20,26 @@ namespace ManageProject.Data.Mappings
             builder.Property(pc => pc.ExcutionTime)
              .HasMaxLength(500)
              .IsRequired();
-            builder.HasOne(pr => pr.Project)
-                .WithMany(p => p.Processes)
-                .HasConstraintName("FK_Processes_Project");
 
-
-
-
-
+            builder.Property(c => c.Start)
+                .IsRequired()
+                .HasDefaultValue(false);
+            builder.Property(c => c.StartMaking)
+                .IsRequired()
+                .HasDefaultValue(false);
+            builder.Property(c => c.WriteReport)
+                .IsRequired()
+                .HasDefaultValue(false);
+            builder.Property(c => c.Complete)
+                .IsRequired()
+                .HasDefaultValue(false);
+            builder.Property(c => c.Status)
+                .IsRequired()
+                .HasDefaultValue(false);
+            builder.HasOne(u => u.Project)
+            .WithMany(pr => pr.Processes)
+            .HasForeignKey(u => u.ProjectId)
+            .HasConstraintName("FK_Processes_Project");
 
         }
     }

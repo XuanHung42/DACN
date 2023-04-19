@@ -52,7 +52,7 @@ namespace ManageProject.Data.Mappings
 
             builder.HasMany(p => p.Projects)
                 .WithMany(pr => pr.Posts)
-                .UsingEntity(pd => pd.ToTable("Directory"));
+				.UsingEntity(pd => pd.ToTable("Directory"));
 
             // test code
 

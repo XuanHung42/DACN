@@ -1,10 +1,13 @@
-﻿using ManageProject.API.Models.Process;
-using ManageProject.API.Models.Users;
-using ManageProject.Core.Entities;
+﻿using ManageProject.Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ManageProject.API.Models.Project
+namespace ManageProject.Core.DTO
 {
-	public class ProjectDto
+	public class ProjectItem
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
@@ -14,9 +17,7 @@ namespace ManageProject.API.Models.Project
 		public string CostProject { get; set; }
 		public int UserNumber { get; set; }
 		public bool Register { get; set; }
-		public IList<UserDto> Users { get; set; }
-		public IList<ProcessDto> Processes { get; set; }
-
+		public IList<User> Users { get; set; }
 
 	}
 }
