@@ -1,5 +1,6 @@
 ﻿
 using ManageProject.API.Models.Departments;
+using ManageProject.API.Models.Process;
 using ManageProject.API.Models.Project;
 using ManageProject.API.Models.Users;
 using ManageProject.Core.DTO;
@@ -27,7 +28,13 @@ namespace ManageProject.API.Mapsters
             config.NewConfig<ProjectEditModel, Project>()
                 .Ignore(dest => dest.Users);
 
-            
+            config.NewConfig<Process, ProcessDto>();
+            config.NewConfig<Process, ProcessItem>()
+                .Map(dest => dest.Id, src => src.Id);
+            config.NewConfig<ProcessEditModel, Process>();
+
+
+
 
         }
     }
