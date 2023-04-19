@@ -72,7 +72,7 @@ public static class ProjectEndpoint
 	{
 		var projectQuery = mapper.Map<ProjectQuery>(model);
 
-		var projectList = await projectRepository.GetPagedProjectAsync(projectQuery, model,
+		var projectList = await projectRepository.GetPagedProjectAsync<ProjectDto>(projectQuery, model,
 			projects => projects.ProjectToType<ProjectDto>());
 
 		var pagingnationResult = new PaginationResult<ProjectDto>(projectList);
@@ -101,8 +101,9 @@ public static class ProjectEndpoint
 		IMapper mapper)
 	{
 		var projectList = await projectRepository.GetProjectBySlugAsync(slug);
+		var projectQuery = mapper.Map<ProjectDto>(projectList);
 
-		return projectList == null
+		return projectQuery == null
 			? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Không tìm thấy slug"))
 			: Results.Ok(ApiResponse.Success(mapper.Map<ProjectDto>(projectList)));
 	}

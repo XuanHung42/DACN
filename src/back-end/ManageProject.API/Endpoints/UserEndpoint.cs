@@ -24,7 +24,7 @@ namespace ManageProject.API.Endpoints
                .Produces<ApiResponse<UserItem>>();
             routeGroupBuilder.MapPut("/{id:int}", UpdateUser)
             .WithName("UpdateAUser")
-            .AddEndpointFilter<ValidatorFilter<UserFilterModel>>()
+            .AddEndpointFilter<ValidatorFilter<UserEditModel>>()
 
             .Produces(401)
             .Produces<ApiResponse<string>>();
