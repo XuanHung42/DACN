@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace ManageProject.Core.DTO
 {
+
+
 	public class ProjectQuery
 	{
 		public string Name { get; set; } = "";
@@ -14,4 +16,5 @@ namespace ManageProject.Core.DTO
 		public string UserSlug { get; set; } = "";
 
 	}
+
 }

@@ -25,7 +25,16 @@ namespace ManageProject.Services.Manage.Users
             int userId,
             string slug,
             CancellationToken cancellationToken = default);
-
+        Task<IPagedList<T>> GetPagedProjectsAsync<T>(ProjectQuery query,
+       IPagingParams pagingParams,
+       Func<IQueryable<Project>,
+       IQueryable<T>> mapper,
+       CancellationToken cancellationToken = default);
+        Task<IPagedList<T>> GetPageRolesAsync<T>(
+            RoleQuery query,
+            IPagingParams pagingParams,
+            Func<IQueryable<Role>, IQueryable<T>> mapper,
+            CancellationToken cancellationToken= default);
 
     }
 }

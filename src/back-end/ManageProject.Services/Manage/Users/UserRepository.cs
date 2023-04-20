@@ -11,6 +11,7 @@ using ManageProject.Services.Extensions;
 
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ManageProject.Services.Manage.Users
 {
@@ -31,6 +32,7 @@ namespace ManageProject.Services.Manage.Users
                 .OrderBy(u => u.Name)
                 .Select(u => new UserItem()
                 {
+                    Id= u.Id,
 
                     Name = u.Name,
                     DepartmentId = u.Department.Id,
@@ -38,7 +40,9 @@ namespace ManageProject.Services.Manage.Users
                     Email = u.Email,
                     RoleId = u.Role.Id,
                     UrlSlug = u.UrlSlug,
-                    Password = u.Password
+                    Password = u.Password,
+                    Projects = u.Projects
+                    
                 })
                 .ToListAsync(cancellationToken);
         }
@@ -65,12 +69,12 @@ namespace ManageProject.Services.Manage.Users
         }
         public async Task<User> GetUserBySlugAsync(string slug, CancellationToken cancellationToken= default)
         {
-            return await _context.Set<User>()
+            return await _context.Set<User>().Include(u=> u.Department)
                 .FirstOrDefaultAsync(a=> a.UrlSlug ==slug,cancellationToken);
         }
         public async Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken= default)
         {
-            return await _context.Set<User>().FindAsync(id);
+            return await _context.Set<User>().Include(u=> u.Department).FirstOrDefaultAsync(a=> a.Id==id, cancellationToken);
         }
 
         public async Task<User> GetUserByIdIsDetailAsync(int userId, bool isDetail = false, CancellationToken cancellationToken = default)
@@ -88,7 +92,7 @@ namespace ManageProject.Services.Manage.Users
             if (user.Id > 0)
             {
                 _context.Users.Update(user);
-                _memoryCache.Remove($"user.by-id.{user.Id}");
+                _memoryCache.Remove($"User.by-id.{user.Id}");
             }
             else
             {
@@ -125,7 +129,78 @@ namespace ManageProject.Services.Manage.Users
                     x.SetProperty(a => a.ImageUrl, a => imageUrl),
                     cancellationToken) > 0;
         }
-       
+        private IQueryable<Role> FilterRole(RoleQuery query)
+        {
+            IQueryable<Role> roleQuery = _context.Set<Role>()
+                .Include(r => r.Users);
+
+
+                if (!string.IsNullOrWhiteSpace(query.UserSlug))
+            {
+                roleQuery= roleQuery.Where(r=> r.Users.Any(u=> u.UrlSlug == query.UserSlug));
+            }
+            if (query.UserId> 0)
+            {
+                roleQuery = roleQuery.Where(r => r.Users.Any(u => u.Id == query.UserId));
+            }
+            return roleQuery;
+        }
+        private IQueryable<Project> FilterProject(ProjectQuery query)
+        {
+            IQueryable<Project> projectQuery = _context.Set<Project>()
+                .Include(pr => pr.Users)
+                .Include(pr => pr.Processes)
+                .Include(pr => pr.Posts);
+            if (!string.IsNullOrEmpty(query.Name))
+            {
+                projectQuery = projectQuery.Where(pr => pr.Name.Contains(query.Name)
+                || pr.ShortDescription.Contains(query.Name)
+                || pr.UrlSlug.Contains(query.Name)
+                || pr.Description.Contains(query.Name)
+                );
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.UserSlug))
+            {
+                projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.UrlSlug == query.UserSlug));
+            }
+
+            if (query.UserId > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.Id == query.UserId));
+            }
+          
+
+            return projectQuery;
+
+        }
+
+    
+
+        public async Task<IPagedList<T>> GetPagedProjectsAsync<T>(ProjectQuery query,
+        IPagingParams pagingParams,
+        Func<IQueryable<Project>,
+        IQueryable<T>> mapper,
+        CancellationToken cancellationToken = default)
+        {
+            IQueryable<Project> projectFindQuery = FilterProject(query);
+            IQueryable<T> tQueryResult = mapper(projectFindQuery);
+            return await tQueryResult.ToPagedListAsync(pagingParams, cancellationToken);
+        }
+
+        public async Task<IPagedList<T>> GetPageRolesAsync<T>(
+            RoleQuery query,
+            IPagingParams pagingParams,
+            Func<IQueryable<Role>, 
+            IQueryable<T>> mapper, 
+            CancellationToken cancellationToken= default)
+        {
+            IQueryable<Role> roleQuery = FilterRole(query);
+            IQueryable<T> queryResult = mapper(roleQuery);
+            return await queryResult.ToPagedListAsync(pagingParams, cancellationToken);
+        }
+
+
 
     }
 }

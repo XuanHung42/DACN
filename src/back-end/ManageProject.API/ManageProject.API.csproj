@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+   
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+   
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
 	  <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1-pre02" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4">
@@ -22,13 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\uploads\pictures\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ManageProject.Core\ManageProject.Core.csproj" />
     <ProjectReference Include="..\ManageProject.Data\ManageProject.Data.csproj" />
     <ProjectReference Include="..\ManageProject.Services\ManageProject.Services.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/azure-iot-edgeagent-deployment-1.1.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

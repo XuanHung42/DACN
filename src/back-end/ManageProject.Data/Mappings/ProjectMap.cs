@@ -9,41 +9,41 @@ using System.Threading.Tasks;
 
 namespace ManageProject.Data.Mappings
 {
-	public class ProjectMap : IEntityTypeConfiguration<Project>
+    public class ProjectMap : IEntityTypeConfiguration<Project>
 
-	{
-		public void Configure(EntityTypeBuilder<Project> builder)
-		{
-			builder.ToTable("Project");
-			builder.HasKey(p => p.Id);
-			builder.Property(p => p.Name)
-				.IsRequired()
-				.HasMaxLength(100);
-			builder.Property(p => p.Description)
-				.IsRequired()
-				.HasMaxLength(500);
-			builder.Property(p => p.UrlSlug)
-				.IsRequired()
-				.HasMaxLength(100);
-			builder.Property(p => p.CostProject)
-				.HasMaxLength(300)
-				.IsRequired();
+    {
+        public void Configure(EntityTypeBuilder<Project> builder)
+        {
+            builder.ToTable("Project");
+            builder.HasKey(p => p.Id);
+            builder.Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(100);
+            builder.Property(p => p.Description)
+                .IsRequired()
+                .HasMaxLength(500);
+            builder.Property(p => p.UrlSlug)
+                .IsRequired()
+                .HasMaxLength(100);
+            builder.Property(p => p.CostProject)
+                .HasMaxLength(300)
+                .IsRequired();
 
 
-			builder.Property(p => p.UserNumber)
-			  .IsRequired()
-			  .HasDefaultValue(0);
+            builder.Property(p => p.UserNumber)
+              .IsRequired()
+              .HasDefaultValue(0);
 
-			builder.Property(p => p.Register)
-			 .IsRequired()
-			 .HasDefaultValue(false);
-
-			
+            builder.Property(p => p.Register)
+             .IsRequired()
+             .HasDefaultValue(false);
 
 
 
 
 
-		}
-	}
+
+
+        }
+    }
 }
