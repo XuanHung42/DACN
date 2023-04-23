@@ -60,7 +60,7 @@ namespace ManageProject.Services.Manage.Projects
         {
             IQueryable<Project> projects = _context.Set<Project>()
                     .Include(p => p.Users)
-                    .Include(p => p.Processes)
+                    .Include(p => p.Process)
                     .OrderBy(pr => pr.Id);
             return await mapper(projects).ToListAsync(cancellationToken);
         }
@@ -78,7 +78,7 @@ namespace ManageProject.Services.Manage.Projects
         {
             IQueryable<Project> projectQuery = _context.Set<Project>()
                 .Include(pr => pr.Users)
-                .Include(pr => pr.Processes)
+                .Include(pr => pr.Process)
                 .Include(pr => pr.Posts);
             if (!string.IsNullOrEmpty(query.Name))
             {
@@ -126,7 +126,7 @@ namespace ManageProject.Services.Manage.Projects
             }
             return await _context.Set<Project>()
                 .Include(x => x.Users)
-                .Include(x => x.Processes)
+                .Include(x => x.Process)
                 .FirstOrDefaultAsync(x => x.Id == projectId, cancellationToken);
 
         }
@@ -135,7 +135,7 @@ namespace ManageProject.Services.Manage.Projects
         {
             IQueryable<Project> projectQuery = _context.Set<Project>()
                 .Include(pr => pr.Users)
-                .Include(pr => pr.Processes);
+                .Include(pr => pr.Process);
 
             if (!string.IsNullOrEmpty(slug))
             {

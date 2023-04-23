@@ -39,7 +39,10 @@ namespace ManageProject.Data.Mappings
              .HasDefaultValue(false);
 
 
-
+            builder.HasOne(u => u.Process)
+            .WithMany(pr => pr.Projects)
+            .HasForeignKey(u => u.ProcessId)
+            .HasConstraintName("FK_Process_Project");
 
 
 

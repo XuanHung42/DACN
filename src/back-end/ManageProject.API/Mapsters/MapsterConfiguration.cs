@@ -29,6 +29,7 @@ namespace ManageProject.API.Mapsters
             config.NewConfig<DepartmentEditModel, Department>();
 
             config.NewConfig<Project, ProjectDto>();
+          
 
             config.NewConfig<Project, ProjectItem>()
                 .Map(dest => dest.Id , src => src .Id);
