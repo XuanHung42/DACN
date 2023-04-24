@@ -30,9 +30,9 @@ namespace ManageProject.Data.Seeders
             var departments = AddDeparments();
             var users = AddUsers(roles, departments);
 
-            var project = AddProjects(users);
-            var processes = AddProcesses(project);
-
+           
+            var processes = AddProcesses();
+            var project = AddProjects(users,processes);
             var posts = AddPosts(users, project, departments);
 
 
@@ -124,13 +124,13 @@ namespace ManageProject.Data.Seeders
             return users;
         }
 
-        private IList<Process> AddProcesses(IList<Project> projects)
+        private IList<Process> AddProcesses()
         {
             var processes = new List<Process>()
             {
                 new()
                 {
-                    Project = projects[2],
+                   
                     ExcutionTime= "2 month",
                    Complete= true,
                     Start= true,
@@ -140,7 +140,7 @@ namespace ManageProject.Data.Seeders
                 },
                  new()
                 {
-                    Project = projects[2],
+                  
 
                     ExcutionTime= "1 month",
                     Complete= false,
@@ -151,7 +151,7 @@ namespace ManageProject.Data.Seeders
                 },
                   new()
                 {
-                    Project = projects[1],
+                   
                     ExcutionTime= "3 month",
                     Complete= false,
                     Start= false,
@@ -211,7 +211,7 @@ namespace ManageProject.Data.Seeders
             _dbContext.SaveChanges();
             return deparments;
         }
-        private IList<Project> AddProjects(IList<User> users)
+        private IList<Project> AddProjects(IList<User> users, IList<Process> processes)
         {
             var projects = new List<Project>()
             {
@@ -228,6 +228,7 @@ namespace ManageProject.Data.Seeders
                         users[1], users[2]
                     },
                     Register = false,
+                    Process= processes[0]
 
 
 
@@ -245,6 +246,7 @@ namespace ManageProject.Data.Seeders
                         users[1], users[2]
                     },
                     Register = false,
+                    Process= processes[2]
 
 
                 },
@@ -261,6 +263,7 @@ namespace ManageProject.Data.Seeders
 
                     },
                     Register = false,
+                    Process= processes[1]
 
 
                 },
@@ -275,6 +278,7 @@ namespace ManageProject.Data.Seeders
                     Users= new List < User >() { users[1], users[2] },
                     Register = true,
 
+                    Process= processes[0]
 
                 }
             };

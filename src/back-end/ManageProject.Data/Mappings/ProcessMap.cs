@@ -36,10 +36,7 @@ namespace ManageProject.Data.Mappings
             builder.Property(c => c.Status)
                 .IsRequired()
                 .HasDefaultValue(false);
-            builder.HasOne(u => u.Project)
-            .WithMany(pr => pr.Processes)
-            .HasForeignKey(u => u.ProjectId)
-            .HasConstraintName("FK_Processes_Project");
+            
 
         }
     }

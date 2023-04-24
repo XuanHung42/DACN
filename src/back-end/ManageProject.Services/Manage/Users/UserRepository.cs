@@ -149,7 +149,7 @@ namespace ManageProject.Services.Manage.Users
         {
             IQueryable<Project> projectQuery = _context.Set<Project>()
                 .Include(pr => pr.Users)
-                .Include(pr => pr.Processes)
+                .Include(pr => pr.Process)
                 .Include(pr => pr.Posts);
             if (!string.IsNullOrEmpty(query.Name))
             {

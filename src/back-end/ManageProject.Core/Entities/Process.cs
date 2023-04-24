@@ -12,8 +12,8 @@ namespace ManageProject.Core.Entities
     {
         public int Id { get; set; }
         public string ExcutionTime { get; set; }
-		public int ProjectId { get; set; }
-		public Project Project { get; set; }
+		
+		public IList<Project> Projects { get; set; }
 		public bool Start { get; set; }
 		public bool StartMaking { get; set; }
 		public bool WriteReport { get; set; }
