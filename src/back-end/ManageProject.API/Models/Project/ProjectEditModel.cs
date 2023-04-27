@@ -31,12 +31,14 @@ namespace ManageProject.API.Models.Project
 
 		public bool Register { get; set; }
 
+		public int ProcessId { get; set; }
 		public string SelectUsers { get; set; }
-		public List<string> GetSlectedUser()
+
+		public List<string> GetSelectedUsers()
 		{
 			return (SelectUsers ?? "")
-				.Split(new[] { ',', ';', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-				.ToList();
+			  .Split(new[] { ',', ';', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+			  .ToList();
 		}
 
 		//public static async ValueTask<ProjectEditModel> BindAsync(HttpContext context)

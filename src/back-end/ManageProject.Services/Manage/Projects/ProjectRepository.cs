@@ -157,14 +157,15 @@ namespace ManageProject.Services.Manage.Projects
 		{
 			if (project.Id > 0)
 			{
-				await _context.Entry(project).Collection(x => x.Users).LoadAsync(cancellationToken);
+				await _context.Entry(project).Collection(x => x.Users)
+                    .LoadAsync(cancellationToken);
 			}
 			else
 			{
 				project.Users = new List<User>();
 			}
 
-			var validUser = user.Where(x => !string.IsNullOrEmpty(x))
+			var validUser = user.Where(x => !string.IsNullOrWhiteSpace(x))
 				.Select(x => new
 				{
 					Name = x,

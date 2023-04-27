@@ -36,5 +36,10 @@ namespace ManageProject.Services.Manage.Processes
 					Status= p.Status
 				}).ToListAsync(cancellationToken);
 		}
+
+		public async Task<Process> GetProcessByIdAsync(int processId)
+		{
+			return await _context.Set<Process>().FindAsync(processId);
+		}
 	}
 }

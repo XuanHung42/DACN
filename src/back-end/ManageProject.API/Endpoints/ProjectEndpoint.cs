@@ -3,6 +3,7 @@ using ManageProject.API.Models.Project;
 using ManageProject.Core.Collections;
 using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
+using ManageProject.Services.Manage.Processes;
 using ManageProject.Services.Manage.Projects;
 using ManageProject.Services.Media;
 using ManageProject.WebApi.Filters;
@@ -150,15 +151,23 @@ public static class ProjectEndpoint
 
 
 	private static async Task<IResult> CreateNewProject(
-		ProjectEditModel model, IProjectRepository projectRepository, IMapper mapper)
+		ProjectEditModel model, 
+		IProjectRepository projectRepository, 
+		IProcessRepository processRepository,
+		IMapper mapper)
 	{
 		if (await projectRepository.CheckSlugExistedAsync(0, model.UrlSlug))
 		{
 			return Results.Ok(ApiResponse.Fail(
 				HttpStatusCode.Conflict,$"Slug '{model.UrlSlug} đã được sử dụng'"));
 		}
+		if (await processRepository.GetProcessByIdAsync(model.ProcessId) == null)
+		{
+			return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict,
+				$"Không tìm thấy proceess có id = {model.ProcessId}"));
+		}
 		var project = mapper.Map<Project>(model);
-		await projectRepository.CreateOrUpdateProjectAsync(project, model.GetSlectedUser());
+		await projectRepository.CreateOrUpdateProjectAsync	(project, model.GetSelectedUsers());
 
 		return Results.Ok(ApiResponse.Success(mapper.Map<ProjectDto>(project), HttpStatusCode.Created));
 	}
