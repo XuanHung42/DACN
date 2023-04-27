@@ -15,6 +15,9 @@ namespace ManageProject.Services.Manage.Processes
 
 		// get process by id
 		Task<Process> GetProcessByIdAsync(int processId);
+		
+		// add or update process
+		Task<bool> AddOrUpdateProcessAsync(Process process, CancellationToken cancellationToken = default);
 
 	}
 }

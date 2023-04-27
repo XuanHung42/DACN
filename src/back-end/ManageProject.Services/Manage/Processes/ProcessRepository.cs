@@ -21,6 +21,7 @@ namespace ManageProject.Services.Manage.Processes
 			_context = context;
 			_memoryCache = memoryCache;
 		}
+
 		public async Task<IList<ProcessItem>> GetProcessAsync(CancellationToken cancellationToken = default)
 		{
 			IQueryable<Process> progresses = _context.Set<Process>();
@@ -40,6 +41,20 @@ namespace ManageProject.Services.Manage.Processes
 		public async Task<Process> GetProcessByIdAsync(int processId)
 		{
 			return await _context.Set<Process>().FindAsync(processId);
+		}
+
+		public async Task<bool> AddOrUpdateProcessAsync(Process process, CancellationToken cancellationToken = default)
+		{
+			if (process.Id > 0)
+			{
+				_context.Processs.Update(process);
+				_memoryCache.Remove($"process.by-id.{process.Id}");
+			}
+			else
+			{
+				_context.Processs.Add(process);
+			}
+			return await _context.SaveChangesAsync(cancellationToken) > 0;
 		}
 	}
 }
