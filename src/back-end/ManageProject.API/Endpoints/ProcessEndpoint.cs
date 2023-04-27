@@ -5,6 +5,7 @@ using ManageProject.Core.Collections;
 using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
 using ManageProject.Services.Manage.Processes;
+using ManageProject.WebApi.Filters;
 using MapsterMapper;
 using System.Net;
 
@@ -26,11 +27,19 @@ public static class ProcessEndpoint
 			.WithName("GetProcessById")
 			.Produces<ApiResponse<ProcessItem>>();
 
+		// update process
 		routeGroupBuilder.MapPut("/{id:int}", UpdateProcess)
 			.WithName("UpdateProcess")
 			.Produces(401)
 			.Produces<ApiResponse<string>>();
 
+		// create new process
+		routeGroupBuilder.MapPost("/", AddNewProcess)
+			.WithName("AddNewProcess")
+			.AddEndpointFilter<ValidatorFilter<ProcessEditModel>>()
+			.Produces(401)
+			.Produces <ApiResponse<ProcessItem>>();
+			
 
 		return app;
 	}
@@ -74,5 +83,18 @@ public static class ProcessEndpoint
 			? Results.Ok(ApiResponse.Success("Cập nhật thành công process"))
 			: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy process có id = {id}"));
 
+	}
+
+	// add new process
+	private static async Task<IResult> AddNewProcess(
+		ProcessEditModel model, 
+		IProcessRepository processRepository,
+		IMapper mapper)
+	{
+		var process = mapper.Map<Process>(model);
+		await processRepository.AddOrUpdateProcessAsync(process);
+
+		return Results.Ok(ApiResponse.Success(mapper.Map<ProcessItem>(process),
+			HttpStatusCode.Created));
 	}
 }
