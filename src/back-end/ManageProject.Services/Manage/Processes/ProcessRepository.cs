@@ -56,5 +56,13 @@ namespace ManageProject.Services.Manage.Processes
 			}
 			return await _context.SaveChangesAsync(cancellationToken) > 0;
 		}
+
+		// delete process by id
+		public async Task<bool> DeleteProcessById(int processId, CancellationToken cancellationToken = default)
+		{
+			return await _context.Processs.Where(pr => pr.Id == processId)
+				.ExecuteDeleteAsync(cancellationToken) > 0;
+		}
+
 	}
 }

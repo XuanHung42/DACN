@@ -39,7 +39,14 @@ public static class ProcessEndpoint
 			.AddEndpointFilter<ValidatorFilter<ProcessEditModel>>()
 			.Produces(401)
 			.Produces <ApiResponse<ProcessItem>>();
-			
+
+		// del
+		routeGroupBuilder.MapDelete("/{id:int}", DeleteProcess)
+			.WithName("DeleteProcess")
+			.Produces(401)
+			.Produces<ApiResponse<string>>();
+
+
 
 		return app;
 	}
@@ -96,5 +103,14 @@ public static class ProcessEndpoint
 
 		return Results.Ok(ApiResponse.Success(mapper.Map<ProcessItem>(process),
 			HttpStatusCode.Created));
+	}
+
+	// delete process
+	private static async Task<IResult> DeleteProcess(
+		int id, IProcessRepository processRepository)
+	{
+		return await processRepository.DeleteProcessById(id)
+			? Results.Ok(ApiResponse.Success("Process có id nhập vào đã được xoá ", HttpStatusCode.NoContent))
+			: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy process có id = {id}"));
 	}
 }

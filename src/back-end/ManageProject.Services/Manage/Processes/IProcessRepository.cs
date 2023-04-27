@@ -19,5 +19,7 @@ namespace ManageProject.Services.Manage.Processes
 		// add or update process
 		Task<bool> AddOrUpdateProcessAsync(Process process, CancellationToken cancellationToken = default);
 
+		// delete process by id
+		Task<bool> DeleteProcessById(int processId, CancellationToken cancellationToken = default);
 	}
 }
