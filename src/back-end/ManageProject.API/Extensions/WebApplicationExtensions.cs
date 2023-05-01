@@ -14,7 +14,7 @@ using Microsoft.Extensions.Options;
 using ManageProject.Services.Manage.Departments;
 using ManageProject.Services.Manage.Projects;
 using ManageProject.Services.Manage.Processes;
-
+using ManageProject.Services.Manage.Posts;
 
 namespace ManageProject.API.Extensions
 {
@@ -38,6 +38,8 @@ namespace ManageProject.API.Extensions
             builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
             // process
             builder.Services.AddScoped<IProcessRepository, ProcessRepository>();
+            // post
+            builder.Services.AddScoped<IPostRepository, PostRepository>();
 
             return builder;
         }

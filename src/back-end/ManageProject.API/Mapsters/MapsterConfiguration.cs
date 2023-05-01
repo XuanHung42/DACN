@@ -1,5 +1,6 @@
 ﻿
 using ManageProject.API.Models.Departments;
+using ManageProject.API.Models.Post;
 using ManageProject.API.Models.Process;
 using ManageProject.API.Models.Project;
 using ManageProject.API.Models.Role;
@@ -42,8 +43,14 @@ namespace ManageProject.API.Mapsters
             config.NewConfig<ProcessEditModel, Process>();
 
 
+            config.NewConfig<Post, PostItem>()
+                .Map(dest => dest.Id, src => src .Id);
+            config.NewConfig<Post, PostDto>();
+			config.NewConfig<PostEditModel, Post>();
 
 
-        }
-    }
+
+
+		}
+	}
 }
