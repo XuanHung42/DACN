@@ -40,10 +40,10 @@ namespace ManageProject.API.Mapsters
             config.NewConfig<Process, ProcessItem>()
                 .Map(dest => dest.Id, src => src.Id);
             config.NewConfig<ProcessEditModel, Process>();
-
-
-
-
+            config.NewConfig<Role, RoleItem>();
+            config.NewConfig<Role, RoleDto>();
+            config.NewConfig<Role, RoleEditModel>();
+            
         }
     }
 }

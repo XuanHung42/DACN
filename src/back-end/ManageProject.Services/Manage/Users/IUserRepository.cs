@@ -35,6 +35,9 @@ namespace ManageProject.Services.Manage.Users
             IPagingParams pagingParams,
             Func<IQueryable<Role>, IQueryable<T>> mapper,
             CancellationToken cancellationToken= default);
-
+        Task<bool> CreateOrUpdateProjectAsync(User user, CancellationToken cancellationToken = default);
+        Task<bool> SetImageUrlAsync(
+             int userId, string imageUrl,
+             CancellationToken cancellationToken = default);
     }
 }

@@ -15,6 +15,9 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using ManageProject.API.Models.Role;
+using SlugGenerator;
+using Microsoft.Extensions.Hosting;
+using ManageProject.Services.Media;
 
 namespace ManageProject.API.Endpoints
 {
@@ -47,15 +50,21 @@ namespace ManageProject.API.Endpoints
             routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/role", GetRoleByUserSlug)
                 .WithName("GetRoleByUserSlug")
                  .Produces<ApiResponse<PaginationResult<RoleDto>>>();
-            routeGroupBuilder.MapPost("/", AddUser)
-                .WithName("AddANewUser")
-                .AddEndpointFilter<ValidatorFilter<UserEditModel>>()
-                .Produces(401)
-                .Produces<ApiResponse<UserItem>>();
+            routeGroupBuilder.MapPost("/", AddOrUpdateUser)
+                 .WithName("AddAnUser")
+            .AddEndpointFilter<ValidatorFilter<UserEditModel>>()
+             .Accepts<UserEditModel>("multipart/form-data")
+            .Produces(401)
+            .Produces<ApiResponse<UserItem>>();
             routeGroupBuilder.MapDelete("/", DeleteUser)
             .WithName("DeleteAnAuthor")
             .Produces(401)
             .Produces<ApiResponse<string>>();
+            routeGroupBuilder.MapPost("/{id:int}/avatar", SetUserPicture)
+         .WithName("SetUserPicture")
+         .Accepts<IFormFile>("multipart/form-data")
+         .Produces<string>()
+         .Produces(400);
             return app;
         }
 
@@ -96,6 +105,7 @@ namespace ManageProject.API.Endpoints
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Slug {model.UrlSlug} đã được sử dụng"));
             }
 
+
             var user = mapper.Map<User>(model);
             user.Id = id;
             return await userRepository.AddOrUpdateAsync(user)
@@ -115,6 +125,51 @@ namespace ManageProject.API.Endpoints
             var user = mapper.Map<User>(model);
             await userRepository.AddOrUpdateAsync(user);
 
+            return Results.Ok(ApiResponse.Success(mapper.Map<UserItem>(user), HttpStatusCode.Created));
+        }
+
+
+        private static async Task<IResult> AddOrUpdateUser(HttpContext context,
+            IUserRepository userRepository, IMapper mapper, IMediaManager media)
+        {
+            var model = await UserEditModel.BindAsync(context);
+            var slug = model.Name.GenerateSlug();
+            if (await userRepository.IsUserSlugExistedAsync(model.Id, slug))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict,
+                    $"Slug '{slug}' đã tôn tại"));
+
+            }
+
+            var user = model.Id > 0
+                ? await userRepository.GetUserByIdAsync(model.Id) : null;
+            if (user == null)
+            {
+                user = new User();
+            }
+            user.Name = model.Name;
+            user.UrlSlug = model.UrlSlug;
+            user.DepartmentId = model.DepartmentId;
+            user.Email = model.Email;
+            user.BirthDate = DateTime.Now;
+            user.UrlSlug = model.Name.GenerateSlug();
+            user.RoleId = user.RoleId;
+            user.Password = model.Password;
+            if (model.ImageFile?.Length > 0)
+            {
+                string hostname = $"{context.Request.Scheme}://{context.Request.Host}{context.Request.PathBase}/",
+                    uploadedPath = await media.SaveFileAsync(
+                        model.ImageFile.OpenReadStream(), model.ImageFile.FileName, model.ImageFile.ContentType);
+                if (!string.IsNullOrWhiteSpace(uploadedPath))
+                {
+                    user.ImageUrl = uploadedPath;
+                }
+
+               
+
+
+            }
+            await userRepository.AddOrUpdateAsync(user);
             return Results.Ok(ApiResponse.Success(mapper.Map<UserItem>(user), HttpStatusCode.Created));
         }
         private static async Task<IResult> DeleteUser(int id, IUserRepository userRepository)
@@ -162,6 +217,20 @@ namespace ManageProject.API.Endpoints
             return user==null
                 ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound))
                 :Results.Ok(ApiResponse.Success(mapper.Map<UserItem>(user)));
+        }
+        private static async Task<IResult> SetUserPicture(
+          int id,
+          IFormFile imageFile,
+          IUserRepository userRepository,
+          IMediaManager mediaManager)
+        {
+            var imageUrl = await mediaManager.SaveFileAsync(imageFile.OpenReadStream(), imageFile.FileName, imageFile.ContentType);
+            if (string.IsNullOrWhiteSpace(imageUrl))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.BadRequest, "Không lưu được tập tin"));
+            }
+            await userRepository.SetImageUrlAsync(id, imageUrl);
+            return Results.Ok(ApiResponse.Success(imageUrl));
         }
     }
 }

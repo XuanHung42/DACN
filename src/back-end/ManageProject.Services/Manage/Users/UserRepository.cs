@@ -12,6 +12,7 @@ using ManageProject.Services.Extensions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Cryptography.X509Certificates;
+using SlugGenerator;
 
 namespace ManageProject.Services.Manage.Users
 {
@@ -84,6 +85,28 @@ namespace ManageProject.Services.Manage.Users
                 return await _context.Set<User>().FindAsync(userId);
             }
             return await _context.Set<User>().Where(a => a.Id == userId).FirstOrDefaultAsync(cancellationToken);
+        }
+        public async Task<bool>  CreateOrUpdateProjectAsync( User user,  CancellationToken cancellationToken= default)
+        {
+            if (user.Id > 0)
+            {
+                _context.Update(user);
+            }
+            else
+            {
+                _context.Add(user);
+            }
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+
+        }
+           
+
+        public async Task<Project> GetProjectSlugAsync(string slug, CancellationToken cancellationToken = default)
+        {
+            IQueryable<Project> userQuery = _context.Set<Project>()
+                .Where(p => p.UrlSlug == slug);
+
+            return await userQuery.FirstOrDefaultAsync(cancellationToken);
         }
 
         public async Task<bool> AddOrUpdateAsync(
@@ -200,7 +223,7 @@ namespace ManageProject.Services.Manage.Users
             return await queryResult.ToPagedListAsync(pagingParams, cancellationToken);
         }
 
-
+      
 
     }
 }
