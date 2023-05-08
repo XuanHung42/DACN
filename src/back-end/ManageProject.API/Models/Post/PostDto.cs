@@ -13,7 +13,7 @@ namespace ManageProject.API.Models.Post
 		public string File { get; set; }
 		public bool Status { get; set; }
 		public DateTime Created { get; set; }
-		public DepartmentDto Department { get; set; }
+		//public DepartmentDto Department { get; set; }
 		public UserDto User { get; set; }
 
 

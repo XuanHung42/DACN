@@ -1,4 +1,5 @@
 ﻿using ManageProject.Core.DTO;
+using ManageProject.Core.Entities;
 using ManageProject.Services.Manage.Departments;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,7 @@ namespace ManageProject.Services.Manage.Posts
 {
 	public interface IPostRepository
 	{
-		// get all
-		Task<IList<PostItem>> GetAllPostAsync(
-			CancellationToken cancellationToken = default);
+		Task<IList<T>> GetAllPostAsync<T>(
+			Func<IQueryable<Post>, IQueryable<T>> mapper, CancellationToken cancellationToken = default);
 	}
 }
