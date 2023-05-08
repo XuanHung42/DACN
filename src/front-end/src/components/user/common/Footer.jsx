@@ -2,11 +2,16 @@ import React from "react";
 import logo from "../image/logo_dlu.png";
 import { Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFax,
+  faLocationDot, faMailBulk, faPager, faPhone,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Footer = () => {
   return (
     <div className="footer bg-success mt-5 text-white">
-      <div className="container py-5">
+      <div className="container py-3">
         <div className="row">
           <div className="col-4 text-center">
             <Image src={logo} alt="logo" />
@@ -18,7 +23,7 @@ const Footer = () => {
             <h3 className="text-center">Thông tin</h3>
             <div className="mt-3">
               <div className="infor-list mt-2">
-                Địa chỉ:
+                <FontAwesomeIcon icon={faLocationDot} />
                 <Link
                   className="text-decoration-none text-white px-3"
                   to={`https://www.google.com/maps/place/Tr%C6%B0%E1%BB%9Dng+%C4%90%E1%BA%A1i+H%E1%BB%8Dc+%C4%90%C3%A0+L%E1%BA%A1t/@11.95456,108.444205,16z/data=!4m6!3m5!1s0x317112d959f88991:0x9c66baf1767356fa!8m2!3d11.9545604!4d108.4442049!16s%2Fm%2F02rtwnx?hl=vi`}
@@ -28,34 +33,34 @@ const Footer = () => {
                 </Link>
               </div>
               <div className="infor-list mt-3">
-                SĐT:
+                <FontAwesomeIcon icon={faPhone} />
                 <Link
                   className="text-decoration-none text-white px-3"
-                  to={`tel`}
+                  to={"tel:0989962356"}
                 >
                   0966668888
                 </Link>
               </div>
               <div className="infor-list mt-3">
-                Fax
+              <FontAwesomeIcon icon={faFax} />
                 <Link
                   className="text-decoration-none text-white px-3"
-                  to={`tel`}
+                  to={"tel:0989962356"}
                 >
-                  0263.3823380
+                  0922226666
                 </Link>
               </div>
               <div className="infor-list mt-3">
-                Email
+              <FontAwesomeIcon icon={faMailBulk} />
                 <Link
                   className="text-decoration-none text-white px-3"
-                  to={`tel`}
+                  to={"mailto:2012254@dlu.edu.vn"}
                 >
                   info@dlu.edu.vn
                 </Link>
               </div>
               <div className="infor-list mt-3">
-                Facebook
+                <FontAwesomeIcon icon={faPager}/>
                 <Link
                   className="text-decoration-none text-white px-3"
                   target="blank"
@@ -79,6 +84,19 @@ const Footer = () => {
               title="map"
             ></iframe>
           </div>
+        </div>
+      </div>
+      <hr />
+      <div className="footer-bottom py-3">
+        <div className="text-center">
+          Coypyright &copy; 2023 by
+          <Link
+            to={"https://www.facebook.com/tran.duat.2368"}
+            target="_blank"
+            className="text-decoration-none px-1 text-white"
+          >
+            Hung Duat
+          </Link>
         </div>
       </div>
     </div>
