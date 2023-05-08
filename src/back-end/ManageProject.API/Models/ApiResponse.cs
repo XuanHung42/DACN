@@ -5,7 +5,7 @@ namespace ManageProject.API.Models
 {
     public class ApiResponse
     {
-        public bool IsSucess => Errors.Count == 0;
+        public bool IsSuccess => Errors.Count == 0;
 
         public HttpStatusCode StatusCode { get; init; }
         public IList<string> Errors { get; init; }
