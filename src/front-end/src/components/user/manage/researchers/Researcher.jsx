@@ -1,12 +1,28 @@
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../Manage.scss"
+import { getAllPost } from "../../../../api/PostApi.js";
 
 
 
 const Researchers = () =>{
+  const [getPost, setGetPost] = useState([]);
+
+  useEffect(() => {
+    getAllPost().then((data) => {
+      console.log("data check: ", data);
+      if(data){
+        setGetPost(data);
+      }
+      else{
+        setGetPost([]);
+      }
+    });
+  }, []);
+
+
   return (
     <>
       <div className="card">
