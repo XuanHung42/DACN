@@ -41,6 +41,7 @@ namespace ManageProject.Services.Manage.Departments
 		{
 			IQueryable<Department> departments = _context.Set<Department>()
 				.Include(u => u.Users)
+				.Include(p => p.Posts)
 				.OrderBy(d => d.Name);
 			return await mapper(departments).ToListAsync(cancellationToken);
 		}
@@ -154,6 +155,21 @@ namespace ManageProject.Services.Manage.Departments
 			return await _context.Departments
 				.Where(d => d.Id == departmentId)
 				.ExecuteDeleteAsync(cancellationToken) > 0;
+		}
+
+		public async Task<Department> GetDetailDepartmentBySlug(string slug, CancellationToken cancellationToken = default)
+		{
+			IQueryable<Department> departmentsQuery = _context.Set<Department>()
+				.Include(u => u.Users)
+				.Include(p => p.Posts);
+			{
+				if (!string.IsNullOrEmpty(slug))
+				{
+					departmentsQuery = departmentsQuery.Where(dp => dp.UrlSlug == slug);
+				}
+				return await departmentsQuery.FirstOrDefaultAsync(cancellationToken);
+			}
+
 		}
 	}
 }

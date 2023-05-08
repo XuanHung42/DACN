@@ -46,5 +46,9 @@ namespace ManageProject.Services.Manage.Departments
 
 		// delete department by id
 		Task<bool> DeleteDepartmentByIdAsync(int departmentId, CancellationToken cancellationToken = default);
+
+		// get department by slug
+		Task<Department> GetDetailDepartmentBySlug(string slug, CancellationToken cancellationToken = default);
+	
 	}
 }

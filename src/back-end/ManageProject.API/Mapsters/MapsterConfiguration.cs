@@ -1,4 +1,5 @@
 ﻿
+using ManageProject.API.Models.Department;
 using ManageProject.API.Models.Departments;
 using ManageProject.API.Models.Post;
 using ManageProject.API.Models.Process;
@@ -25,6 +26,7 @@ namespace ManageProject.API.Mapsters
             config.NewConfig<User, UserEditModel>()
  .Map(dest => dest.RoleId, src => src.Role.Id);
             config.NewConfig<Department, DepartmentDto>();
+            config.NewConfig<Department, DepartmentDetail>();
             config.NewConfig<Department, DepartmentItem>()
                 .Map(dest => dest.Id , src => src.Id);
             config.NewConfig<DepartmentEditModel, Department>();
