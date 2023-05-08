@@ -25,15 +25,24 @@ namespace ManageProject.Services.Manage.Departments
 		}
 
 		// get department not paging
-		public async Task<IList<DepartmentItem>> GetDepartmentAsync(CancellationToken cancellationToken = default)
+		//public async Task<IList<DepartmentItem>> GetDepartmentAsync(CancellationToken cancellationToken = default)
+		//{
+		//	IQueryable<Department> departments = _context.Set<Department>();
+		//	return await departments.OrderBy(d => d.Name).Select(d => new DepartmentItem()
+		//	{
+		//		Id = d.Id,
+		//		Name = d.Name,
+		//		UrlSlug = d.UrlSlug
+		//	}).ToListAsync(cancellationToken);
+		//}
+
+
+		public async Task<IList<T>> GetAllDepartmentAsync<T>(Func<IQueryable<Department>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
 		{
-			IQueryable<Department> departments = _context.Set<Department>();
-			return await departments.OrderBy(d => d.Name).Select(d => new DepartmentItem()
-			{
-				Id = d.Id,
-				Name = d.Name,
-				UrlSlug = d.UrlSlug
-			}).ToListAsync(cancellationToken);
+			IQueryable<Department> departments = _context.Set<Department>()
+				.Include(u => u.Users)
+				.OrderBy(d => d.Name);
+			return await mapper(departments).ToListAsync(cancellationToken);
 		}
 
 		// get department required paging

@@ -2,8 +2,8 @@ import { faBank } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../Manage.scss";
-import { getAllPost } from "../../../../api/PostApi";
+import "./Manage.scss";
+import { getAllPost } from "../../../api/PostApi";
 
 const Departments = () => {
   const [getPost, setGetPost] = useState([]);

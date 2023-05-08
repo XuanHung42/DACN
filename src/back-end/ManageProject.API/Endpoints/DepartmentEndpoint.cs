@@ -25,9 +25,9 @@ public static class DepartmentEndpoint
 
 
 		// get department not required
-		routeGroupBuilder.MapGet("/notpaging", GetDepartmentNotRequired)
-			.WithName("GetDepartmentNotRequired")
-			.Produces<ApiResponse<PaginationResult<DepartmentItem>>>();
+		routeGroupBuilder.MapGet("/getall", GetAllDepartment)
+			.WithName("GetAllDepartment")
+			.Produces<ApiResponse<PaginationResult<DepartmentDto>>>();
 
 		// get department required paging
 
@@ -73,12 +73,13 @@ public static class DepartmentEndpoint
 	}
 
 	// get department not required
-	private static async Task<IResult> GetDepartmentNotRequired(
+	private static async Task<IResult> GetAllDepartment(
 		IDepartmentRepository departmentRepository
 		)
 	{
-		var departmentList = await departmentRepository.GetDepartmentAsync();
-		return Results.Ok(ApiResponse.Success(departmentList));
+		var department = await departmentRepository.GetAllDepartmentAsync(
+			department => department.ProjectToType<DepartmentDto>());
+		return Results.Ok(ApiResponse.Success(department));
 	}
 
 	// get department required paging

@@ -1,6 +1,7 @@
 import React from "react";
-import Researchers from "./researchers/Researcher";
-import Departments from "./departments/Department";
+import Researchers from "./Researcher";
+import Departments from "./Department";
+
 
 const Manage = () => {
   return (

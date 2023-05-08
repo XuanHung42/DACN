@@ -3,8 +3,8 @@ import Header from "../../components/user/common/Header";
 import Banner from "../../components/user/banner/Banner";
 import Wellcome from "../../components/user/banner/Wellcome";
 import SearchBox from "../../components/user/search/SearchBox";
-import Manage from "../../components/user/manage/Manage";
 import Footer from "../../components/user/common/Footer";
+import Manage from "../../components/user/home/Manage";
 
 
 
