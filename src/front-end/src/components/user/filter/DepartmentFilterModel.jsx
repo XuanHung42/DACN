@@ -2,13 +2,12 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   reset,
-  updateEmail,
   updateName,
-} from "../../../redux/researchers/Researcher";
+} from "../../../redux/departments/Department";
 import { Form } from "react-bootstrap";
 
-const ResearchFilter = () => {
-  const researcherFilter = useSelector((state) => state.researcherFilter),
+const DepartmentFilter = () => {
+  const departmentFilter = useSelector((state) => state.departmentFilter),
     dispatch = useDispatch();
 
   const handleReset = (e) => {
@@ -28,22 +27,12 @@ const ResearchFilter = () => {
             type="text"
             placeholder="Tìm kiếm theo tên"
             name="name"
-            value={researcherFilter.name}
+            value={departmentFilter.name}
             onChange={(e) => dispatch(updateName(e.target.value))}
-          />
-        </Form.Group>
-        <Form.Group className="col-auto">
-          <Form.Label className="visually-hidden">Email</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Tìm kiếm theo email"
-            name="email"
-            value={researcherFilter.email}
-            onChange={(e) => dispatch(updateEmail(e.target.value))}
           />
         </Form.Group>
       </Form>
     </>
   );
 };
-export default ResearchFilter;
+export default DepartmentFilter;
