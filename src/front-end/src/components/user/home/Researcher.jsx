@@ -36,7 +36,7 @@ const Researchers = () => {
               </Link>
               <div className="card-shortdesc">{item.shortDescription}</div>
               <div className="card-author">
-                <span className="card-author-title">Tác giả:</span>
+                <span className="card-author-title">Đăng bởi:</span>
                 <Link className="text-decoration-none">
                   <span className="card-author-name px-3">{item.user.name}</span>
                 </Link>

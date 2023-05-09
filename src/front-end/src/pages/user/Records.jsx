@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../../components/user/common/Header";
 import Footer from "../../components/user/common/Footer";
+import ResearcherManage from "../../components/user/manage/researchers/ResearcherManage";
 
 
 
@@ -9,7 +10,7 @@ const Record = () => {
     <>
       <Header/>
       <div className="container">
-        <h2>Khu vực hồ sơ</h2>
+        <ResearcherManage/>
       </div>
       <Footer/>
     </>
