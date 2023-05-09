@@ -69,7 +69,7 @@ namespace ManageProject.API.Endpoints
             [AsParameters] UserFilterModel model,
             IUserRepository userRepository)
         {
-            var userList = await userRepository.GetPagedUserAsync(model, model.Name);
+            var userList = await userRepository.GetPagedUserAsync(model, model.Name,model.Email);
             var paginationResult = new PaginationResult<UserItem>(userList);
             return Results.Ok(ApiResponse.Success(paginationResult));
         }
