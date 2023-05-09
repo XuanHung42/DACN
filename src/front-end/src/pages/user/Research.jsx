@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../../components/user/common/Header";
 import Footer from "../../components/user/common/Footer";
+import ResearchResult from "../../components/user/manage/result/ResearchResult";
 
 
 
@@ -9,7 +10,7 @@ const Research = () => {
     <>
       <Header/>
       <div className="container">
-        <h2>Khu vực kết quả nghiên cứu</h2>
+        <ResearchResult/>
       </div>
       <Footer/>
     </>

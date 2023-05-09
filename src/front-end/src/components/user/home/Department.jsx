@@ -10,7 +10,7 @@ const Departments = () => {
 
   useEffect(() => {
     getAllPost().then((data) => {
-      console.log("data check: ", data);
+      // console.log("data check: ", data);
       if (data) {
         setGetPost(data);
       } else {

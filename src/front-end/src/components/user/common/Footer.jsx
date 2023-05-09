@@ -5,19 +5,20 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFax,
-  faLocationDot, faMailBulk, faPager, faPhone,
+  faLocationDot,
+  faMailBulk,
+  faPager,
+  faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Footer = () => {
   return (
     <div className="footer bg-success mt-5 text-white">
       <div className="container py-3">
-        <div className="row">
+        <div className="row align-items-center">
           <div className="col-4 text-center">
             <Image src={logo} alt="logo" />
-            <h3 className="text-center text-white mt-3">
-              Trường Đại học Đà Lạt
-            </h3>
+            <h3 className=" text-white mt-3">Trường Đại học Đà Lạt</h3>
           </div>
           <div className="col-4">
             <h3 className="text-center">Thông tin</h3>
@@ -42,7 +43,7 @@ const Footer = () => {
                 </Link>
               </div>
               <div className="infor-list mt-3">
-              <FontAwesomeIcon icon={faFax} />
+                <FontAwesomeIcon icon={faFax} />
                 <Link
                   className="text-decoration-none text-white px-3"
                   to={"tel:0868658353"}
@@ -51,7 +52,7 @@ const Footer = () => {
                 </Link>
               </div>
               <div className="infor-list mt-3">
-              <FontAwesomeIcon icon={faMailBulk} />
+                <FontAwesomeIcon icon={faMailBulk} />
                 <Link
                   className="text-decoration-none text-white px-3"
                   to={"mailto:2012254@dlu.edu.vn"}
@@ -60,7 +61,7 @@ const Footer = () => {
                 </Link>
               </div>
               <div className="infor-list mt-3">
-                <FontAwesomeIcon icon={faPager}/>
+                <FontAwesomeIcon icon={faPager} />
                 <Link
                   className="text-decoration-none text-white px-3"
                   target="blank"
@@ -71,14 +72,14 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="col-4">
+
+          <div className="col-4 text-center">
+            <h3 className=" text-white mt-3">Theo dõi chúng tôi</h3>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3903.2877902405253!2d108.44201621412589!3d11.95456563961217!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317112d959f88991%3A0x9c66baf1767356fa!2zVHLGsOG7nW5nIMSQ4bqhaSBI4buNYyDEkMOgIEzhuqF0!5e0!3m2!1svi!2s!4v1633261535076!5m2!1svi!2s"
-              width="100%"
-              height="250px"
-              style={{ border: 0 }}
-              aria-hidden="false"
-              title="map"
+              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FDalatUni&tabs&width=270&height=250&small_header=false&adapt_container_width=false&hide_cover=false&show_facepile=false&appId"
+              scrolling="no"
+              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+              title="facebook"
             ></iframe>
           </div>
         </div>
