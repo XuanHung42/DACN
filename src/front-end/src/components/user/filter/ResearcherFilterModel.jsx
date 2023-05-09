@@ -7,7 +7,7 @@ import {
 } from "../../../redux/researchers/Researcher";
 import { Form } from "react-bootstrap";
 
-const UserFilter = () => {
+const ResearchFilter = () => {
   const researcherFilter = useSelector((state) => state.researcherFilter),
     dispatch = useDispatch();
 
@@ -46,4 +46,4 @@ const UserFilter = () => {
     </>
   );
 };
-export default UserFilter;
+export default ResearchFilter;
