@@ -64,7 +64,7 @@ const ResearcherManage = () => {
               ))}
             </div>
           </Tab>
-          <Tab eventKey="post" title="Đơn vị">
+          <Tab eventKey="post" title="Đơn vị khoa">
             <div className="row">
               {departmentManage.map((item, index) => (
                 <div className="col-6" key={index}>

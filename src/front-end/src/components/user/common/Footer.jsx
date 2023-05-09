@@ -36,7 +36,7 @@ const Footer = () => {
                 <FontAwesomeIcon icon={faPhone} />
                 <Link
                   className="text-decoration-none text-white px-3"
-                  to={"tel:0989962356"}
+                  to={"tel:0868658353"}
                 >
                   0966668888
                 </Link>
@@ -45,7 +45,7 @@ const Footer = () => {
               <FontAwesomeIcon icon={faFax} />
                 <Link
                   className="text-decoration-none text-white px-3"
-                  to={"tel:0989962356"}
+                  to={"tel:0868658353"}
                 >
                   0922226666
                 </Link>
