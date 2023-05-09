@@ -5,7 +5,7 @@ import Department from "../pages/user/Department";
 import Research from "../pages/user/Research";
 import Record from "../pages/user/Records";
 import Contact from "../pages/user/Contact";
-import DepartmentDetail from "../components/user/manage/departments/DepartmentDetail";
+import DepartmentDetail from "../pages/user/DepartmentDetail";
 
 const Routers = () => {
   return (

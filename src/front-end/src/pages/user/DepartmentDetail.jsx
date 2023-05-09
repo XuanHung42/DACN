@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../common/Header";
-import Footer from "../../common/Footer";
-import "../Manage.scss";
+import Header from "../../components/user/common/Header";
+import Footer from "../../components/user/common/Footer";
 import {
   getAllDepartment,
   getDepartmentBySlug,
-} from "../../../../api/Department";
+} from "../../api/Department";
 import { useParams } from "react-router-dom";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";

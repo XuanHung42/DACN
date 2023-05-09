@@ -19,7 +19,7 @@ const DepartmentFilter = () => {
       <Form
         method="get"
         onReset={handleReset}
-        className="row gy-2 gx-3 align-items-center p-2"
+        className="row gy-2 gx-3 align-items-center p-2 justify-content-end"
       >
         <Form.Group className="col-auto">
           <Form.Label className="visually-hidden">Tên</Form.Label>

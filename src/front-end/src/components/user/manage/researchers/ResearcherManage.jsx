@@ -87,7 +87,7 @@ const ResearcherManage = () => {
                   ))
                 ) : (
                   <h2 className="text-warning text-center py-3">
-                    Không tìm thấy nhà khoa học nhập vào
+                    Không tìm thấy nhà khoa học
                   </h2>
                 )}
               </div>
@@ -121,7 +121,7 @@ const ResearcherManage = () => {
                   ))
                 ) : (
                   <h2 className="text-warning text-center py-3">
-                    Không tìm thấy đơn vị khoa nhập vào
+                    Không tìm thấy đơn vị khoa
                   </h2>
                 )}
               </div>
