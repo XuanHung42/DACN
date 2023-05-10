@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   getFilterDepartment,
-} from "../../../../api/Department";
+} from "../../../../api/DepartmentApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { Link, useParams } from "react-router-dom";

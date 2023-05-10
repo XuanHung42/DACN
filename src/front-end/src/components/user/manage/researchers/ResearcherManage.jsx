@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import { faHome, faUser } from "@fortawesome/free-solid-svg-icons";
 import {
   getFilterDepartment,
-} from "../../../../api/Department";
+} from "../../../../api/DepartmentApi";
 import { getFilterResearch } from "../../../../api/UserApi";
 import { useSelector } from "react-redux";
 import ResearchFilter from "../../filter/ResearcherFilterModel";
@@ -56,7 +56,7 @@ const ResearcherManage = () => {
           <h1 className="text-danger text-center">Hồ sơ khoa học </h1>
         </div>
         <Tabs className="mb-3">
-          <Tab eventKey="users" title="Tác giả">
+          <Tab eventKey="users" title="Tất cả tác giả">
             <ResearchFilter />
             {isVisibleLoading ? (
               <Loading />
@@ -93,7 +93,7 @@ const ResearcherManage = () => {
               </div>
             )}
           </Tab>
-          <Tab eventKey="post" title="Đơn vị khoa">
+          <Tab eventKey="post" title="Tất cả đơn vị khoa">
             <DepartmentFilter/>
             {isVisibleLoading ? (
               <Loading />

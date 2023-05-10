@@ -23,7 +23,7 @@ public static class ProjectEndpoint
 		var routeGroupBuilder = app.MapGroup("/api/projects");
 
 		// get project not required
-		routeGroupBuilder.MapGet("/notpaging", GetProjectNotRequired)
+		routeGroupBuilder.MapGet("/getAll", GetProjectNotRequired)
 			.WithName("GetProjectNotRequired")
 			.Produces<ApiResponse<PaginationResult<ProjectDto>>>();
 
