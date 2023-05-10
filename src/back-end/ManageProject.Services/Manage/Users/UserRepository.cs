@@ -200,7 +200,19 @@ namespace ManageProject.Services.Manage.Users
 			return await queryResult.ToPagedListAsync(pagingParams, cancellationToken);
 		}
 
-
+		public async Task<User> GetUserDetailBySlug(string slug, CancellationToken cancellationToken = default)
+		{
+			IQueryable<User> userQuery = _context.Set<User>()
+				//.Include(p => p.Projects)
+				.Include(p => p.Posts);
+			{
+				if (!string.IsNullOrEmpty(slug))
+				{
+					userQuery = userQuery.Where(u => u.UrlSlug == slug);
+				}
+				return await userQuery.FirstOrDefaultAsync(cancellationToken);
+			}
+		}
 	}
 
 }

@@ -64,7 +64,7 @@ const PostDetail = () => {
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Thuộc khoa</td>
-                  <td className="post-value">{postDetail.department.name}</td>
+                  {/* <td className="post-value">{postDetail.department.name}</td> */}
                 </tr>
               </tbody>
             </Table>

@@ -74,7 +74,7 @@ const ResearcherManage = () => {
                           />
                           <Link
                             className="text-success text-decoration-none"
-                            to={item.urlSlug}
+                            to={`researcher/${item.urlSlug}`}
                           >
                             <div className="text-name">Họ tên: {item.name}</div>
                             <span className="text-danger">

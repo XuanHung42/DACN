@@ -6,8 +6,8 @@ export async function getAllUser(){
   return get_api (`https://localhost:7284/api/users/getAll`)
 }
 
-export async function getUserBySlug(urlSlug = ''){
-  return get_api (`/${urlSlug}`)
+export async function getUserDetailBySlug(urlSlug = ''){
+  return get_api (`https://localhost:7284/api/users/slugDetail/${urlSlug}`)
 
 }
 

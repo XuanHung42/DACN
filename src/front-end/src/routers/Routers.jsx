@@ -7,6 +7,8 @@ import Record from "../pages/user/Records";
 import Contact from "../pages/user/Contact";
 import DepartmentDetail from "../pages/user/DepartmentDetail";
 import PostDetail from "../pages/user/PostDetail";
+import SearchPost from "../components/user/search/SearchPost";
+import ResearcherDetail from "../pages/user/ResearcherDetail";
 
 const Routers = () => {
   return (
@@ -14,15 +16,20 @@ const Routers = () => {
       <Routes>
       {/* routers user */}
         <Route path="/" element={<Home />} />
+        <Route path="/:slug" element={<PostDetail />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/home/:slug" element={<PostDetail />} />
         <Route path="/department" element={<Department />} />
         <Route path="/department/:slug" element={<DepartmentDetail />} />
         <Route path="/research" element={<Research/>}/>
         <Route path="/research/:slug" element={<PostDetail/>}/>
+        <Route path="/research/researcher/:slug" element={<ResearcherDetail/>}/>
         <Route path="/records" element={<Record/>}/>
+        <Route path="/records/:slug" element={<DepartmentDetail/>}/>
+        <Route path="/records/researcher/:slug" element={<ResearcherDetail/>}/>
         <Route path="/contact" element={<Contact/>}/>
 
+        <Route path="/search" element={<SearchPost />} />
+        <Route path="/home/search" element={<SearchPost />} />
 
 
 

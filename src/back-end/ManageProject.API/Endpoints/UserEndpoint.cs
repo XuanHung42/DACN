@@ -15,6 +15,7 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using ManageProject.API.Models.Role;
+using Microsoft.Extensions.Hosting;
 
 namespace ManageProject.API.Endpoints
 {
@@ -47,7 +48,12 @@ namespace ManageProject.API.Endpoints
             routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/role", GetRoleByUserSlug)
                 .WithName("GetRoleByUserSlug")
                  .Produces<ApiResponse<PaginationResult<RoleDto>>>();
-            routeGroupBuilder.MapPost("/", AddUser)
+
+			routeGroupBuilder.MapGet("/slugDetail/{slug:regex(^[a-z0-9_-]+$)}", GetDetailUserBySlugAsync)
+				.WithName("GetDetailUserBySlugAsync")
+				.Produces<ApiResponse<UserDto>>();
+
+			routeGroupBuilder.MapPost("/", AddUser)
                 .WithName("AddANewUser")
                 .AddEndpointFilter<ValidatorFilter<UserEditModel>>()
                 .Produces(401)
@@ -163,5 +169,16 @@ namespace ManageProject.API.Endpoints
                 ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound))
                 :Results.Ok(ApiResponse.Success(mapper.Map<UserItem>(user)));
         }
+
+        //  get detail user by slug
+        private static async Task<IResult> GetDetailUserBySlugAsync (
+            [FromRoute] string slug, IUserRepository userRepository, IMapper mapper)
+        {
+            var user = await userRepository.GetUserDetailBySlug(slug);
+
+			return user == null
+			? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy slug = {slug}"))
+			: Results.Ok(ApiResponse.Success(mapper.Map<UserDetail>(user)));
+		}
     }
 }

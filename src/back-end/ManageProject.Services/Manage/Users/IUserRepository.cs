@@ -40,5 +40,7 @@ namespace ManageProject.Services.Manage.Users
             Func<IQueryable<Role>, IQueryable<T>> mapper,
             CancellationToken cancellationToken= default);
 
+        Task<User> GetUserDetailBySlug(string slug, CancellationToken cancellationToken = default);
+
     }
 }
