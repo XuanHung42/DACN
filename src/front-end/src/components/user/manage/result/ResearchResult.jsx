@@ -35,7 +35,7 @@ const ResearchResult = () => {
             getPost.map((item, index) => (
               <div className="col-6" key={index}>
                 <div className="card-content mt-1">
-                  <Link className="text-decoration-none">
+                  <Link className="text-decoration-none" to={item.urlSlug}>
                     <h3>{item.title}</h3>
                   </Link>
                   <p className="card-shortdesc">{item.shortDescription}</p>

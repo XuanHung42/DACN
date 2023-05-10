@@ -6,6 +6,7 @@ import Research from "../pages/user/Research";
 import Record from "../pages/user/Records";
 import Contact from "../pages/user/Contact";
 import DepartmentDetail from "../pages/user/DepartmentDetail";
+import PostDetail from "../pages/user/PostDetail";
 
 const Routers = () => {
   return (
@@ -17,6 +18,7 @@ const Routers = () => {
         <Route path="/department" element={<Department />} />
         <Route path="/department/:slug" element={<DepartmentDetail />} />
         <Route path="/research" element={<Research/>}/>
+        <Route path="/research/:slug" element={<PostDetail/>}/>
         <Route path="/records" element={<Record/>}/>
         <Route path="/contact" element={<Contact/>}/>
 
