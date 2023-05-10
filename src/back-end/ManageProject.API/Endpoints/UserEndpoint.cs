@@ -51,11 +51,12 @@ namespace ManageProject.API.Endpoints
                 .WithName("GetRoleByUserSlug")
                  .Produces<ApiResponse<PaginationResult<RoleDto>>>();
             routeGroupBuilder.MapPost("/", AddOrUpdateUser)
-                 .WithName("AddAnUser")
-            .AddEndpointFilter<ValidatorFilter<UserEditModel>>()
-             .Accepts<UserEditModel>("multipart/form-data")
-            .Produces(401)
-            .Produces<ApiResponse<UserItem>>();
+                 .WithName("AddANewUser")
+                 //.AddEndpointFilter<ValidatorFilter<UserEditModel>>()
+                 .Produces(401)
+         .Accepts<UserEditModel>("multipart/form-data")
+
+                 .Produces<ApiResponse<UserItem>>();
             routeGroupBuilder.MapDelete("/", DeleteUser)
             .WithName("DeleteAnAuthor")
             .Produces(401)
@@ -145,7 +146,7 @@ namespace ManageProject.API.Endpoints
                 ? await userRepository.GetUserByIdAsync(model.Id) : null;
             if (user == null)
             {
-                user = new User();
+                user = new User() ;
             }
             user.Name = model.Name;
             user.UrlSlug = model.UrlSlug;
@@ -153,7 +154,7 @@ namespace ManageProject.API.Endpoints
             user.Email = model.Email;
             user.BirthDate = DateTime.Now;
             user.UrlSlug = model.Name.GenerateSlug();
-            user.RoleId = user.RoleId;
+            user.RoleId = model.RoleId;
             user.Password = model.Password;
             if (model.ImageFile?.Length > 0)
             {

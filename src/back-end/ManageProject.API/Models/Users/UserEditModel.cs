@@ -28,13 +28,14 @@ namespace ManageProject.API.Models.Users
             return new UserEditModel()
             {
                 ImageFile = form.Files["ImageFile"],
+                UrlSlug= (form["UrlSlug"]),
                 Id = int.Parse(form["Id"]),
                 Name = (form["Name"]),
                 Email = (form["Email"]),
                 Password = (form["Password"]),
                 DepartmentId = int.Parse(form["DepartmentId"]),
                 RoleId = int.Parse(form["RoleId"]),
-                BirthDate = DateTime.Parse(form["BirdDate"]),
+                BirthDate = DateTime.Now
                 //SelectProject= form["SelectedProject"]
                
             };
