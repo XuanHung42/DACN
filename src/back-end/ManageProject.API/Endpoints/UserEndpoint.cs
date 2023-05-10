@@ -41,7 +41,7 @@ namespace ManageProject.API.Endpoints
 
             .Produces(401)
             .Produces<ApiResponse<string>>();
-            routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/projects", GetProjectByUserSlug)
+            routeGroupBuilder.MapGet("projects/{slug:regex(^[a-z0-9_-]+$)}", GetProjectByUserSlug)
                 .WithName("GetProjectByUserSlug")
                  .Produces<ApiResponse<PaginationResult<ProjectDto>>>();
             routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/role", GetRoleByUserSlug)

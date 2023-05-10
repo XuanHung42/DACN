@@ -11,8 +11,6 @@ namespace ManageProject.Core.DTO
 	public class ProjectQuery
 	{
 		public string Name { get; set; } = "";
-		public string UrlSlug { get; set; } = "";
-		public int? UserId { get; set; }
 		public string UserSlug { get; set; } = "";
 
 	}

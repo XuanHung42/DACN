@@ -54,7 +54,7 @@ const DepartmentDetail = () => {
               <Tab eventKey="intro" title="Giới thiệu">
               Đơn vị khoa: {departmentDetail.name}
               </Tab>
-              <Tab eventKey="users" title="Nhà khoa học">
+              <Tab eventKey="users" title="Nhân sự">
                 {departmentList.map((item, index) => (
                   <div key={index}>
                     {item.name}
