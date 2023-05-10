@@ -50,10 +50,9 @@ const DepartmentDetail = () => {
             </h1>
           </div>
           <div className="department-detail">
-            <div className="text-name">Khoa: {departmentDetail.name}</div>
             <Tabs className="mb-3">
               <Tab eventKey="intro" title="Giới thiệu">
-                2
+              Đơn vị khoa: {departmentDetail.name}
               </Tab>
               <Tab eventKey="users" title="Nhà khoa học">
                 {departmentList.map((item, index) => (
