@@ -3,12 +3,16 @@ import { useEffect } from "react";
 import { getAllPost } from "../../../../api/PostApi";
 import { Link } from "react-router-dom";
 import Loading from "../../Loading";
-// import PostFilter from "../../filter/PostFilterModel";
+import { useSelector } from "react-redux";
+import PostFilter from "../../filter/PostFilterModel";
 
 
 const ResearchResult = () => {
   const [getPost, setGetPost] = useState([]);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+  // const [isVisibleLoading, setIsVisibleLoading] = useState(true), 
+  // postFilter = useSelector((state) => state.postFilter);
+  
 
   useEffect(() => {
     getAllPost().then((data) => {
@@ -21,12 +25,24 @@ const ResearchResult = () => {
     });
   }, []);
 
+  // useEffect(() => {
+  //   getFilterPost(postFilter.title,
+  //     postFilter.shortDescription).then((data) => {
+  //     if (data) {
+  //       setGetPost(data.items);
+  //     } else {
+  //       setGetPost([]);
+  //     }
+  //     setIsVisibleLoading(false);
+  //   });
+  // }, [postFilter, ps, p]);
+
   return (
     <div className="research">
       <div className="research-title py-3">
         <h1 className="text-danger text-center">Kết quả nghiên cứu</h1>
       </div>
-      {/* <PostFilter/> */}
+      <PostFilter/>
       {isVisibleLoading ? (
         <Loading />
       ) : (
