@@ -25,6 +25,7 @@ var app = builder.Build();
     app.MapProjectEndpoints();
 
     app.MapProcessEndpoints();
+    app.MapRoleEndpoints();
 
     app.MapPostEndpoints();
 

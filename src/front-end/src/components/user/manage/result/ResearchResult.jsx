@@ -1,32 +1,42 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { getAllPost } from "../../../../api/PostApi";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Loading from "../../Loading";
 // import PostFilter from "../../filter/PostFilterModel";
-
+import { getFilterPost } from "../../../../api/PostApi";
+import { useSelector } from "react-redux";
+import PostFilter from "../../filter/PostFilterModel";
 
 const ResearchResult = () => {
   const [getPost, setGetPost] = useState([]);
-  const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true),
+    postFilter = useSelector((state) => state.postFilter);
+
+  let { id } = useParams,
+    p = 1,
+    ps = 10;
 
   useEffect(() => {
-    getAllPost().then((data) => {
-      if (data) {
-        setGetPost(data);
-      } else {
-        setGetPost([]);
+    getFilterPost(postFilter.title, postFilter.shortDescription).then(
+      (data) => {
+        if (data) {
+          console.log("data check ddmmm: ", data);
+          setGetPost(data);
+        } else {
+          setGetPost([]);
+        }
+        setIsVisibleLoading(false);
       }
-      setIsVisibleLoading(false);
-    });
-  }, []);
+    );
+  }, [postFilter, ps, p]);
 
   return (
     <div className="research">
       <div className="research-title py-3">
         <h1 className="text-danger text-center">Kết quả nghiên cứu</h1>
       </div>
-      {/* <PostFilter/> */}
+      <PostFilter />
       {isVisibleLoading ? (
         <Loading />
       ) : (
