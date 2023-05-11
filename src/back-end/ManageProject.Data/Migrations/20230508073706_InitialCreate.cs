@@ -12,23 +12,6 @@ namespace ManageProject.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CheckProcess",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Start = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    StartMaking = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    WriteReport = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    Complete = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CheckProcess", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Department",
                 columns: table => new
                 {
@@ -39,27 +22,25 @@ namespace ManageProject.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Departments", x => x.Id);
+                    table.PrimaryKey("PK_Department", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Project",
+                name: "Processes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    ShortDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UrlSlug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    UserNumber = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    CostProject = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    ProcessId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    ExcutionTime = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Start = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    StartMaking = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    WriteReport = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Complete = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Project", x => x.Id);
+                    table.PrimaryKey("PK_Processes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,29 +58,30 @@ namespace ManageProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Processes",
+                name: "Project",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ExcutionTime = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    CheckProcessId = table.Column<int>(type: "int", nullable: false),
-                    ProjectId = table.Column<int>(type: "int", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ShortDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UrlSlug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CostProject = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    UserNumber = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    Register = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ProcessId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Processes", x => x.Id);
+                    table.PrimaryKey("PK_Project", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Processes_CheckProcess_CheckProcessId",
-                        column: x => x.CheckProcessId,
-                        principalTable: "CheckProcess",
+                        name: "FK_Process_Project",
+                        column: x => x.ProcessId,
+                        principalTable: "Processes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Processes_Project_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Project",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -111,7 +93,7 @@ namespace ManageProject.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UrlSlug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
@@ -141,24 +123,24 @@ namespace ManageProject.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ShortDecription = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ShortDescription = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     UrlSlug = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    File = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    File = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Created = table.Column<DateTime>(type: "datetime", nullable: false),
-                    DepartmentsId = table.Column<int>(type: "int", nullable: true)
+                    DepartmentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Post_Department",
-                        column: x => x.DepartmentsId,
+                        column: x => x.DepartmentId,
                         principalTable: "Department",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Posts_Users_UserId",
+                        name: "FK_Posts_Users",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -219,9 +201,9 @@ namespace ManageProject.Data.Migrations
                 column: "ProjectsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_DepartmentsId",
+                name: "IX_Posts_DepartmentId",
                 table: "Posts",
-                column: "DepartmentsId");
+                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_UserId",
@@ -229,15 +211,9 @@ namespace ManageProject.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Processes_CheckProcessId",
-                table: "Processes",
-                column: "CheckProcessId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Processes_ProjectId",
-                table: "Processes",
-                column: "ProjectId");
+                name: "IX_Project_ProcessId",
+                table: "Project",
+                column: "ProcessId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Selected_UsersId",
@@ -262,22 +238,19 @@ namespace ManageProject.Data.Migrations
                 name: "Directory");
 
             migrationBuilder.DropTable(
-                name: "Processes");
-
-            migrationBuilder.DropTable(
                 name: "Selected");
 
             migrationBuilder.DropTable(
                 name: "Posts");
 
             migrationBuilder.DropTable(
-                name: "CheckProcess");
-
-            migrationBuilder.DropTable(
                 name: "Project");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Processes");
 
             migrationBuilder.DropTable(
                 name: "Department");

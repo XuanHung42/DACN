@@ -1,4 +1,4 @@
-﻿using ManageProject.Core.Contracts;
+﻿    using ManageProject.Core.Contracts;
 using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
 using ManageProject.Data.Contexts;
@@ -66,7 +66,8 @@ namespace ManageProject.Services.Manage.Projects
         }
 
         // get include paging
-        public async Task<IPagedList<T>> GetPagedProjectAsync<T>(ProjectQuery query, IPagingParams pagingParams, Func<IQueryable<Project>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+        public async Task<IPagedList<T>> GetPagedProjectAsync<T>(
+            ProjectQuery query, IPagingParams pagingParams, Func<IQueryable<Project>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
         {
             IQueryable<Project> projectFindQuery = FilterProject(query);
             IQueryable<T> queryResult = mapper(projectFindQuery);
@@ -74,7 +75,8 @@ namespace ManageProject.Services.Manage.Projects
         }
 
         // filter project
-        private IQueryable<Project> FilterProject(ProjectQuery query)
+        private IQueryable<Project> FilterProject(
+            ProjectQuery query)
         {
             IQueryable<Project> projectQuery = _context.Set<Project>()
                 .Include(pr => pr.Users)

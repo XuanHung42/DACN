@@ -48,7 +48,9 @@ const ResearcherDetail = () => {
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Hình ảnh</td>
-                  <td className="post-value">{reseacherDetail.imageUrl}</td>
+                  <td className="post-value">
+                  <img src={`https://localhost:7284/${reseacherDetail.imageUrl}`} alt="" />
+                  </td>
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Ngày sinh</td>

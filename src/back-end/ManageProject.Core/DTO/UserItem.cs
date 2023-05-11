@@ -19,7 +19,7 @@ namespace ManageProject.Core.DTO
         public DateTime BirthDate { get; set; }
         public string UrlSlug { get; set; }
         public int DepartmentId { get; set; }
-        //public int RoleId { get; set; }
-        //public IList<Project> Projects { get; set; } 
+        public int RoleId { get; set; }
+        public IList<Project> Projects { get; set; } 
     }
 }
