@@ -44,7 +44,7 @@ namespace ManageProject.API.Endpoints
 
             .Produces(401)
             .Produces<ApiResponse<string>>();
-            routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/projects", GetProjectByUserSlug)
+            routeGroupBuilder.MapGet("projects/{slug:regex(^[a-z0-9_-]+$)}", GetProjectByUserSlug)
                 .WithName("GetProjectByUserSlug")
                  .Produces<ApiResponse<PaginationResult<ProjectDto>>>();
             routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/role", GetRoleByUserSlug)
@@ -57,6 +57,9 @@ namespace ManageProject.API.Endpoints
          .Accepts<UserEditModel>("multipart/form-data")
 
                  .Produces<ApiResponse<UserItem>>();
+            routeGroupBuilder.MapGet("/slugDetail/{slug:regex(^[a-z0-9_-]+$)}", GetDetailUserBySlugAsync)
+                .WithName("GetDetailUserBySlugAsync")
+                .Produces<ApiResponse<UserDto>>();
             routeGroupBuilder.MapDelete("/", DeleteUser)
             .WithName("DeleteAnAuthor")
             .Produces(401)
@@ -233,5 +236,15 @@ namespace ManageProject.API.Endpoints
             await userRepository.SetImageUrlAsync(id, imageUrl);
             return Results.Ok(ApiResponse.Success(imageUrl));
         }
+        private static async Task<IResult> GetDetailUserBySlugAsync(
+            [FromRoute] string slug, IUserRepository userRepository, IMapper mapper)
+        {
+            var user = await userRepository.GetUserDetailBySlug(slug);
+
+            return user == null
+            ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy slug = {slug}"))
+            : Results.Ok(ApiResponse.Success(mapper.Map<UserDetail>(user)));
+        }
     }
 }
+

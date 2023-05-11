@@ -12,8 +12,12 @@ namespace ManageProject.Services.Manage.Departments
 	public interface IDepartmentRepository
 	{
 		// get department not paging
-		Task<IList<DepartmentItem>> GetDepartmentAsync(
-			CancellationToken cancellationToken = default);
+		//Task<IList<DepartmentItem>> GetDepartmentAsync(
+		//	CancellationToken cancellationToken = default);
+
+		Task<IList<T>> GetAllDepartmentAsync<T>(
+		   Func<IQueryable<Department>, IQueryable<T>> mapper,
+		   CancellationToken cancellationToken = default);
 
 		// get department include paging
 		Task<IPagedList<DepartmentItem>> GetPagedDepartmentAsync(
@@ -42,5 +46,9 @@ namespace ManageProject.Services.Manage.Departments
 
 		// delete department by id
 		Task<bool> DeleteDepartmentByIdAsync(int departmentId, CancellationToken cancellationToken = default);
+
+		// get department by slug
+		Task<Department> GetDetailDepartmentBySlug(string slug, CancellationToken cancellationToken = default);
+	
 	}
 }

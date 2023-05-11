@@ -1,5 +1,7 @@
 ﻿
+using ManageProject.API.Models.Department;
 using ManageProject.API.Models.Departments;
+using ManageProject.API.Models.Post;
 using ManageProject.API.Models.Process;
 using ManageProject.API.Models.Project;
 using ManageProject.API.Models.Role;
@@ -24,6 +26,7 @@ namespace ManageProject.API.Mapsters
             config.NewConfig<User, UserEditModel>()
  .Map(dest => dest.RoleId, src => src.Role.Id);
             config.NewConfig<Department, DepartmentDto>();
+            config.NewConfig<Department, DepartmentDetail>();
             config.NewConfig<Department, DepartmentItem>()
                 .Map(dest => dest.Id , src => src.Id);
             config.NewConfig<DepartmentEditModel, Department>();
@@ -43,7 +46,18 @@ namespace ManageProject.API.Mapsters
             config.NewConfig<Role, RoleItem>();
             config.NewConfig<Role, RoleDto>();
             config.NewConfig<Role, RoleEditModel>();
-            
+            config.NewConfig<Post, PostItem>()
+                .Map(dest => dest.Id, src => src.Id);
+            config.NewConfig<Post, PostDto>();
+            config.NewConfig<PostEditModel, Post>();
+
+
         }
     }
-}
+
+
+            
+
+
+
+		}

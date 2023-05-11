@@ -27,6 +27,8 @@ var app = builder.Build();
     app.MapProcessEndpoints();
     app.MapRoleEndpoints();
 
+    app.MapPostEndpoints();
+
 	using (var scope = app.Services.CreateScope())
     {
         var seeder = scope.ServiceProvider.GetRequiredService<IDataSeeder>();

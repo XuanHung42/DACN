@@ -91,15 +91,15 @@ namespace ManageProject.Services.Manage.Projects
                 );
             }
 
-			if (!string.IsNullOrWhiteSpace(query.UserSlug))
-			{
-				projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.UrlSlug == query.UserSlug));
-			}
+			//if (!string.IsNullOrWhiteSpace(query.UserSlug))
+			//{
+			//	projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.UrlSlug == query.UserSlug));
+			//}
 
-			if (query.UserId > 0)
-			{
-				projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.Id == query.UserId));
-			}
+			//if (query.UserId > 0)
+			//{
+			//	projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.Id == query.UserId));
+			//}
 			//if (query.UserId > 0)
 			//{
 			//	projectQuery = projectQuery.Include(pr => pr.Users)
@@ -159,14 +159,15 @@ namespace ManageProject.Services.Manage.Projects
 		{
 			if (project.Id > 0)
 			{
-				await _context.Entry(project).Collection(x => x.Users).LoadAsync(cancellationToken);
+				await _context.Entry(project).Collection(x => x.Users)
+                    .LoadAsync(cancellationToken);
 			}
 			else
 			{
 				project.Users = new List<User>();
 			}
 
-			var validUser = user.Where(x => !string.IsNullOrEmpty(x))
+			var validUser = user.Where(x => !string.IsNullOrWhiteSpace(x))
 				.Select(x => new
 				{
 					Name = x,

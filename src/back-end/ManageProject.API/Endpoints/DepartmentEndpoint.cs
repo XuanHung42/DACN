@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using ManageProject.API.Models;
+using ManageProject.API.Models.Department;
 using ManageProject.API.Models.Departments;
 using ManageProject.API.Models.Post;
 using ManageProject.API.Models.Users;
@@ -25,9 +26,9 @@ public static class DepartmentEndpoint
 
 
 		// get department not required
-		routeGroupBuilder.MapGet("/notpaging", GetDepartmentNotRequired)
-			.WithName("GetDepartmentNotRequired")
-			.Produces<ApiResponse<PaginationResult<DepartmentItem>>>();
+		routeGroupBuilder.MapGet("/getall", GetAllDepartment)
+			.WithName("GetAllDepartment")
+			.Produces<ApiResponse<PaginationResult<DepartmentDto>>>();
 
 		// get department required paging
 
@@ -42,12 +43,12 @@ public static class DepartmentEndpoint
 
 		// get user by slug department
 
-		routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/user", GetUserByDepartmentSlug)
+		routeGroupBuilder.MapGet("/user/{slug:regex(^[a-z0-9_-]+$)}", GetUserByDepartmentSlug)
 			.WithName("GetUserByDepartmentSlug")
 			.Produces<ApiResponse<PaginationResult<UserDto>>>();
 
 		// get post by slug department
-		routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/post", GetPostByDepartmentSlug)
+		routeGroupBuilder.MapGet("/post/{slug:regex(^[a-z0-9_-]+$)}", GetPostByDepartmentSlug)
 			.WithName("GetPostByDepartmentSlug")
 			.Produces<ApiResponse<PaginationResult<PostDto>>>();
 
@@ -69,16 +70,22 @@ public static class DepartmentEndpoint
 			.WithName("DeleteDepartment")
 			.Produces(401)
 			.Produces<ApiResponse<string>>();
+
+		// get detail department
+		routeGroupBuilder.MapGet("/slugDetail/{slug:regex(^[a-z0-9_-]+$)}", GetDetailDepartment)
+				.WithName("GetDetailDepartment")
+				.Produces<ApiResponse<DepartmentDetail>>();
 		return app;
 	}
 
 	// get department not required
-	private static async Task<IResult> GetDepartmentNotRequired(
+	private static async Task<IResult> GetAllDepartment(
 		IDepartmentRepository departmentRepository
 		)
 	{
-		var departmentList = await departmentRepository.GetDepartmentAsync();
-		return Results.Ok(ApiResponse.Success(departmentList));
+		var department = await departmentRepository.GetAllDepartmentAsync(
+			department => department.ProjectToType<DepartmentDto>());
+		return Results.Ok(ApiResponse.Success(department));
 	}
 
 	// get department required paging
@@ -202,6 +209,17 @@ public static class DepartmentEndpoint
 		return await departmentRepository.DeleteDepartmentByIdAsync(id)
 			? Results.Ok(ApiResponse.Success("Department đã được xoá", HttpStatusCode.NoContent))
 			: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Không tìm thấy department"));
+	}
+
+	// get details by slug
+	private static async Task<IResult> GetDetailDepartment(
+		[FromRoute] string slug,
+		IDepartmentRepository departmentRepository, IMapper mapper)
+	{
+		var department = await departmentRepository.GetDetailDepartmentBySlug(slug);
+		return department == null
+			? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy slug = {slug}"))
+			: Results.Ok(ApiResponse.Success(mapper.Map<DepartmentDetail>(department)));
 	}
 
 }

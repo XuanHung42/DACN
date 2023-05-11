@@ -34,10 +34,11 @@ namespace ManageProject.Services.Manage.Users
             RoleQuery query,
             IPagingParams pagingParams,
             Func<IQueryable<Role>, IQueryable<T>> mapper,
-            CancellationToken cancellationToken= default);
+            CancellationToken cancellationToken = default);
         Task<bool> CreateOrUpdateProjectAsync(User user, CancellationToken cancellationToken = default);
         Task<bool> SetImageUrlAsync(
              int userId, string imageUrl,
              CancellationToken cancellationToken = default);
+        Task<User> GetUserDetailBySlug(string slug, CancellationToken cancellationToken = default);
     }
 }
