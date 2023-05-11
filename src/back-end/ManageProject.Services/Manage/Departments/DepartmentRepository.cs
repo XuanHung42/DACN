@@ -25,15 +25,25 @@ namespace ManageProject.Services.Manage.Departments
 		}
 
 		// get department not paging
-		public async Task<IList<DepartmentItem>> GetDepartmentAsync(CancellationToken cancellationToken = default)
+		//public async Task<IList<DepartmentItem>> GetDepartmentAsync(CancellationToken cancellationToken = default)
+		//{
+		//	IQueryable<Department> departments = _context.Set<Department>();
+		//	return await departments.OrderBy(d => d.Name).Select(d => new DepartmentItem()
+		//	{
+		//		Id = d.Id,
+		//		Name = d.Name,
+		//		UrlSlug = d.UrlSlug
+		//	}).ToListAsync(cancellationToken);
+		//}
+
+
+		public async Task<IList<T>> GetAllDepartmentAsync<T>(Func<IQueryable<Department>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
 		{
-			IQueryable<Department> departments = _context.Set<Department>();
-			return await departments.OrderBy(d => d.Name).Select(d => new DepartmentItem()
-			{
-				Id = d.Id,
-				Name = d.Name,
-				UrlSlug = d.UrlSlug
-			}).ToListAsync(cancellationToken);
+			IQueryable<Department> departments = _context.Set<Department>()
+				.Include(u => u.Users)
+				.Include(p => p.Posts)
+				.OrderBy(d => d.Name);
+			return await mapper(departments).ToListAsync(cancellationToken);
 		}
 
 		// get department required paging
@@ -145,6 +155,21 @@ namespace ManageProject.Services.Manage.Departments
 			return await _context.Departments
 				.Where(d => d.Id == departmentId)
 				.ExecuteDeleteAsync(cancellationToken) > 0;
+		}
+
+		public async Task<Department> GetDetailDepartmentBySlug(string slug, CancellationToken cancellationToken = default)
+		{
+			IQueryable<Department> departmentsQuery = _context.Set<Department>()
+				.Include(u => u.Users)
+				.Include(p => p.Posts);
+			{
+				if (!string.IsNullOrEmpty(slug))
+				{
+					departmentsQuery = departmentsQuery.Where(dp => dp.UrlSlug == slug);
+				}
+				return await departmentsQuery.FirstOrDefaultAsync(cancellationToken);
+			}
+
 		}
 	}
 }

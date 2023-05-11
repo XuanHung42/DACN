@@ -10,5 +10,7 @@ namespace ManageProject.Core.DTO
     {
         public string UserSlug { get; set; } = "";
         public int UserId { get; set; }
+        public string Name { get; set; }
+      
     }
 }

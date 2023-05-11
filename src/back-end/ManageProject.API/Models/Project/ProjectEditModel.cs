@@ -19,7 +19,7 @@ namespace ManageProject.API.Models.Project
 		[Required]
 		public string ShortDescription { get; set; }
 
-		//public string UrlSlug { get; set; }
+		public string UrlSlug { get; set; }
 
 		[DisplayName("Chi phí")]
 		[Required]
@@ -31,29 +31,31 @@ namespace ManageProject.API.Models.Project
 
 		public bool Register { get; set; }
 
+		public int ProcessId { get; set; }
 		public string SelectUsers { get; set; }
-		public List<string> GetSlectedUser()
+
+		public List<string> GetSelectedUsers()
 		{
 			return (SelectUsers ?? "")
-				.Split(new[] { ',', ';', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-				.ToList();
+			  .Split(new[] { ',', ';', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+			  .ToList();
 		}
 
-		public static async ValueTask<ProjectEditModel> BindAsync(HttpContext context)
-		{
-			var form = await context.Request.ReadFormAsync();
-			return new ProjectEditModel()
-			{
-				Id = int.Parse(form["Id"]),
-				Name = (form["Name"]),
-				Description = (form["Description"]),
-				ShortDescription = (form["ShortDescription"]),
-				CostProject = (form["CostProject"]),
-				UseNumber = int.Parse(form["UseNumber"]),
-				Register = form["Register"] != "false",
+		//public static async ValueTask<ProjectEditModel> BindAsync(HttpContext context)
+		//{
+		//	var form = await context.Request.ReadFormAsync();
+		//	return new ProjectEditModel()
+		//	{
+		//		Id = int.Parse(form["Id"]),
+		//		Name = (form["Name"]),
+		//		Description = (form["Description"]),
+		//		ShortDescription = (form["ShortDescription"]),
+		//		CostProject = (form["CostProject"]),
+		//		UseNumber = int.Parse(form["UseNumber"]),
+		//		Register = form["Register"] != "false",
 
-			};
-		}
+		//	};
+		//}
 
 	}
 }

@@ -12,10 +12,11 @@ using ManageProject.Services.Extensions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Cryptography.X509Certificates;
+using SlugGenerator;
 
 namespace ManageProject.Services.Manage.Users
 {
-    public class UserRepository:IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly ManageDbContext _context;
         private readonly IMemoryCache _memoryCache;
@@ -32,7 +33,7 @@ namespace ManageProject.Services.Manage.Users
                 .OrderBy(u => u.Name)
                 .Select(u => new UserItem()
                 {
-                    Id= u.Id,
+                    Id = u.Id,
 
                     Name = u.Name,
                     DepartmentId = u.Department.Id,
@@ -42,11 +43,11 @@ namespace ManageProject.Services.Manage.Users
                     UrlSlug = u.UrlSlug,
                     Password = u.Password,
                     Projects = u.Projects
-                    
+
                 })
                 .ToListAsync(cancellationToken);
         }
-        public async Task<IPagedList<UserItem>> GetPagedUserAsync(IPagingParams pagingParams, string name =null, CancellationToken cancellationToken= default)
+        public async Task<IPagedList<UserItem>> GetPagedUserAsync(IPagingParams pagingParams, string name = null, CancellationToken cancellationToken = default)
         {
             return await _context.Set<User>()
                     .AsNoTracking()
@@ -63,18 +64,18 @@ namespace ManageProject.Services.Manage.Users
                         DepartmentId = u.Department.Id,
 
                     })
-                    .ToPagedListAsync(pagingParams,cancellationToken);
-                    
+                    .ToPagedListAsync(pagingParams, cancellationToken);
+
 
         }
-        public async Task<User> GetUserBySlugAsync(string slug, CancellationToken cancellationToken= default)
+        public async Task<User> GetUserBySlugAsync(string slug, CancellationToken cancellationToken = default)
         {
-            return await _context.Set<User>().Include(u=> u.Department)
-                .FirstOrDefaultAsync(a=> a.UrlSlug ==slug,cancellationToken);
+            return await _context.Set<User>().Include(u => u.Department)
+                .FirstOrDefaultAsync(a => a.UrlSlug == slug, cancellationToken);
         }
-        public async Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken= default)
+        public async Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _context.Set<User>().Include(u=> u.Department).FirstOrDefaultAsync(a=> a.Id==id, cancellationToken);
+            return await _context.Set<User>().Include(u => u.Department).FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
         }
 
         public async Task<User> GetUserByIdIsDetailAsync(int userId, bool isDetail = false, CancellationToken cancellationToken = default)
@@ -85,10 +86,33 @@ namespace ManageProject.Services.Manage.Users
             }
             return await _context.Set<User>().Where(a => a.Id == userId).FirstOrDefaultAsync(cancellationToken);
         }
+        public async Task<bool> CreateOrUpdateProjectAsync(User user, CancellationToken cancellationToken = default)
+        {
+            if (user.Id > 0)
+            {
+                _context.Update(user);
+            }
+            else
+            {
+                _context.Add(user);
+            }
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+
+        }
+
+
+        public async Task<Project> GetProjectSlugAsync(string slug, CancellationToken cancellationToken = default)
+        {
+            IQueryable<Project> userQuery = _context.Set<Project>()
+                .Where(p => p.UrlSlug == slug);
+
+            return await userQuery.FirstOrDefaultAsync(cancellationToken);
+        }
 
         public async Task<bool> AddOrUpdateAsync(
         User user, CancellationToken cancellationToken = default)
         {
+
             if (user.Id > 0)
             {
                 _context.Users.Update(user);
@@ -135,11 +159,11 @@ namespace ManageProject.Services.Manage.Users
                 .Include(r => r.Users);
 
 
-                if (!string.IsNullOrWhiteSpace(query.UserSlug))
+            if (!string.IsNullOrWhiteSpace(query.UserSlug))
             {
-                roleQuery= roleQuery.Where(r=> r.Users.Any(u=> u.UrlSlug == query.UserSlug));
+                roleQuery = roleQuery.Where(r => r.Users.Any(u => u.UrlSlug == query.UserSlug));
             }
-            if (query.UserId> 0)
+            if (query.UserId > 0)
             {
                 roleQuery = roleQuery.Where(r => r.Users.Any(u => u.Id == query.UserId));
             }
@@ -169,13 +193,13 @@ namespace ManageProject.Services.Manage.Users
             {
                 projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.Id == query.UserId));
             }
-          
+
 
             return projectQuery;
 
         }
 
-    
+
 
         public async Task<IPagedList<T>> GetPagedProjectsAsync<T>(ProjectQuery query,
         IPagingParams pagingParams,
@@ -191,9 +215,9 @@ namespace ManageProject.Services.Manage.Users
         public async Task<IPagedList<T>> GetPageRolesAsync<T>(
             RoleQuery query,
             IPagingParams pagingParams,
-            Func<IQueryable<Role>, 
-            IQueryable<T>> mapper, 
-            CancellationToken cancellationToken= default)
+            Func<IQueryable<Role>,
+            IQueryable<T>> mapper,
+            CancellationToken cancellationToken = default)
         {
             IQueryable<Role> roleQuery = FilterRole(query);
             IQueryable<T> queryResult = mapper(roleQuery);
@@ -201,6 +225,18 @@ namespace ManageProject.Services.Manage.Users
         }
 
 
-
+        public async Task<User> GetUserDetailBySlug(string slug, CancellationToken cancellationToken = default)
+        {
+            IQueryable<User> userQuery = _context.Set<User>()
+                //.Include(p => p.Projects)
+                .Include(p => p.Posts);
+            {
+                if (!string.IsNullOrEmpty(slug))
+                {
+                    userQuery = userQuery.Where(u => u.UrlSlug == slug);
+                }
+                return await userQuery.FirstOrDefaultAsync(cancellationToken);
+            }
+        }
     }
 }

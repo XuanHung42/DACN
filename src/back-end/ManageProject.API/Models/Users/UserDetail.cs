@@ -16,7 +16,7 @@ namespace ManageProject.API.Models.Users
         public int DepartmentId { get; set; }
         public int RoleId { get; set; }
 
-        public Department Department { get; set; }
+        //public Department Department { get; set; }
         public IList<ProjectDto> Projects { get; set; }
 
         public IList<PostDto> Posts { get; set; }

@@ -41,11 +41,11 @@ namespace ManageProject.Data.Mappings
             builder.Property(p => p.Created)
                 .HasColumnType("datetime");
 
-            //builder.HasOne(p => p.User)
-            //    .WithMany(u => u.Posts)
-            //    .HasForeignKey(p => p.UserId)
-            //    .HasConstraintName("FK_Posts_Users")
-            //    .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(p => p.User)
+                .WithMany(u => u.Posts)
+                .HasForeignKey(p => p.UserId)
+                .HasConstraintName("FK_Posts_Users")
+                .OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(p => p.Department)
                 .WithMany(d => d.Posts)
                 .HasConstraintName("FK_Post_Department");

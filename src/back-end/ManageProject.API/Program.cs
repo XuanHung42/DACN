@@ -25,7 +25,9 @@ var app = builder.Build();
     app.MapProjectEndpoints();
 
     app.MapProcessEndpoints();
+    app.MapRoleEndpoints();
 
+    app.MapPostEndpoints();
 
 	using (var scope = app.Services.CreateScope())
     {
