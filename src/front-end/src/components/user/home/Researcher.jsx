@@ -37,8 +37,8 @@ const Researchers = () => {
               <div className="card-shortdesc">{item.shortDescription}</div>
               <div className="card-author">
                 <span className="card-author-title">Đăng bởi:</span>
-                <Link className="text-decoration-none">
-                  <span className="card-author-name px-3">{item.user.name}</span>
+                <Link className="text-decoration-none px-2" to={`/home/${item.user.urlSlug}`}>
+                  {item.user.name}
                 </Link>
               </div>
             </div>
