@@ -39,7 +39,7 @@ const ProjectAdmin = () => {
         </div>
         <div className="col-10">
           <div className="title py-3 text-danger">
-            <h3>Quản lý phòng dự án</h3>
+            <h3>Quản lý dự án</h3>
           </div>
           <div className="project-content">
             <ProjectFilter />

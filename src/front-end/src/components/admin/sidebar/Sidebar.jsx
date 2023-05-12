@@ -49,7 +49,7 @@ const Sidebar = () => {
             </div>
 
             <div className="sidebar-wrapper">
-              <Link className="sidebar-link">
+              <Link className="sidebar-link" to={`/admin/post`}>
                 <li>
                   <FontAwesomeIcon icon={faPen} />
                   <span className="px-3">Bài đăng</span>
