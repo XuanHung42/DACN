@@ -23,3 +23,11 @@ export function getFilterProject(
 
   return get_api(url.href);
 }
+
+
+
+export async function getProjectById(id = 0) {
+  if (id > 0) {
+    return get_api(`https://localhost:7284/api/projects/${id}`);
+  }
+}
