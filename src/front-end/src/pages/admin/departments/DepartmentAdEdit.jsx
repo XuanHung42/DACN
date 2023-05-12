@@ -60,7 +60,7 @@ const DepartmentEditAdmin = () => {
         </div>
         <div className="col-10">
           <div className="department-wrapper">
-            <h3 className="text-success mb-5">Thêm/cập nhật phòng khoa</h3>
+            <h3 className="text-success py-3">Thêm/cập nhật phòng khoa</h3>
             <Form
               method="post"
               encType=""
@@ -114,7 +114,7 @@ const DepartmentEditAdmin = () => {
                 <Button variant="success" type="submit">
                   Lưu các thay đổi
                 </Button>
-                <Link to="/admin/service" className="btn btn-danger ms-2">
+                <Link to="/admin/department" className="btn btn-danger ms-2">
                   Hủy và quay lại
                 </Link>
               </div>

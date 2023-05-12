@@ -1,4 +1,4 @@
-import { get_api } from "./Method";
+import { get_api, put_api } from "./Method";
 
 
 
@@ -32,3 +32,14 @@ export function getFilterResearch(
   return get_api(url.href);
 }
 
+
+export async function getUserResearchertById(id = 0) {
+  if (id > 0) {
+    return get_api(`https://localhost:7284/api/users/${id}`);
+  }
+}
+
+
+export async function updateUserResearcher( formData) {
+  return put_api(`https://localhost:7284/api/users`, formData);
+}

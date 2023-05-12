@@ -38,7 +38,7 @@ const DepartmentAdmin = () => {
           <Sidebar />
         </div>
         <div className="col-10">
-          <div className="department-title py-3">
+          <div className="title py-3 text-danger">
             <h3>Quản lý phòng khoa</h3>
           </div>
           <div className="department-content">
@@ -82,7 +82,7 @@ const DepartmentAdmin = () => {
                     <tr>
                       <td colSpan={3}>
                         <h4 className="text-danger text-center">
-                          Không tìm thấy dịch vụ nào
+                          Không tìm thấy phòng khoa nào
                         </h4>
                       </td>
                     </tr>
