@@ -10,8 +10,8 @@ import PostDetail from "../pages/user/PostDetail";
 import SearchPost from "../components/user/search/SearchPost";
 import ResearcherDetail from "../pages/user/ResearcherDetail";
 import LayoutAdmin from "../components/admin/layout/LayoutAd";
-import ResearchAdmin from "../pages/admin/ResearcherAd";
-import ProjectAdmin from "../pages/admin/ProjectAd";
+import ResearchAdmin from "../pages/admin/researchers/ResearcherAd";
+import ProjectAdmin from "../pages/admin/projects/ProjectAd";
 
 const Routers = () => {
   return (

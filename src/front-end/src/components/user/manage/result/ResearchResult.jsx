@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { getAllPost } from "../../../../api/PostApi";
-import { Link } from "react-router-dom";
+import { getAllPost , getFilterPost} from "../../../../api/PostApi";
+import { Link, useParams } from "react-router-dom";
 import Loading from "../../Loading";
 import { useSelector } from "react-redux";
 import PostFilter from "../../filter/PostFilterModel";
-
+import { format } from 'date-fns'
 
 const ResearchResult = () => {
   const [getPost, setGetPost] = useState([]);
@@ -25,11 +25,17 @@ const ResearchResult = () => {
     });
   }, []);
 
+
+  // let { id } = useParams,
+  // p = 1,
+  // ps = 10;
+
   // useEffect(() => {
   //   getFilterPost(postFilter.title,
   //     postFilter.shortDescription).then((data) => {
   //     if (data) {
   //       setGetPost(data.items);
+  //       console.log("data abcbabds: ", data);
   //     } else {
   //       setGetPost([]);
   //     }
@@ -42,7 +48,7 @@ const ResearchResult = () => {
       <div className="research-title py-3">
         <h1 className="text-danger text-center">Kết quả nghiên cứu</h1>
       </div>
-      <PostFilter/>
+      {/* <PostFilter/> */}
       {isVisibleLoading ? (
         <Loading />
       ) : (
@@ -60,13 +66,13 @@ const ResearchResult = () => {
                     <Link className="text-decoration-none">
                       <span className="card-author-name">{item.user.name}</span>
                     </Link>
-                    <span className="px-5">Đăng ngày: {item.created}</span>
+                    <span className="px-5">Đăng ngày: {format(new Date(item.created), 'dd/MM/yyyy hh:mm')}</span>
                   </div>
-                </div>
+                </div>     
               </div>
             ))
           ) : (
-            <>
+            <>    
               <h2 className="text-warning text-center py-3">
                 Không tìm thấy bài viết nào
               </h2>

@@ -4,6 +4,7 @@ import Footer from "../../components/user/common/Footer";
 import { Link, useParams } from "react-router-dom";
 import { getUserDetailBySlug } from "../../api/UserApi";
 import { Table } from "react-bootstrap";
+import { format } from "date-fns";
 
 const ResearcherDetail = () => {
   const params = useParams();
@@ -20,6 +21,16 @@ const ResearcherDetail = () => {
       }
     });
   }, [slug]);
+
+  const getImage = (path) => {
+    console.log(path);
+    if (!path) {
+      // set default image
+      return `https://placehold.co/200x200?text=Image-not-found`;
+    }
+
+    return `https://localhost:7284/${path}`;
+  };
 
   if (reseacherDetail) {
     return (
@@ -49,18 +60,26 @@ const ResearcherDetail = () => {
                 <tr>
                   <td className="post-lable w-25">Hình ảnh</td>
                   <td className="post-value">
-                  <img src={`https://localhost:7284/${reseacherDetail.imageUrl}`} alt="" />
+                    <img
+                      src={getImage(reseacherDetail.imageUrl)}
+                      alt=""
+                    />
                   </td>
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Ngày sinh</td>
-                  <td className="post-value">{reseacherDetail.birthDate}</td>
+                  <td className="post-value">
+                    {" "}
+                    {format(
+                      new Date(reseacherDetail.birthDate),
+                      "dd/MM/yyyy hh:mm"
+                    )}
+                  </td>
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Thuộc khoa</td>
                   <td className="post-value">{reseacherDetail.departmentId}</td>
                 </tr>
-
               </tbody>
             </Table>
           </div>

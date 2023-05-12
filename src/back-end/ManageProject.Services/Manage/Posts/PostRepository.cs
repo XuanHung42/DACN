@@ -60,8 +60,8 @@ namespace ManageProject.Services.Manage.Posts
 					Title = p.Title,
 					UrlSlug = p.UrlSlug,
 					ShortDescription = p.ShortDescription,
+					User = p.User,
 					//File = p.File,
-					//User = p.User,
 					//Department = p.Department,
 
 				}).ToPagedListAsync(pagingParams, cancellationToken);
