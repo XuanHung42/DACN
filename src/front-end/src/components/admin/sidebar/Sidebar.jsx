@@ -58,7 +58,7 @@ const Sidebar = () => {
             </div>
 
             <div className="sidebar-wrapper">
-              <Link className="sidebar-link">
+              <Link className="sidebar-link" to={`/admin/department`}>
                 <li>
                   <FontAwesomeIcon icon={faHomeAlt} />
                   <span className="px-3">Phòng khoa</span>

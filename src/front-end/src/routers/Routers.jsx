@@ -12,6 +12,8 @@ import ResearcherDetail from "../pages/user/ResearcherDetail";
 import LayoutAdmin from "../components/admin/layout/LayoutAd";
 import ResearchAdmin from "../pages/admin/researchers/ResearcherAd";
 import ProjectAdmin from "../pages/admin/projects/ProjectAd";
+import DepartmentAdmin from "../pages/admin/departments/DepartmentAd";
+import DepartmentEditAdmin from "../pages/admin/departments/DepartmentEditAd";
 
 const Routers = () => {
   return (
@@ -43,6 +45,11 @@ const Routers = () => {
         <Route path="/admin" element = {<LayoutAdmin/>}/>
         <Route path="/admin/researcher" element = {<ResearchAdmin/>}/>
         <Route path="/admin/project" element = {<ProjectAdmin/>}/>
+        <Route path="/admin/department" element = {<DepartmentAdmin/>}/>
+        <Route path="/admin/department/edit" element = {<DepartmentEditAdmin/>}/>
+        <Route path="/admin/department/edit/:id" element = {<DepartmentEditAdmin/>}/>
+
+
 
 
 
