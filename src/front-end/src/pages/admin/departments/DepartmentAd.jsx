@@ -3,7 +3,7 @@ import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { getFilterDepartment } from "../../../api/DepartmentApi";
+import { deleteDepartment, getFilterDepartment } from "../../../api/DepartmentApi";
 import Loading from "../../../components/user/Loading";
 import { Button, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,6 +12,9 @@ import DepartmentFilter from "../../../components/user/filter/DepartmentFilterMo
 
 const DepartmentAdmin = () => {
   const [getDepartment, setGetDepartment] = useState([]);
+  const [reRender, setRender] = useState(false);
+
+
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     departmentFilter = useSelector((state) => state.departmentFilter);
 
@@ -28,7 +31,22 @@ const DepartmentAdmin = () => {
       }
       setIsVisibleLoading(false);
     });
-  }, [departmentFilter, ps, p]);
+  }, [departmentFilter, ps, p, reRender]);
+
+  const handleDeleteDepartment = (e, id ) => {
+    e.preventDefault();
+    RemoveDepartment(id);
+    async function RemoveDepartment(id) {
+      if (window.confirm("Bạn có muốn xoá phòng khoa này")) {
+        const response = await deleteDepartment(id);
+        if (response) {
+          alert("Đã xoá phòng khoa này");
+          
+          setRender(true);
+        } else alert("Đã xảy ra lỗi xoá");
+      }
+    }
+  };
 
   return (
     <>
@@ -72,7 +90,7 @@ const DepartmentAdmin = () => {
                           </Link>
                         </td>
                         <td className="text-center">
-                          <div>
+                          <div onClick={(e) => handleDeleteDepartment(e, item.id)}>
                             <FontAwesomeIcon icon={faTrash} color="red" />
                           </div>
                         </td>
