@@ -3,7 +3,7 @@ import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { getFilterResearch } from "../../../api/UserApi";
+import { deleteUserResearcher, getFilterResearch } from "../../../api/UserApi";
 import Loading from "../../../components/user/Loading";
 import { Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +13,7 @@ import ResearchFilter from "../../../components/user/filter/ResearcherFilterMode
 
 const ResearchAdmin = () => {
   const [getResearcher, setGetResearcher] = useState([]);
+  const [reRender, setRender] = useState(false);
 
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     researcherFilter = useSelector((state) => state.researcherFilter);
@@ -32,7 +33,23 @@ const ResearchAdmin = () => {
         setIsVisibleLoading(false);
       }
     );
-  }, [researcherFilter, ps, p]);
+  }, [researcherFilter, ps, p, reRender]);
+
+  // delete 
+  const handleDeleteUser = (e, id ) => {
+    e.preventDefault();
+    RemoveResearcher(id);
+    async function RemoveResearcher(id) {
+      if (window.confirm("Bạn có muốn xoá nhà khoa học này")) {
+        const response = await deleteUserResearcher(id);
+        if (response) {
+          alert("Đã xoá nhà khoa học");
+          
+          setRender(true);
+        } else alert("Đã xảy ra lỗi xoá");
+      }
+    }
+  };
 
   return (
     <>
@@ -85,7 +102,7 @@ const ResearchAdmin = () => {
                           </Link>
                         </td>
                         <td className="text-center">
-                          <div>
+                          <div onClick={(e) => handleDeleteUser(e, item.id)}>
                             <FontAwesomeIcon icon={faTrash} color="red" />
                           </div>
                         </td>

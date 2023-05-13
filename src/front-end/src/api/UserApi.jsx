@@ -1,4 +1,4 @@
-import { get_api, put_api } from "./Method";
+import { delete_api, get_api, put_api } from "./Method";
 
 
 
@@ -42,4 +42,8 @@ export async function getUserResearchertById(id = 0) {
 
 export async function updateUserResearcher( formData) {
   return put_api(`https://localhost:7284/api/users`, formData);
+}
+
+export async function deleteUserResearcher(id = 0) {
+  return delete_api(`https://localhost:7284/api/users/${id}`);
 }

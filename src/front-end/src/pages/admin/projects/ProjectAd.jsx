@@ -3,7 +3,7 @@ import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { getFilterProject } from "../../../api/ProjectApi";
+import { deleteProject, getFilterProject } from "../../../api/ProjectApi";
 import ProjectFilter from "../../../components/user/filter/ProjectFilterModel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -12,6 +12,9 @@ import { Table } from "react-bootstrap";
 
 const ProjectAdmin = () => {
   const [getProject, setGetProject] = useState([]);
+  const [reRender, setRender] = useState(false);
+
+
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     projectFilter = useSelector((state) => state.projectFilter);
 
@@ -28,7 +31,23 @@ const ProjectAdmin = () => {
       }
       setIsVisibleLoading(false);
     });
-  }, [projectFilter, ps, p]);
+  }, [projectFilter, ps, p, reRender]);
+
+  // delete project
+  const handleDeleteProject = (e, id ) => {
+    e.preventDefault();
+    DeleteProject(id);
+    async function DeleteProject(id) {
+      if (window.confirm("Bạn có muốn xoá dự án này")) {
+        const response = await deleteProject(id);
+        if (response) {
+          alert("Đã xoá dự án");
+          
+          setRender(true);
+        } else alert("Đã xảy ra lỗi xoá");
+      }
+    }
+  };
 
   return (
     <>
@@ -80,7 +99,7 @@ const ProjectAdmin = () => {
                           </Link>
                         </td>
                         <td className="text-center">
-                          <div>
+                          <div onClick={(e) => handleDeleteProject(e, item.id)}>
                             <FontAwesomeIcon icon={faTrash} color="red" />
                           </div>
                         </td>

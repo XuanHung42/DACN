@@ -1,4 +1,5 @@
-import { get_api } from "./Method";
+import { de } from "date-fns/locale";
+import { delete_api, get_api } from "./Method";
 
 
 
@@ -30,4 +31,9 @@ export async function getProjectById(id = 0) {
   if (id > 0) {
     return get_api(`https://localhost:7284/api/projects/${id}`);
   }
+}
+
+
+export async function deleteProject(id = 0) {
+  return delete_api(`https://localhost:7284/api/projects/${id}`);
 }
