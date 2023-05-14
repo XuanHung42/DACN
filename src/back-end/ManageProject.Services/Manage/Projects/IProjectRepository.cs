@@ -47,7 +47,7 @@ namespace ManageProject.Services.Manage.Projects
 		Task<User> GetUserSlugAsync(string slug, CancellationToken cancellationToken = default);
 
 		public Task<bool> CreateOrUpdateProjectAsync(
-			Project project, IEnumerable<string> user, CancellationToken cancellationToken = default);
+			Project project, CancellationToken cancellationToken = default);
 
 		
 		// delete project by id

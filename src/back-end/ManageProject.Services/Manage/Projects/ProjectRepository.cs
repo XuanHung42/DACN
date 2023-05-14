@@ -1,4 +1,4 @@
-﻿    using ManageProject.Core.Contracts;
+﻿using ManageProject.Core.Contracts;
 using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
 using ManageProject.Data.Contexts;
@@ -91,20 +91,20 @@ namespace ManageProject.Services.Manage.Projects
                 );
             }
 
-			//if (!string.IsNullOrWhiteSpace(query.UserSlug))
-			//{
-			//	projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.UrlSlug == query.UserSlug));
-			//}
+            //if (!string.IsNullOrWhiteSpace(query.UserSlug))
+            //{
+            //	projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.UrlSlug == query.UserSlug));
+            //}
 
-			//if (query.UserId > 0)
-			//{
-			//	projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.Id == query.UserId));
-			//}
-			//if (query.UserId > 0)
-			//{
-			//	projectQuery = projectQuery.Include(pr => pr.Users)
-			//		.Where(u => u.Users.Any(u => u.Id == query.UserId));
-			//}
+            //if (query.UserId > 0)
+            //{
+            //	projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.Id == query.UserId));
+            //}
+            //if (query.UserId > 0)
+            //{
+            //	projectQuery = projectQuery.Include(pr => pr.Users)
+            //		.Where(u => u.Users.Any(u => u.Id == query.UserId));
+            //}
 
             return projectQuery;
 
@@ -127,8 +127,9 @@ namespace ManageProject.Services.Manage.Projects
                 return await _context.Set<Project>().FindAsync(projectId);
             }
             return await _context.Set<Project>()
-                .Include(x => x.Users)
                 .Include(x => x.Process)
+
+                .Include(x => x.Users)
                 .FirstOrDefaultAsync(x => x.Id == projectId, cancellationToken);
 
         }
@@ -147,75 +148,44 @@ namespace ManageProject.Services.Manage.Projects
 
         }
 
-		// kiem tra slug da ton tai hay chua
-		public async Task<bool> CheckSlugExistedAsync(int projectId, string slug, CancellationToken cancellationToken = default)
-		{
-			return await _context.Set<Project>()
-				.AnyAsync(x => x.Id != projectId && x.UrlSlug == slug, cancellationToken);
-		}
+        // kiem tra slug da ton tai hay chua
+        public async Task<bool> CheckSlugExistedAsync(int projectId, string slug, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Project>()
+                .AnyAsync(x => x.Id != projectId && x.UrlSlug == slug, cancellationToken);
+        }
 
 
-		public async Task<bool> CreateOrUpdateProjectAsync(Project project, IEnumerable<string> user, CancellationToken cancellationToken = default)
-		{
-			if (project.Id > 0)
-			{
-				await _context.Entry(project).Collection(x => x.Users)
-                    .LoadAsync(cancellationToken);
-			}
-			else
-			{
-				project.Users = new List<User>();
-			}
+        public async Task<bool> CreateOrUpdateProjectAsync(Project project, CancellationToken cancellationToken = default)
+        {
 
-			var validUser = user.Where(x => !string.IsNullOrWhiteSpace(x))
-				.Select(x => new
-				{
-					Name = x,
-					Slug = x.GenerateSlug(),
-				})
-				.GroupBy(x => x.Slug)
-				.ToDictionary(g => g.Key, g => g.First().Name);
 
-			foreach (var kv in validUser)
-			{
-				if (project.Users.Any(x => string.Compare(x.UrlSlug, kv.Key, StringComparison.InvariantCultureIgnoreCase) == 0)) continue;
 
-				var users = await GetUserSlugAsync(kv.Key, cancellationToken) ?? new User()
-				{
-					Name = kv.Value,
-					Email = kv.Value,
-					UrlSlug = kv.Key,
-				};
+            if (project.Id > 0)
+            {
+                _context.Update(project);
+                _memoryCache.Remove($"Project.by-id.${project.Id}");
+            }
+            else
+            {
+                _context.Add(project);
+            }
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
 
-				project.Users.Add(users);
-			}
+        public async Task<User> GetUserSlugAsync(string slug, CancellationToken cancellationToken = default)
+        {
+            IQueryable<User> userQuery = _context.Set<User>()
+                .Where(p => p.UrlSlug == slug);
 
-			project.Users = project.Users.Where(u => validUser.ContainsKey(u.UrlSlug)).ToList();
+            return await userQuery.FirstOrDefaultAsync(cancellationToken);
+        }
 
-			if (project.Id > 0)
-			{
-				_context.Update(project);
-			}
-			else
-			{
-				_context.Add(project);
-			}
-			return await _context.SaveChangesAsync(cancellationToken) > 0;
-		}
-
-		public async Task<User> GetUserSlugAsync(string slug, CancellationToken cancellationToken = default)
-		{
-			IQueryable<User> userQuery = _context.Set<User>()
-				.Where(p => p.UrlSlug == slug);
-
-			return await userQuery.FirstOrDefaultAsync(cancellationToken);
-		}
-
-		public async Task<bool> DeleteProjectByIdAsync(int projectId, CancellationToken cancellationToken = default)
-		{
-			return await _context.Projects
-				.Where(p => p.Id == projectId)
-				.ExecuteDeleteAsync(cancellationToken) > 0;
-		}
-	}
+        public async Task<bool> DeleteProjectByIdAsync(int projectId, CancellationToken cancellationToken = default)
+        {
+            return await _context.Projects
+                .Where(p => p.Id == projectId)
+                .ExecuteDeleteAsync(cancellationToken) > 0;
+        }
+    }
 }
