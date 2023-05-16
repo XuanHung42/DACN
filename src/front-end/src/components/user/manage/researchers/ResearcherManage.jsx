@@ -80,7 +80,10 @@ const ResearcherManage = () => {
                                 Họ tên: {item.name}
                               </div>
                             </Link>
-                            <Link className="text-danger text-decoration-none" to={`mailto:${item.email}`}>
+                            <Link
+                              className="text-danger text-decoration-none"
+                              to={`mailto:${item.email}`}
+                            >
                               Email: {item.email}
                             </Link>
                           </div>
@@ -114,7 +117,7 @@ const ResearcherManage = () => {
                           />
                           <Link
                             className="text-success text-decoration-none"
-                            to={item.urlSlug}
+                            to={`/department`}
                           >
                             <div className="text-name">{item.name}</div>
                           </Link>

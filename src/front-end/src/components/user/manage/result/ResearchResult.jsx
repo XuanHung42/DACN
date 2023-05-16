@@ -9,7 +9,6 @@ import { format } from 'date-fns'
 
 const ResearchResult = () => {
   const [getPost, setGetPost] = useState([]);
-  // const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true), 
   postFilter = useSelector((state) => state.postFilter);
   
