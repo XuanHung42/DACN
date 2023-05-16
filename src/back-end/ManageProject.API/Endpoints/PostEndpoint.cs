@@ -29,6 +29,14 @@ namespace ManageProject.API.Endpoints
 				.WithName("GetDetailPostAsync")
 				.Produces<ApiResponse<PostDetail>>();
 
+			routeGroupBuilder.MapGet("topView/{limit:int}", GetLimitNViewCount)
+			.WithName("GetLimitNViewCount")
+			.Produces<ApiResponse<IList<PostDto>>>();
+
+			routeGroupBuilder.MapGet("newPost/{limit:int}", GetLimitNByNewId)
+			.WithName("GetLimitNByNewId")
+			.Produces<ApiResponse<IList<PostDto>>>();
+
 			return app;
 		}
 
@@ -64,5 +72,24 @@ namespace ManageProject.API.Endpoints
 			? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy slug = {slug}"))
 			: Results.Ok(ApiResponse.Success(mapper.Map<PostDetail>(post)));
 		}
+
+		// get limit by viewCount
+		private static async Task<IResult> GetLimitNViewCount(int limit, 
+			IPostRepository postRepository, ILogger<IResult> logger)
+		{
+			var postViewCount = await postRepository.GetNLimitTopViewCount(limit,
+				p => p.ProjectToType<PostDto>());
+			return Results.Ok(ApiResponse.Success(postViewCount));
+		}
+
+		// get limit by id 
+		private static async Task<IResult> GetLimitNByNewId(int limit, 
+			IPostRepository postRepository, ILogger<IResult> logger)
+		{
+			var descId = await postRepository.GetNLimitByNewId(limit,
+				p => p.ProjectToType<PostDto>());
+			return Results.Ok(ApiResponse.Success(descId));
+		}
+
 	}
 }

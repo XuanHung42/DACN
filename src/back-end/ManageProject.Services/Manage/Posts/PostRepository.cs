@@ -89,12 +89,24 @@ namespace ManageProject.Services.Manage.Posts
                     .ExecuteUpdateAsync(p =>
                     p.SetProperty(p => p.ViewCount, x => x.ViewCount + 1), cancellationToken);
         }
-    }
-}
 
-//public string ShortDescription { get; set; }
-//public string UrlSlug { get; set; }
-//public string File { get; set; }
-//public int UserId { get; set; }
-//public bool Status { get; set; }
-//public User User { get; set; }
+		public async Task<IList<T>> GetNLimitTopViewCount<T>(int n, Func<IQueryable<Post>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+		{
+			var topViewCount = _context.Set<Post>()
+				.Include(p => p.User)
+				.OrderByDescending(p => p.ViewCount)
+				.Take(n);
+
+			return await mapper(topViewCount).ToListAsync(cancellationToken);
+		}
+
+		public async Task<IList<T>> GetNLimitByNewId<T>(int n, Func<IQueryable<Post>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+		{
+			var byNewId = _context.Set<Post>()
+				.Include(p => p.User)
+				.OrderByDescending(p => p.Id)
+				.Take(n);
+			return await mapper(byNewId).ToListAsync(cancellationToken);
+		}
+	}
+}
