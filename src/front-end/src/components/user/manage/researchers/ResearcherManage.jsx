@@ -41,6 +41,7 @@ const ResearcherManage = () => {
   useEffect(() => {
     getFilterDepartment(departmentFilter.name).then((data) => {
       if (data) {
+        console.log("data abcjdasđá: ", data);
         setDepartmentManage(data.items);
       } else {
         setDepartmentManage([]);
@@ -53,7 +54,7 @@ const ResearcherManage = () => {
     <>
       <div className="researcher">
         <div className="researcher-title py-3">
-          <h1 className="text-danger text-center">Hồ sơ khoa học </h1>
+          <h1 className="text-danger text-center">Hồ sơ khoa học</h1>
         </div>
         <Tabs className="mb-3">
           <Tab eventKey="users" title="Tất cả tác giả">
