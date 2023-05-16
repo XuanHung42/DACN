@@ -61,6 +61,7 @@ namespace ManageProject.Services.Manage.Posts
 					UrlSlug = p.UrlSlug,
 					ShortDescription = p.ShortDescription,
 					User = p.User,
+					Created = p.Created,
 					//File = p.File,
 					//Department = p.Department,
 

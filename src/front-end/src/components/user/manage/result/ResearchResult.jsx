@@ -19,32 +19,18 @@ const ResearchResult = () => {
     p = 1,
     ps = 10;
 
-  useEffect(() => {
-    getFilterPost(postFilter.title, postFilter.shortDescription).then(
-      (data) => {
-        if (data) {
-          console.log("data check ddmmm: ", data);
-          setGetPost(data);
-        } else {
+  useEffect (() => {
+    getFilterPost(postFilter.title,
+      postFilter.shortDescription).then((data) => {
+        if (data){
+          setGetPost(data.items);
+        }
+        else{
           setGetPost([]);
         }
         setIsVisibleLoading(false);
-      }
-    );
+      });
   }, [postFilter, ps, p]);
-
-  // useEffect(() => {
-  //   getFilterPost(postFilter.title,
-  //     postFilter.shortDescription).then((data) => {
-  //     if (data) {
-  //       setGetPost(data.items);
-  //       console.log("data abcbabds: ", data);
-  //     } else {
-  //       setGetPost([]);
-  //     }
-  //     setIsVisibleLoading(false);
-  //   });
-  // }, [postFilter, ps, p]);
 
   return (
     <div className="research">

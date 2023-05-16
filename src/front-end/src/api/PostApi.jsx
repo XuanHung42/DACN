@@ -19,7 +19,7 @@ export function getFilterPost(
   sortColumn = '',
   sortOrder = ''
 ) {
-  let url = new URL(`https://localhost:7284/api/users`);
+  let url = new URL(`https://localhost:7284/api/posts/filter`);
   title !== '' && url.searchParams.append('Title', title);
   shortDescription !== '' && url.searchParams.append('ShortDescription', shortDescription);
   sortColumn !== '' && url.searchParams.append('SortColumn', sortColumn);
