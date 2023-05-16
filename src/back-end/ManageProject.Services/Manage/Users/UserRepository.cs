@@ -47,13 +47,15 @@ namespace ManageProject.Services.Manage.Users
                 })
                 .ToListAsync(cancellationToken);
         }
-        public async Task<IPagedList<UserItem>> GetPagedUserAsync(IPagingParams pagingParams, string name = null, CancellationToken cancellationToken = default)
+        public async Task<IPagedList<UserItem>> GetPagedUserAsync(IPagingParams pagingParams, string name = null, string email = null, CancellationToken cancellationToken = default)
         {
             return await _context.Set<User>()
                     .AsNoTracking()
                     .WhereIf(!string.IsNullOrEmpty(name),
                     x => x.Name.Contains(name))
-                    .Select(u => new UserItem()
+					.WhereIf(!string.IsNullOrEmpty(email),
+					x => x.Email.Contains(email))
+					.Select(u => new UserItem()
                     {
                         Id = u.Id,
                         Name = u.Name,
@@ -63,7 +65,6 @@ namespace ManageProject.Services.Manage.Users
                         ImageUrl = u.ImageUrl,
                         UrlSlug = u.UrlSlug,
                         DepartmentId = u.Department.Id,
-
                     })
                     .ToPagedListAsync(pagingParams, cancellationToken);
 

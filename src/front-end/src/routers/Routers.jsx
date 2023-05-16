@@ -9,6 +9,15 @@ import DepartmentDetail from "../pages/user/DepartmentDetail";
 import PostDetail from "../pages/user/PostDetail";
 import SearchPost from "../components/user/search/SearchPost";
 import ResearcherDetail from "../pages/user/ResearcherDetail";
+import LayoutAdmin from "../components/admin/layout/LayoutAd";
+import ResearchAdmin from "../pages/admin/researchers/ResearcherAd";
+import ProjectAdmin from "../pages/admin/projects/ProjectAd";
+import DepartmentAdmin from "../pages/admin/departments/DepartmentAd";
+import DepartmentEditAdmin from "../pages/admin/departments/DepartmentAdEdit";
+import ResearchEditAdmin from "../pages/admin/researchers/ResearcherAdEdit";
+import ProjectAdminEdit from "../pages/admin/projects/ProjectAdEdit";
+import PostAdmin from "../pages/admin/posts/PostAd";
+import PostAdminEdit from "../pages/admin/posts/PostAdEdit";
 
 const Routers = () => {
   return (
@@ -36,6 +45,24 @@ const Routers = () => {
 
 
       {/* routers admin */}
+
+        <Route path="/admin" element = {<LayoutAdmin/>}/>
+        <Route path="/admin/researcher" element = {<ResearchAdmin/>}/>
+        <Route path="/admin/researcher/edit" element = {<ResearchEditAdmin/>}/>
+        <Route path="/admin/researcher/edit/:id" element = {<ResearchEditAdmin/>}/>
+        <Route path="/admin/project" element = {<ProjectAdmin/>}/>
+        <Route path="/admin/project/edit" element = {<ProjectAdminEdit/>}/>
+        <Route path="/admin/project/edit/:id" element = {<ProjectAdminEdit/>}/>
+        <Route path="/admin/post" element = {<PostAdmin/>}/>
+        <Route path="/admin/post/edit" element = {<PostAdminEdit/>}/>
+        <Route path="/admin/post/edit/:id" element = {<PostAdminEdit/>}/>
+        <Route path="/admin/department" element = {<DepartmentAdmin/>}/>
+        <Route path="/admin/department/edit" element = {<DepartmentEditAdmin/>}/>
+        <Route path="/admin/department/edit/:id" element = {<DepartmentEditAdmin/>}/>
+
+
+
+
 
       </Routes>
     </BrowserRouter>

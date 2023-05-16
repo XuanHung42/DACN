@@ -12,7 +12,7 @@ namespace ManageProject.Services.Manage.Users
     public interface IUserRepository
     {
         Task<IList<UserItem>> GetUserAsync(CancellationToken cancellationToken = default);
-        Task<IPagedList<UserItem>> GetPagedUserAsync(IPagingParams pagingParams, string name = null, CancellationToken cancellationToken = default);
+        Task<IPagedList<UserItem>> GetPagedUserAsync(IPagingParams pagingParams, string name = null, string email = null, CancellationToken cancellationToken = default);
 
         Task<User> GetUserBySlugAsync(string slug, CancellationToken cancellationToken = default);
         Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken = default);

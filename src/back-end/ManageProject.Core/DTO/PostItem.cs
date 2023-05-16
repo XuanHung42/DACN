@@ -14,10 +14,13 @@ namespace ManageProject.Core.DTO
 		public string ShortDescription { get; set; }
 		public string UrlSlug { get; set; }
 		public string File { get; set; }
+		public DateTime Created { get; set; }
 		public int UserId { get; set; }
 		public bool Status { get; set; }
-		//public User User { get; set; }
-		//public Department Department { get; set; }
+		public User User { get; set; }
+        public int ViewCount { get; set; }
 
-	}
+        //public Department Department { get; set; }
+
+    }
 }

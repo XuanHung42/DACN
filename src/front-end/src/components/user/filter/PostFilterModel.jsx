@@ -33,10 +33,10 @@ const PostFilter = () => {
           />
         </Form.Group>
         <Form.Group className="col-auto">
-          <Form.Label className="visually-hidden">Mô tả</Form.Label>
+          <Form.Label className="visually-hidden">Mô tả ngắn</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Tìm kiếm theo mô tả"
+            placeholder="Tìm kiếm mô tả"
             name="shortDescription"
             value={postFilter.shortDescription}
             onChange={(e) => dispatch(updateShortDescription(e.target.value))}

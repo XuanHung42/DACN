@@ -10,8 +10,7 @@ const store = configureStore({
     researcherFilter: researcherReducer,
     departmentFilter: departmentReducer,
     projectFilter : projectReducer,
-    postFilter: postReducer,
-
+    postFilter: postReducer
   }
 })
 export default store;

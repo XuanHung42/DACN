@@ -22,6 +22,7 @@ namespace ManageProject.Services.Manage.Posts
 	
 		// get details by slug
 		Task<Post> GetPostDetailBySlug(string slug, CancellationToken cancellationToken = default);
+		Task IncreaseViewCountAsync(int postId, CancellationToken cancellationToken);
 
-	}
+    }
 }

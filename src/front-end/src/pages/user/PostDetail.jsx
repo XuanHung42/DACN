@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { getPostDetailBySlug } from "../../api/PostApi";
 import { Table } from "react-bootstrap";
 import "./styles/style.scss"
+import { format } from 'date-fns'
 
 
 const PostDetail = () => {
@@ -49,7 +50,7 @@ const PostDetail = () => {
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Đăng ngày</td>
-                  <td className="post-value">{postDetail.created}</td>
+                  <td className="post-value">{format(new Date(postDetail.created), 'dd/MM/yyyy hh:mm')}</td>
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Đăng bởi tác giả: </td>
@@ -64,7 +65,7 @@ const PostDetail = () => {
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Thuộc khoa</td>
-                  {/* <td className="post-value">{postDetail.department.name}</td> */}
+                  <td className="post-value">{postDetail.department.name}</td>
                 </tr>
               </tbody>
             </Table>

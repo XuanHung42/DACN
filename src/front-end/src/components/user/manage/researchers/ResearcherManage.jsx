@@ -5,9 +5,7 @@ import Loading from "../../Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useParams } from "react-router-dom";
 import { faHome, faUser } from "@fortawesome/free-solid-svg-icons";
-import {
-  getFilterDepartment,
-} from "../../../../api/DepartmentApi";
+import { getFilterDepartment } from "../../../../api/DepartmentApi";
 import { getFilterResearch } from "../../../../api/UserApi";
 import { useSelector } from "react-redux";
 import ResearchFilter from "../../filter/ResearcherFilterModel";
@@ -73,15 +71,19 @@ const ResearcherManage = () => {
                             fontSize={50}
                             className="px-3 text-success"
                           />
-                          <Link
-                            className="text-success text-decoration-none"
-                            to={`researcher/${item.urlSlug}`}
-                          >
-                            <div className="text-name">Họ tên: {item.name}</div>
-                            <span className="text-danger">
+                          <div className="d-flex flex-column">
+                            <Link
+                              className="text-success text-decoration-none"
+                              to={`researcher/${item.urlSlug}`}
+                            >
+                              <div className="text-name">
+                                Họ tên: {item.name}
+                              </div>
+                            </Link>
+                            <Link className="text-danger text-decoration-none" to={`mailto:${item.email}`}>
                               Email: {item.email}
-                            </span>
-                          </Link>
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -95,7 +97,7 @@ const ResearcherManage = () => {
             )}
           </Tab>
           <Tab eventKey="post" title="Tất cả đơn vị khoa">
-            <DepartmentFilter/>
+            <DepartmentFilter />
             {isVisibleLoading ? (
               <Loading />
             ) : (

@@ -1,34 +1,35 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { getAllPost } from "../../../../api/PostApi";
+import { getAllPost , getFilterPost} from "../../../../api/PostApi";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../Loading";
-// import PostFilter from "../../filter/PostFilterModel";
-import { getFilterPost } from "../../../../api/PostApi";
 import { useSelector } from "react-redux";
 import PostFilter from "../../filter/PostFilterModel";
+import { format } from 'date-fns'
 
 const ResearchResult = () => {
   const [getPost, setGetPost] = useState([]);
-  const [isVisibleLoading, setIsVisibleLoading] = useState(true),
-    postFilter = useSelector((state) => state.postFilter);
-
-  let { id } = useParams,
+  // const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true), 
+  postFilter = useSelector((state) => state.postFilter);
+  
+  
+  
+    let { id } = useParams,
     p = 1,
     ps = 10;
 
-  useEffect(() => {
-    getFilterPost(postFilter.title, postFilter.shortDescription).then(
-      (data) => {
-        if (data) {
-          console.log("data check ddmmm: ", data);
-          setGetPost(data);
-        } else {
+  useEffect (() => {
+    getFilterPost(postFilter.title,
+      postFilter.shortDescription).then((data) => {
+        if (data){
+          setGetPost(data.items);
+        }
+        else{
           setGetPost([]);
         }
         setIsVisibleLoading(false);
-      }
-    );
+      });
   }, [postFilter, ps, p]);
 
   return (
@@ -54,13 +55,13 @@ const ResearchResult = () => {
                     <Link className="text-decoration-none">
                       <span className="card-author-name">{item.user.name}</span>
                     </Link>
-                    <span className="px-5">Đăng ngày: {item.created}</span>
+                    <span className="px-5">Đăng ngày: {format(new Date(item.created), 'dd/MM/yyyy hh:mm')}</span>
                   </div>
-                </div>
+                </div>     
               </div>
             ))
           ) : (
-            <>
+            <>    
               <h2 className="text-warning text-center py-3">
                 Không tìm thấy bài viết nào
               </h2>

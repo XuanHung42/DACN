@@ -1,4 +1,4 @@
-import { get_api } from "./Method";
+import { delete_api, get_api, put_api } from "./Method";
 
 
 
@@ -29,4 +29,20 @@ export function getFilterDepartment(
 
   return get_api(url.href);
 }
+
+
+export async function getDepartmentById(id = 0) {
+  if (id > 0) {
+    return get_api(`https://localhost:7284/api/departments/${id}`);
+  }
+}
+
+export async function updateDepartment(id = 0, formData) {
+  return put_api(`https://localhost:7284/api/departments/${id}`, formData);
+}
+
+export async function deleteDepartment(id = 0) {
+  return delete_api(`https://localhost:7284/api/departments/${id}`);
+}
+
 

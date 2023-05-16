@@ -57,7 +57,6 @@ const DepartmentDetail = () => {
               <Tab eventKey="users" title="Nhân sự">
                 {departmentList.map((item, index) => (
                   <div key={index}>
-                    {item.name}
                     {item.users.map((users, i) => (
                       <div key={i}>
                         <h2>{users.name}</h2>

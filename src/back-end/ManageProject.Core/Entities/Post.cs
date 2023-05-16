@@ -21,5 +21,6 @@ namespace ManageProject.Core.Entities
         public Department Department { get; set; }
         public IList<Project> Projects { get; set; }
         public User User { get; set; }
+        public int ViewCount { get; set; }
     }
 }
