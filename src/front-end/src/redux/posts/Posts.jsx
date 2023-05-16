@@ -28,8 +28,6 @@ const postFilterReducer = createSlice({
       };
     },
 
-
-
   },
 });
 

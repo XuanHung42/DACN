@@ -11,7 +11,6 @@ export async function getPostDetailBySlug(urlSlug = ''){
 
 }
 
-
 export function getFilterPost(
   title = '',
   shortDescription = '',
@@ -30,4 +29,3 @@ export function getFilterPost(
 
   return get_api(url.href);
 }
-

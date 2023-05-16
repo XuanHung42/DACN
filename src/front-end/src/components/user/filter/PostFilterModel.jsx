@@ -10,6 +10,7 @@ import { Form } from "react-bootstrap";
 const PostFilter = () => {
   const postFilter = useSelector((state) => state.postFilter),
     dispatch = useDispatch();
+
   const handleReset = (e) => {
     dispatch(reset());
   };

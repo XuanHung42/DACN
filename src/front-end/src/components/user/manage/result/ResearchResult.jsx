@@ -9,26 +9,29 @@ import { format } from 'date-fns'
 
 const ResearchResult = () => {
   const [getPost, setGetPost] = useState([]);
-  const [isVisibleLoading, setIsVisibleLoading] = useState(true);
-  // const [isVisibleLoading, setIsVisibleLoading] = useState(true), 
-  // postFilter = useSelector((state) => state.postFilter);
+  // const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true), 
+  postFilter = useSelector((state) => state.postFilter);
   
+  
+  
+    let { id } = useParams,
+    p = 1,
+    ps = 10;
 
   useEffect(() => {
-    getAllPost().then((data) => {
-      if (data) {
-        setGetPost(data);
-      } else {
-        setGetPost([]);
+    getFilterPost(postFilter.title, postFilter.shortDescription).then(
+      (data) => {
+        if (data) {
+          console.log("data check ddmmm: ", data);
+          setGetPost(data);
+        } else {
+          setGetPost([]);
+        }
+        setIsVisibleLoading(false);
       }
-      setIsVisibleLoading(false);
-    });
-  }, []);
-
-
-  // let { id } = useParams,
-  // p = 1,
-  // ps = 10;
+    );
+  }, [postFilter, ps, p]);
 
   // useEffect(() => {
   //   getFilterPost(postFilter.title,
@@ -48,7 +51,7 @@ const ResearchResult = () => {
       <div className="research-title py-3">
         <h1 className="text-danger text-center">Kết quả nghiên cứu</h1>
       </div>
-      {/* <PostFilter/> */}
+      <PostFilter />
       {isVisibleLoading ? (
         <Loading />
       ) : (
