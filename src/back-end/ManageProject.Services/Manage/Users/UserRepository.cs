@@ -59,12 +59,12 @@ namespace ManageProject.Services.Manage.Users
                     {
                         Id = u.Id,
                         Name = u.Name,
+                        Email = u.Email,
                         Password = u.Password,
                         RoleId = u.Role.Id,
                         ImageUrl = u.ImageUrl,
                         UrlSlug = u.UrlSlug,
                         DepartmentId = u.Department.Id,
-                        Email = u.Email
                     })
                     .ToPagedListAsync(pagingParams, cancellationToken);
 

@@ -306,11 +306,13 @@ namespace ManageProject.Data.Seeders
                 UrlSlug="post1",
                   Created= DateTime.Now,
                 Department = department[0],
+                ViewCount=1,
                 Projects= new List<Project>()
                 {
                     projects[1],
                     projects[0]
                 }
+              
 
             },
              new()
@@ -326,7 +328,8 @@ namespace ManageProject.Data.Seeders
                 {
                     projects[1],
                     projects[0]
-                }
+                },
+                ViewCount= 2
 
             },
              new()
@@ -342,7 +345,8 @@ namespace ManageProject.Data.Seeders
                 {
                     projects[1],
 
-                }
+                },
+                ViewCount= 3
 
 
             },

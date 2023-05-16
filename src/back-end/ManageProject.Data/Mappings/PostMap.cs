@@ -37,7 +37,7 @@ namespace ManageProject.Data.Mappings
             builder.Property(p => p.Status)
                 .IsRequired()
                 .HasDefaultValue(false);
-
+            builder.Property(p => p.ViewCount).IsRequired().HasDefaultValue(0);
             builder.Property(p => p.Created)
                 .HasColumnType("datetime");
 

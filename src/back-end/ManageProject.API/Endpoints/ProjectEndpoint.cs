@@ -43,17 +43,17 @@ public static class ProjectEndpoint
             .Produces<ApiResponse<ProjectDto>>();
 
         //// add or update post
-        //routeGroupBuilder.MapPost("/", AddOrUpdateProject)
-        //	.WithName("AddOrUpdateProject")
-        //	.Accepts<ProjectEditModel>("multipart/form-data")
-        //	.Produces(401)
-        //	.Produces<ApiResponse<ProjectDetail>>();
-
-        routeGroupBuilder.MapPost("/", CreateNewProject)
-            .WithName("CreateNewProject")
-            .AddEndpointFilter<ValidatorFilter<ProjectEditModel>>()
+        routeGroupBuilder.MapPost("/", AddOrUpdateProject)
+            .WithName("AddOrUpdateProject")
+            .Accepts<ProjectEditModel>("multipart/form-data")
             .Produces(401)
-            .Produces<ApiResponse<ProjectDto>>();
+            .Produces<ApiResponse<ProjectDetail>>();
+
+        //routeGroupBuilder.MapPost("/", CreateNewProject)
+        //    .WithName("CreateNewProject")
+        //    .AddEndpointFilter<ValidatorFilter<ProjectEditModel>>()
+        //    .Produces(401)
+        //    .Produces<ApiResponse<ProjectDto>>();
 
 
         // delete project
@@ -119,38 +119,43 @@ public static class ProjectEndpoint
     }
 
     //// create new project or update
-    //private static async Task<IResult> AddOrUpdateProject (HttpContext context,
-    //	IProjectRepository projectRepository, IMapper mapper
-    //	)
-    //{
-    //	var model = await ProjectEditModel.BindAsync(context);
-    //	var slug = model.Name.GenerateSlug();
-    //	if (await projectRepository.CheckSlugExistedAsync(model.Id, slug))
-    //	{
-    //		return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict,
-    //			$"Slug '{slug}' da duoc su dung cho project khac"));
-    //	}
+    private static async Task<IResult> AddOrUpdateProject(HttpContext context,
+        IProjectRepository projectRepository, IMapper mapper
+        )
+    {
+        var model = await ProjectEditModel.BindAsync(context);
+        var slug = model.Name.GenerateSlug();
+        if (await projectRepository.CheckSlugExistedAsync(model.Id, slug))
+        {
+            return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict,
+                $"Slug '{slug}' da duoc su dung cho project khac"));
+        }
 
-    //	var project = model.Id > 0
-    //		? await projectRepository.GetProjectByIdAsync(model.Id) : null;
+        var project = model.Id > 0
+            ? await projectRepository.GetProjectByIdAsync(model.Id) : null;
+        if(project == null)
+        {
+            project = new Project();
+        }
 
-    //	project.Name = model.Name;
-    //	project.UrlSlug = model.Name.GenerateSlug();
-    //	project.Description = model.Description;
-    //	project.ShortDescription = model.ShortDescription;
-    //	project.CostProject = model.CostProject;
-    //	project.UserNumber = model.UseNumber;
-    //	project.Register = model.Register;
-
-
-    //	await projectRepository.CreateOrUpdateProjectAsync(project, model.GetSlectedUser());
-
-    //	return Results.Ok(ApiResponse.Success(mapper.Map<ProjectDetail>(project), HttpStatusCode.Created));
-    //}
-
+        project.Name = model.Name;
+        project.UrlSlug = model.Name.GenerateSlug();
+        project.Description = model.Description;
+        project.ShortDescription = model.ShortDescription;
+        project.CostProject = model.CostProject;
+        project.UserNumber = model.UseNumber;
+        project.Register = model.Register;
+        project.ProcessId = model.ProcessId;
 
 
-    private static async Task<IResult> CreateNewProject(
+        await projectRepository.CreateOrUpdateProjectAsync(project);
+
+        return Results.Ok(ApiResponse.Success(mapper.Map<ProjectDetail>(project), HttpStatusCode.Created));
+        }
+
+
+
+        private static async Task<IResult> CreateNewProject(
         ProjectEditModel model,
         IProjectRepository projectRepository,
         IProcessRepository processRepository,
@@ -167,7 +172,7 @@ public static class ProjectEndpoint
                 $"Không tìm thấy proceess có id = {model.ProcessId}"));
         }
         var project = mapper.Map<Project>(model);
-        await projectRepository.CreateOrUpdateProjectAsync(project, model.GetSelectedUsers());
+        await projectRepository.CreateOrUpdateProjectAsync(project);
 
         return Results.Ok(ApiResponse.Success(mapper.Map<ProjectDto>(project), HttpStatusCode.Created));
     }

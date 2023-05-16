@@ -62,6 +62,7 @@ namespace ManageProject.Services.Manage.Posts
 					ShortDescription = p.ShortDescription,
 					User = p.User,
 					Created = p.Created,
+					ViewCount= p.ViewCount,
 					//File = p.File,
 					//Department = p.Department,
 
@@ -80,8 +81,15 @@ namespace ManageProject.Services.Manage.Posts
 				return await postQuery.FirstOrDefaultAsync(cancellationToken);
 			}
 		}
+        public async Task IncreaseViewCountAsync(int postId, CancellationToken cancellationToken)
+        {
 
-	}
+            await _context.Set<Post>()
+                    .Where(x => x.Id == postId)
+                    .ExecuteUpdateAsync(p =>
+                    p.SetProperty(p => p.ViewCount, x => x.ViewCount + 1), cancellationToken);
+        }
+    }
 }
 
 //public string ShortDescription { get; set; }

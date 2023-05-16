@@ -25,6 +25,8 @@ namespace ManageProject.API.Mapsters
      .Map(dest => dest.DepartmentId, src => src.Department.Id);
             config.NewConfig<User, UserEditModel>()
  .Map(dest => dest.RoleId, src => src.Role.Id);
+            config.NewConfig<Project, ProjectEditModel>()
+.Map(dest => dest.ProcessId, src => src.Process.Id);
             config.NewConfig<Department, DepartmentDto>();
             config.NewConfig<Department, DepartmentDetail>();
             config.NewConfig<Department, DepartmentItem>()
