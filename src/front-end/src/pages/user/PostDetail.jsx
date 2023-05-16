@@ -6,6 +6,8 @@ import { getPostDetailBySlug } from "../../api/PostApi";
 import { Table } from "react-bootstrap";
 import "./styles/style.scss"
 import { format } from 'date-fns'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 
 const PostDetail = () => {
@@ -43,6 +45,13 @@ const PostDetail = () => {
                 <tr>
                   <td className="post-lable w-25">Mô tả ngắn </td>
                   <td className="post-value">{postDetail.shortDescription}</td>
+                </tr>
+                <tr>
+                  <td className="post-lable w-25">Số lượt xem</td>
+                  <td className="post-value">
+                    <FontAwesomeIcon icon={faEye} className="text-danger px-1"/>
+                    {postDetail.viewCount}
+                  </td>
                 </tr>
                 <tr>
                   <td className="post-lable w-25">File dự án</td>

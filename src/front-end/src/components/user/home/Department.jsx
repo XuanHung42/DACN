@@ -1,15 +1,15 @@
-import { faBank } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Manage.scss";
-import { getAllPost } from "../../../api/PostApi";
+import { getAllPostByViewCount } from "../../../api/PostApi";
 
 const Departments = () => {
   const [getPost, setGetPost] = useState([]);
 
   useEffect(() => {
-    getAllPost().then((data) => {
+    getAllPostByViewCount().then((data) => {
       // console.log("data check: ", data);
       if (data) {
         setGetPost(data);
@@ -23,11 +23,11 @@ const Departments = () => {
     <>
       <div className="card">
         <FontAwesomeIcon
-          icon={faBank}
+          icon={faEye}
           fontSize={80}
           className="text-danger py-3"
         />
-        <h5 className="text-success text-center">Phòng Khoa</h5>
+        <h5 className="text-success text-center">Xem nhiều nhất</h5>
 
         <div className="card-body">
           {getPost.map((item, index) => (
@@ -36,11 +36,20 @@ const Departments = () => {
                 <h5>{item.title}</h5>
               </Link>
               <div className="card-shortdesc">{item.shortDescription}</div>
-              <div className="card-author">
-                <span className="card-author-title">Đăng bởi:</span>
-                <Link className="text-decoration-none px-2" to={`/home/${item.user.urlSlug}`}>
-                  {item.user.name}
-                </Link>
+              <div className="card-author row">
+                <div className="card-author-title col">
+                  Đăng bởi:
+                  <Link
+                    className="text-decoration-none px-2"
+                    to={`/home/${item.user.urlSlug}`}
+                  >
+                    {item.user.name}
+                  </Link>
+                </div>
+                <div className="col"> 
+                  Lượt xem: {item.viewCount} 
+                  <FontAwesomeIcon icon={faEye} className="text-danger px-1"/>
+                </div>
               </div>
             </div>
           ))}

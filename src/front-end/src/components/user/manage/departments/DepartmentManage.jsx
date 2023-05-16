@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllDepartment } from "../../../../api/DepartmentApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import "../Manage.scss";
 
@@ -120,6 +120,11 @@ const DepartmentManage = () => {
                                       new Date(posts.created),
                                       "dd/MM/yyyy hh:mm"
                                     )}
+                                  </span>
+                                  <span>
+                                    Lượt xem: 
+                                    {posts.viewCount}
+                                    <FontAwesomeIcon icon={faEye} className="text-danger px-1"/>
                                   </span>
                                 </div>
                               </div>

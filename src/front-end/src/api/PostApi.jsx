@@ -6,6 +6,15 @@ export async function getAllPost(){
   return get_api (`https://localhost:7284/api/posts`)
 }
 
+export async function getAllPostByViewCount(){
+  return get_api (`https://localhost:7284/api/posts/topView/3`)
+}
+
+
+export async function getAllLimitNewPost(){
+  return get_api (`https://localhost:7284/api/posts/newPost/2`)
+}
+
 export async function getPostDetailBySlug(urlSlug = ''){
   return get_api (`https://localhost:7284/api/posts/slugDetail/${urlSlug}`)
 
