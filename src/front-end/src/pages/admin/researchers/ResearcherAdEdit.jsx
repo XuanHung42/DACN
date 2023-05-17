@@ -14,10 +14,12 @@ const ResearchEditAdmin = () => {
   const initialState = {
       id: 0,
       name: "",
-      urlSlug: "",
+      // urlSlug: "",
+      email: "",
       password: "",
-      imageUrl: "",
+      // imageUrl: "",
       birthDate: "",
+      roleId: "",
       departmentId: "",
     },
     [researcher, setResearcher] = useState(initialState);
@@ -96,7 +98,7 @@ const ResearchEditAdmin = () => {
                 </div>
               </div>
 
-              <div className="row mb-3">
+              {/* <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">
                   UrlSlug
                 </Form.Label>
@@ -109,6 +111,27 @@ const ResearchEditAdmin = () => {
                     value={researcher.urlSlug || ""}
                     onChange={(e) =>
                       setResearcher({ ...researcher, urlSlug: e.target.value })
+                    }
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Không được bỏ trống
+                  </Form.Control.Feedback>
+                </div>
+              </div> */}
+
+              <div className="row mb-3">
+                <Form.Label className="col-sm-2 col-form-label">
+                  Email
+                </Form.Label>
+                <div className="col-sm-10">
+                  <Form.Control
+                    type="text"
+                    name="email"
+                    title="Email"
+                    required
+                    value={researcher.email || ""}
+                    onChange={(e) =>
+                      setResearcher({ ...researcher, email: e.target.value })
                     }
                   />
                   <Form.Control.Feedback type="invalid">
@@ -153,6 +176,30 @@ const ResearchEditAdmin = () => {
                       setResearcher({
                         ...researcher,
                         birthDate: e.target.value,
+                      })
+                    }
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Không được bỏ trống
+                  </Form.Control.Feedback>
+                </div>
+              </div>
+
+              <div className="row mb-3">
+                <Form.Label className="col-sm-2 col-form-label">
+                  Mã vai trò
+                </Form.Label>
+                <div className="col-sm-10">
+                  <Form.Control
+                    type="text"
+                    name="roleId"
+                    title="role Id"
+                    required
+                    value={researcher.roleId || ""}
+                    onChange={(e) =>
+                      setResearcher({
+                        ...researcher,
+                        roleId: e.target.value,
                       })
                     }
                   />
