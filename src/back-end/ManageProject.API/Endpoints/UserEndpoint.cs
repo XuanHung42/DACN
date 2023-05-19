@@ -20,6 +20,7 @@ using Microsoft.Extensions.Hosting;
 using ManageProject.Services.Media;
 using ManageProject.Services.Manage.Roles;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ManageProject.API.Models.Departments;
 
 namespace ManageProject.API.Endpoints
 {
@@ -76,6 +77,10 @@ namespace ManageProject.API.Endpoints
 			// get filter role 
 			routeGroupBuilder.MapGet("/get-filter", GetFilterRoleAsync)
 				.WithName("GetFilterRoleAsync")
+				.Produces<ApiResponse<UserFilterModel>>();
+
+            routeGroupBuilder.MapGet("/filterDepartment", GetFilterDepartment)
+				.WithName("GetFilterDepartment")
 				.Produces<ApiResponse<UserFilterModel>>();
 			return app;
         }
@@ -261,6 +266,22 @@ namespace ManageProject.API.Endpoints
             var model = new UserFilterModel()
             {
                 RoleList = (await roleRepository.GetRoleNotRequired())
+                .Select(r => new SelectListItem()
+                {
+                    Text = r.Name,
+                    Value = r.Id.ToString()
+                })
+            };
+            return Results.Ok(ApiResponse.Success(model));
+        }
+
+        // get filter department
+        private static async Task<IResult> GetFilterDepartment(
+            IDepartmentRepository departmentRepository)
+        {
+            var model = new UserFilterModel()
+            {
+                DepartmentList =  (await departmentRepository.GetDepartmentNotRequired())
                 .Select(r => new SelectListItem()
                 {
                     Text = r.Name,

@@ -171,5 +171,16 @@ namespace ManageProject.Services.Manage.Departments
 			}
 
 		}
+
+		public async Task<IList<DepartmentItem>> GetDepartmentNotRequired(CancellationToken cancellationToken = default)
+		{
+			IQueryable<Department> departments = _context.Set<Department>();
+			return await departments.OrderBy(d => d.Name).Select(d => new DepartmentItem()
+			{
+				Id = d.Id,
+				Name = d.Name,
+				UrlSlug = d.UrlSlug,
+			}).ToListAsync(cancellationToken);
+		}
 	}
 }

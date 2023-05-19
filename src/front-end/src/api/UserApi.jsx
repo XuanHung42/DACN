@@ -52,3 +52,8 @@ export async function deleteUserResearcher(id = 0) {
 export async function getUserFilterRole() {
   return get_api(`https://localhost:7284/api/users/get-filter`);
 }
+
+
+export async function getUserFilterDepartment() {
+  return get_api(`https://localhost:7284/api/users/filterDepartment`);
+}
