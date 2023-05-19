@@ -59,11 +59,7 @@ const handleSubmit = (e)=>{
    }
  
 }
-if(id && isInteger(id))
-return(
-  <Navigate to = {`/400?redirectTo=/admin/products`}/>
-  
-)
+
   return (
     <>
       <div className="row">

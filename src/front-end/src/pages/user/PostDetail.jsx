@@ -59,7 +59,7 @@ const PostDetail = () => {
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Đăng ngày</td>
-                  <td className="post-value">{format(new Date(postDetail.created), 'dd/MM/yyyy hh:mm')}</td>
+                  <td className="post-value">{format(new Date(postDetail.created), 'dd/MM/yyyy')}</td>
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Đăng bởi tác giả: </td>
