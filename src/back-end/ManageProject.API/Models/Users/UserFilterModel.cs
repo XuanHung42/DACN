@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Globalization;
 
 namespace ManageProject.API.Models.Users
 {
@@ -6,5 +7,6 @@ namespace ManageProject.API.Models.Users
     {
         public string Name { get; set; }
         public string Email { get; set; }
+        public IEnumerable<SelectListItem> RoleList { get; set; }
     }
 }

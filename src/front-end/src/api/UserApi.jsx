@@ -47,3 +47,8 @@ export async function updateUserResearcher( formData) {
 export async function deleteUserResearcher(id = 0) {
   return delete_api(`https://localhost:7284/api/users/${id}`);
 }
+
+
+export async function getUserFilterRole() {
+  return get_api(`https://localhost:7284/api/users/get-filter`);
+}

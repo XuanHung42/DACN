@@ -3,6 +3,7 @@ import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
+  getUserFilterRole,
   getUserResearchertById,
   updateUserResearcher,
 } from "../../../api/UserApi";
@@ -22,7 +23,8 @@ const ResearchEditAdmin = () => {
       roleId: "",
       departmentId: "",
     },
-    [researcher, setResearcher] = useState(initialState);
+    [researcher, setResearcher] = useState(initialState),
+    [filterRole, setFilterRole] = useState({roleList: []});
 
   const navigate = useNavigate();
 
@@ -38,6 +40,18 @@ const ResearchEditAdmin = () => {
         setResearcher(initialState);
       }
     });
+
+    getUserFilterRole().then((data) => {
+      if (data) {
+        setFilterRole({
+          roleList: data.roleList
+        });
+      }
+      else{
+        setFilterRole({roleList: []});
+      }
+    })
+
   }, []);
 
   const handleSubmit = (e) => {
@@ -186,28 +200,37 @@ const ResearchEditAdmin = () => {
               </div>
 
               <div className="row mb-3">
-                <Form.Label className="col-sm-2 col-form-label">
-                  Mã vai trò
-                </Form.Label>
-                <div className="col-sm-10">
-                  <Form.Control
-                    type="text"
-                    name="roleId"
-                    title="role Id"
-                    required
-                    value={researcher.roleId || ""}
-                    onChange={(e) =>
-                      setResearcher({
-                        ...researcher,
-                        roleId: e.target.value,
-                      })
-                    }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Không được bỏ trống
-                  </Form.Control.Feedback>
-                </div>
+              <Form.Label className="col-sm-2 col-form-label">
+                Vai trò
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Select
+                  name="roleId"
+                  title="role Id"
+                  value={researcher.roleId}
+                  required
+                  onChange={(e) =>
+                    setResearcher({
+                      ...researcher,
+                      roleId: e.target.value,
+                    })
+                  }
+                >
+                  {filterRole.roleList.length > 0 &&
+                    filterRole.roleList.map((item, index) => (
+                      <option key={index} value={item.value}>
+                        {item.text}
+                      </option>
+                    ))}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống.
+                </Form.Control.Feedback>
               </div>
+            </div>
+
+
+
 
               <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">

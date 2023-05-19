@@ -18,6 +18,8 @@ using ManageProject.API.Models.Role;
 using SlugGenerator;
 using Microsoft.Extensions.Hosting;
 using ManageProject.Services.Media;
+using ManageProject.Services.Manage.Roles;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ManageProject.API.Endpoints
 {
@@ -69,7 +71,13 @@ namespace ManageProject.API.Endpoints
          .Accepts<IFormFile>("multipart/form-data")
          .Produces<string>()
          .Produces(400);
-            return app;
+
+
+			// get filter role 
+			routeGroupBuilder.MapGet("/get-filter", GetFilterRoleAsync)
+				.WithName("GetFilterRoleAsync")
+				.Produces<ApiResponse<UserFilterModel>>();
+			return app;
         }
 
         public static async Task<IResult> GetUserList(IUserRepository userRepository)
@@ -244,6 +252,22 @@ namespace ManageProject.API.Endpoints
             return user == null
             ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy slug = {slug}"))
             : Results.Ok(ApiResponse.Success(mapper.Map<UserDetail>(user)));
+        }
+
+        // get filter role
+        private static async Task<IResult> GetFilterRoleAsync(
+            IRoleRepository roleRepository)
+        {
+            var model = new UserFilterModel()
+            {
+                RoleList = (await roleRepository.GetRoleNotRequired())
+                .Select(r => new SelectListItem()
+                {
+                    Text = r.Name,
+                    Value = r.Id.ToString()
+                })
+            };
+            return Results.Ok(ApiResponse.Success(model));
         }
     }
 }
