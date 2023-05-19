@@ -143,7 +143,7 @@ public static class ProjectEndpoint
 		project.Description = model.Description;
 		project.ShortDescription = model.ShortDescription;
 		project.CostProject = model.CostProject;
-		project.UserNumber = model.UseNumber;
+		project.UserNumber = model.UserNumber;
 		project.Register = model.Register;
 		project.ProcessId = model.ProcessId;
 

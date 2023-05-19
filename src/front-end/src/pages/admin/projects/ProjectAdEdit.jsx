@@ -1,57 +1,69 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { getProjectById, updateAndAddProject } from "../../../api/ProjectApi";
 import { Button, Form } from "react-bootstrap";
+import { decode, isInteger } from "../../../utils/Utils";
 
 const ProjectAdminEdit = () => {
-  const [validated, setValidated] = useState(false);
-  const initialState = {
-      id: 0,
-      name: "",
-      description: "",
-      shortDescription: "",
-      costProject: "",
-      userNumber: "",
-      processId: "",
-      register: false,
-    },
-    [project, setProject] = useState(initialState);
-
-  const navigate = useNavigate();
-  let { id } = useParams();
-  id = id ?? 0;
-
-  useEffect(() => {
-    document.title = "Thêm, cập nhật dự án";
-    getProjectById(id).then((data) => {
-      if (data) {
-        setProject(data);
-      } else {
-        setProject(initialState);
-      }
-    });
-  }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (e.currentTarget.checkValidity() === false) {
-      e.stopPropagation();
-      setValidated(true);
-    } else {
-      let form = new FormData(e.target);
-
-      updateAndAddProject(form).then((data) => {
-        if (data) {
-          alert("Đã xảy lưu thành công");
-        } else {
-          alert("Đã xảy ra lỗi");
-        }
-      });
+const initialState={
+    id: 0,
+    name: "",
+    description: "",
+    shortDescription: "",
+    urlSlug: "",
+    costProject: "",
+    userNumber: 0,
+    register: false,
+    processId: 0,
+};
+const [project, setProject]= useState(initialState);
+let {id} = useParams();
+id = id ?? 0;
+useEffect(()=> {
+  document.title= "Thêm/ cập nhập dự án";
+  getProjectById(id).then((data)=> {
+    if(data){
+      setProject({
+        ...data,
+      })
     }
-  };
+    else{
+      setProject(initialState);
+    }
+    
+  })
+},[]);
 
+const [validated, setValidated]= useState(false);
+const handleSubmit = (e)=>{
+   e.preventDefault();
+   if(e.currentTarget.checkValidity()===false){
+    e.StopPropagation();
+    setValidated(true);
+   }
+   else{
+    let formData = new FormData(e.target);
+    console.log(formData)
+    updateAndAddProject(formData).then((data)=> {
+      console.log("Project",project);
+      console.log("data",data);
+      if(data)
+        alert('Lưu thành công');
+      else
+        alert('Đã có lỗi xảy ra');
+
+    });
+
+   }
+ 
+}
+if(id && isInteger(id))
+return(
+  <Navigate to = {`/400?redirectTo=/admin/products`}/>
+  
+)
   return (
     <>
       <div className="row">
@@ -63,12 +75,13 @@ const ProjectAdminEdit = () => {
           <h3 className="text-success py-3">Thêm/cập nhật dự án</h3>
           <Form
             method="post"
-            encType=""
+                        
+            encType="multipart/form-data"
             onSubmit={handleSubmit}
             noValidate
             validated={validated}
           >
-            <Form.Control type="hidden" name="id" value={project.id} />
+            <Form.Control type="hidden" name="id" value={project.id}  />
             <div className="row mb-3">
               <Form.Label className="col-sm-2 col-form-label">
                 Tên đề tài
@@ -81,7 +94,28 @@ const ProjectAdminEdit = () => {
                   required
                   value={project.name || ""}
                   onChange={(e) =>
-                    setProject({ ...project, name: e.target.value })
+                    setProject({ ...project, 
+                      name: e.target.value })
+                  }
+                />
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống.
+                </Form.Control.Feedback>
+              </div>
+            </div>
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                UrlSlug
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="text"
+                  name="urlSlug"
+                  title="UrlSlug"
+                  required
+                  value={project.urlSlug || ""}
+                  onChange={e =>
+                    setProject({ ...project, urlSlug: e.target.value })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -94,11 +128,12 @@ const ProjectAdminEdit = () => {
               <Form.Label className="col-sm-2 col-form-label">Mô tả</Form.Label>
               <div className="col-sm-10">
                 <Form.Control
+                  as="textarea"
                   type="text"
                   name="description"
                   title="Description"
                   required
-                  value={project.description || ""}
+                  value={decode(project.description || "")}
                   onChange={(e) =>
                     setProject({ ...project, description: e.target.value })
                   }
@@ -115,11 +150,12 @@ const ProjectAdminEdit = () => {
               </Form.Label>
               <div className="col-sm-10">
                 <Form.Control
+                  as="textarea"
                   type="text"
                   name="shortDescription"
                   title="ShortDescription"
                   required
-                  value={project.shortDescription || ""}
+                  value={decode(project.shortDescription || "")}
                   onChange={(e) =>
                     setProject({ ...project, shortDescription: e.target.value })
                   }
@@ -199,10 +235,10 @@ const ProjectAdminEdit = () => {
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    name="published"
+                    name="register"
                     checked={project.register}
-                    title="Published"
-                    onChange={(e) =>
+                    title="register"
+                    onChange={e =>
                       setProject({ ...project, register: e.target.checked })
                     }
                   />

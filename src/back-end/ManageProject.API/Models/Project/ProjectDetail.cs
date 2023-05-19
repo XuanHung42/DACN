@@ -12,6 +12,6 @@ namespace ManageProject.API.Models.Project
 		public string CostProject { get; set; }
 		public int UserNumber { get; set; }
 		public bool Register { get; set; }
-		public IList<UserDto> Users { get; set; }
+		public int ProcessId { get; set; }
 	}
 }

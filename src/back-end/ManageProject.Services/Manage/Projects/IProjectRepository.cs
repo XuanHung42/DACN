@@ -46,7 +46,7 @@ namespace ManageProject.Services.Manage.Projects
 
 		Task<User> GetUserSlugAsync(string slug, CancellationToken cancellationToken = default);
 
-		public Task<bool> CreateOrUpdateProjectAsync(
+		Task<bool> CreateOrUpdateProjectAsync(
 			Project project, CancellationToken cancellationToken = default);
 
 		
