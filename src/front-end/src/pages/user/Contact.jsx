@@ -18,9 +18,10 @@ const Contact = () => {
             <div className="col-6">
               <div className="card-header">
                 <FontAwesomeIcon icon={faQuestionCircle} />
-                <span className="text-success px-3">Gửi ý kiến của bạn tại đây</span>
+                <span className="text-success px-3">
+                  Gửi ý kiến của bạn tại đây
+                </span>
               </div>
-
               <div className="card-body">
                 <form action="" method="post">
                   <div className="form-group">

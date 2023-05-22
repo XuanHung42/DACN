@@ -4,25 +4,36 @@ import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import { getAllPost } from "../../../api/PostApi";
 import Loading from "../../../components/user/Loading";
 import { Table } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { format } from 'date-fns'
+import PostFilter from "../../../components/user/filter/PostFilterModel";
+import { useSelector } from "react-redux";
+import { getFilterPost } from "../../../api/PostApi";
+
+
 
 const PostAdmin = () => {
   const [getPost, setGetPost] = useState([]);
-  const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true), postFilter = useSelector((state) => state.postFilter);
+
+  let { id } = useParams,
+  p = 1,
+  ps = 10;
 
   useEffect(() => {
-    getAllPost().then((data) => {
-      if (data) {
-        setGetPost(data);
-      } else {
-        setGetPost([]);
+    getFilterPost(postFilter.title, postFilter.shortDescription).then(
+      (data) => {
+        if (data) {
+          setGetPost(data.items);
+        } else {
+          setGetPost([]);
+        }
+        setIsVisibleLoading(false);
       }
-      setIsVisibleLoading(false);
-    });
-  }, []);
+    );
+  }, [postFilter, ps, p]);
 
   return (
     <>
@@ -36,6 +47,7 @@ const PostAdmin = () => {
             <h3>Quản lý bài đăng</h3>
           </div>
           <div className="post-content">
+            <PostFilter/>
             {isVisibleLoading ? (
               <Loading />
             ) : (
@@ -71,11 +83,13 @@ const PostAdmin = () => {
                       </tr>
                     ))
                   ) : (
-                    <>
-                      <h2 className="text-warning text-center py-3">
-                        Không tìm thấy bài viết nào
-                      </h2>
-                    </>
+                    <tr>
+                      <td colSpan={6}>
+                        <h4 className="text-danger text-center">
+                          Không tìm thấy bài viết nào
+                        </h4>
+                      </td>
+                    </tr>
                   )}
                 </tbody>
               </Table>

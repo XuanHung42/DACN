@@ -62,6 +62,7 @@ const ResearchEditAdmin = () => {
         setFilterDepartment({ departmentList: [] });
       }
     });
+    
   }, []);
 
   const handleSubmit = (e) => {

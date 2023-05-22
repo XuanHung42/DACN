@@ -17,6 +17,8 @@ import ResearchEditAdmin from "../pages/admin/researchers/ResearcherAdEdit";
 import ProjectAdminEdit from "../pages/admin/projects/ProjectAdEdit";
 import PostAdmin from "../pages/admin/posts/PostAd";
 import PostAdminEdit from "../pages/admin/posts/PostAdEdit";
+import Login from "../pages/auth/Login";
+import Register from "../pages/auth/Register";
 
 const Routers = () => {
   return (
@@ -49,6 +51,12 @@ const Routers = () => {
 
         <Route path="/search" element={<SearchPost />} />
         <Route path="/home/search" element={<SearchPost />} />
+
+        {/* router auth button login end register */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+
 
         {/* routers admin */}
 
