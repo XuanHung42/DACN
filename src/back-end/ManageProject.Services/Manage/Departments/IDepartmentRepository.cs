@@ -52,5 +52,7 @@ namespace ManageProject.Services.Manage.Departments
 
 		Task<IList<DepartmentItem>> GetDepartmentNotRequired(
 			CancellationToken cancellationToken = default);
+
+		Task<int> CountTotalDepartmentAsync(CancellationToken cancellationToken = default);
 	}
 }

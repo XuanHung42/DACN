@@ -108,5 +108,10 @@ namespace ManageProject.Services.Manage.Posts
 				.Take(n);
 			return await mapper(byNewId).ToListAsync(cancellationToken);
 		}
+
+		public async Task<int> CountTotalPostAsync(CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Post>().CountAsync(cancellationToken);
+		}
 	}
 }

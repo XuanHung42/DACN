@@ -187,5 +187,11 @@ namespace ManageProject.Services.Manage.Projects
                 .Where(p => p.Id == projectId)
                 .ExecuteDeleteAsync(cancellationToken) > 0;
         }
-    }
+
+		public async Task<int> CountTotalProjectAsync(CancellationToken cancellationToken = default)
+		{
+            return await _context.Set<Project>().CountAsync(cancellationToken);
+
+		}
+	}
 }

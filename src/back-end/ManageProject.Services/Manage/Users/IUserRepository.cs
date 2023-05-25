@@ -40,5 +40,7 @@ namespace ManageProject.Services.Manage.Users
              int userId, string imageUrl,
              CancellationToken cancellationToken = default);
         Task<User> GetUserDetailBySlug(string slug, CancellationToken cancellationToken = default);
+
+        Task<int> CountTotalUserAsync(CancellationToken cancellationToken = default);
     }
 }

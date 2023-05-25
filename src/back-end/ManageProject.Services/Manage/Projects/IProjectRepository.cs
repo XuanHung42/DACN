@@ -53,6 +53,7 @@ namespace ManageProject.Services.Manage.Projects
 		// delete project by id
 		Task<bool> DeleteProjectByIdAsync(int projectId, CancellationToken cancellationToken = default);
 
+        Task<int> CountTotalProjectAsync(CancellationToken cancellationToken = default);
 
 
 	}

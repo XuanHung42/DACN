@@ -240,5 +240,10 @@ namespace ManageProject.Services.Manage.Users
                 return await userQuery.FirstOrDefaultAsync(cancellationToken);
             }
         }
-    }
+
+		public async Task<int> CountTotalUserAsync(CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<User>().CountAsync(cancellationToken);
+		}
+	}
 }

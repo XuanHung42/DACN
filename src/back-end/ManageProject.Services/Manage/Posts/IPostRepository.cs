@@ -31,5 +31,6 @@ namespace ManageProject.Services.Manage.Posts
 		Task<IList<T>> GetNLimitByNewId<T>(int n, Func<IQueryable<Post>,
 			IQueryable<T>> mapper, CancellationToken cancellationToken = default);
 
+		Task<int> CountTotalPostAsync(CancellationToken cancellationToken = default);
     }
 }

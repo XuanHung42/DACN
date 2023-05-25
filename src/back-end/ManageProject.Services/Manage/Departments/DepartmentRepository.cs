@@ -182,5 +182,10 @@ namespace ManageProject.Services.Manage.Departments
 				UrlSlug = d.UrlSlug,
 			}).ToListAsync(cancellationToken);
 		}
+
+		public async Task<int> CountTotalDepartmentAsync(CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Department>().CountAsync(cancellationToken);
+		}
 	}
 }
