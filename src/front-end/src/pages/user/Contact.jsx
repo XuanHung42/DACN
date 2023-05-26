@@ -8,21 +8,29 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "react-bootstrap";
 import emailjs from '@emailjs/browser';
+import { useSnackbar } from "notistack";
 
 const Contact = () => {
 
   const form = useRef();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const sendEmail = (e) => {
     e.preventDefault();
 
     emailjs.sendForm('service_zzmtzvh', 'template_qeerh7w', form.current, 'XsTZC2H1dQ4aImZ2-')
       .then((result) => {
-          console.log(result.text);
-          alert("Cảm ơn bạn đã gửi phản hồi cho chúng tôi")
+          // console.log(result.text);
+          enqueueSnackbar("Cảm ơn bạn vì đã phản hồi ", {
+            variant: "success",
+            closeSnackbar
+          }); // show snackbark
       }, (error) => {
-          console.log(error.text);
-          alert("Đã xảy ra lỗi khi gửi phản hồi tới chúng tôi")
+          // console.log(error.text);
+          enqueueSnackbar("Xảy ra lỗi khi phản hồi", {
+            variant: "error",
+            closeSnackbar
+          }); // show snackbark
       });
   };
 

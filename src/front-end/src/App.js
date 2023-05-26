@@ -1,11 +1,14 @@
 import { Provider } from "react-redux";
 import Routers from "./routers/Routers";
 import store from "./redux/Store"
+import { SnackbarProvider } from "notistack";
 
 function App() {
   return (
     <Provider store={store}>
-      <Routers/>
+      <SnackbarProvider>
+        <Routers/>
+      </SnackbarProvider>
     </Provider>
   );
 }
