@@ -5,14 +5,19 @@ import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { deleteDepartment, getFilterDepartment } from "../../../api/DepartmentApi";
 import Loading from "../../../components/user/Loading";
-import { Button, Table } from "react-bootstrap";
+import {Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import DepartmentFilter from "../../../components/user/filter/DepartmentFilterModel";
+import { useSnackbar } from "notistack";
+
+
+
 
 const DepartmentAdmin = () => {
   const [getDepartment, setGetDepartment] = useState([]);
   const [reRender, setRender] = useState(false);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
 
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
@@ -40,10 +45,15 @@ const DepartmentAdmin = () => {
       if (window.confirm("Bạn có muốn xoá phòng khoa này")) {
         const response = await deleteDepartment(id);
         if (response) {
-          alert("Đã xoá phòng khoa này");
-          
+          enqueueSnackbar("Đã xoá thành công", {
+            variant: "success",
+          }); 
           setRender(true);
-        } else alert("Đã xảy ra lỗi xoá");
+        } else{
+          enqueueSnackbar("Đã xoá thành công", {
+            variant: "error",
+          }); 
+        } 
       }
     }
   };

@@ -23,14 +23,12 @@ const Contact = () => {
           // console.log(result.text);
           enqueueSnackbar("Cảm ơn bạn vì đã phản hồi ", {
             variant: "success",
-            closeSnackbar
-          }); // show snackbark
+          }); 
       }, (error) => {
           // console.log(error.text);
           enqueueSnackbar("Xảy ra lỗi khi phản hồi", {
             variant: "error",
-            closeSnackbar
-          }); // show snackbark
+          }); 
       });
   };
 

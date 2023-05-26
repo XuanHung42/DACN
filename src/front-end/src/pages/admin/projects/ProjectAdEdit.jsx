@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getProjectById, updateAndAddProject } from "../../../api/ProjectApi";
 import { Button, Form } from "react-bootstrap";
-import { decode, isInteger } from "../../../utils/Utils";
+import { decode } from "../../../utils/Utils";
+import { useSnackbar } from "notistack";
 
 const ProjectAdminEdit = () => {
-const initialState={
+  const initialState = {
     id: 0,
     name: "",
     description: "",
@@ -17,48 +18,53 @@ const initialState={
     userNumber: 0,
     register: false,
     processId: 0,
-};
-const [project, setProject]= useState(initialState);
-let {id} = useParams();
-id = id ?? 0;
-useEffect(()=> {
-  document.title= "Thêm/ cập nhập dự án";
-  getProjectById(id).then((data)=> {
-    if(data){
-      setProject({
-        ...data,
-      })
-    }
-    else{
-      setProject(initialState);
-    }
-    
-  })
-},[]);
+  };
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
-const [validated, setValidated]= useState(false);
-const handleSubmit = (e)=>{
-   e.preventDefault();
-   if(e.currentTarget.checkValidity()===false){
-    e.StopPropagation();
-    setValidated(true);
-   }
-   else{
-    let formData = new FormData(e.target);
-    console.log(formData)
-    updateAndAddProject(formData).then((data)=> {
-      console.log("Project",project);
-      console.log("data",data);
-      if(data)
-        alert('Lưu thành công');
-      else
-        alert('Đã có lỗi xảy ra');
-
+  const [project, setProject] = useState(initialState);
+  let { id } = useParams();
+  id = id ?? 0;
+  useEffect(() => {
+    document.title = "Thêm/ cập nhập dự án";
+    getProjectById(id).then((data) => {
+      if (data) {
+        setProject({
+          ...data,
+        });
+      } else {
+        setProject(initialState);
+      }
     });
+  }, []);
 
-   }
- 
-}
+  const [validated, setValidated] = useState(false);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (e.currentTarget.checkValidity() === false) {
+      e.StopPropagation();
+      setValidated(true);
+    } else {
+      let formData = new FormData(e.target);
+      console.log(formData);
+      updateAndAddProject(formData).then((data) => {
+        console.log("Project", project);
+        console.log("data", data);
+        if (data)
+        {
+          enqueueSnackbar("Đã lưu thành công", {
+            variant: "success",
+          });
+          navigate(`/admin/project`)
+        }
+        else
+          enqueueSnackbar("Đã xảy ra lỗi", {
+            variant: "error",
+            closeSnackbar,
+          });
+      });
+    }
+  };
 
   return (
     <>
@@ -71,13 +77,12 @@ const handleSubmit = (e)=>{
           <h3 className="text-success py-3">Thêm/cập nhật dự án</h3>
           <Form
             method="post"
-                        
             encType="multipart/form-data"
             onSubmit={handleSubmit}
             noValidate
             validated={validated}
           >
-            <Form.Control type="hidden" name="id" value={project.id}  />
+            <Form.Control type="hidden" name="id" value={project.id} />
             <div className="row mb-3">
               <Form.Label className="col-sm-2 col-form-label">
                 Tên đề tài
@@ -90,8 +95,7 @@ const handleSubmit = (e)=>{
                   required
                   value={project.name || ""}
                   onChange={(e) =>
-                    setProject({ ...project, 
-                      name: e.target.value })
+                    setProject({ ...project, name: e.target.value })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -110,7 +114,7 @@ const handleSubmit = (e)=>{
                   title="UrlSlug"
                   required
                   value={project.urlSlug || ""}
-                  onChange={e =>
+                  onChange={(e) =>
                     setProject({ ...project, urlSlug: e.target.value })
                   }
                 />
@@ -234,7 +238,7 @@ const handleSubmit = (e)=>{
                     name="register"
                     checked={project.register}
                     title="register"
-                    onChange={e =>
+                    onChange={(e) =>
                       setProject({ ...project, register: e.target.checked })
                     }
                   />

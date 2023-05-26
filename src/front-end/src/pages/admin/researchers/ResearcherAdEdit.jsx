@@ -9,10 +9,14 @@ import {
   updateUserResearcher,
 } from "../../../api/UserApi";
 import { Button, Form } from "react-bootstrap";
-import { isEmptyOrSpaces } from "../../../utils/Utils";
+// import { isEmptyOrSpaces } from "../../../utils/Utils";
+import { useSnackbar } from "notistack";
+
 
 const ResearchEditAdmin = () => {
   const [validated, setValidated] = useState(false);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const initialState = {
       id: 0,
       name: "",
@@ -75,10 +79,15 @@ const ResearchEditAdmin = () => {
 
       updateUserResearcher(data).then((data) => {
         if (data) {
-          alert("Đã lưu thành công");
-          navigate(`/admin/department`);
+          enqueueSnackbar("Đã xoá thành công", {
+            variant: "success",
+          }); 
+          closeSnackbar()
+          navigate(`/admin/researcher`);
         } else {
-          alert("Xảy ra lỗi khi lưu");
+          enqueueSnackbar("Đã xảy ra lỗi", {
+            variant: "error",
+          }); 
         }
       });
     }

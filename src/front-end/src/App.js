@@ -1,13 +1,19 @@
 import { Provider } from "react-redux";
 import Routers from "./routers/Routers";
-import store from "./redux/Store"
+import store from "./redux/Store";
 import { SnackbarProvider } from "notistack";
 
 function App() {
   return (
     <Provider store={store}>
-      <SnackbarProvider>
-        <Routers/>
+      <SnackbarProvider
+        sx={{ height: "100%" }}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <Routers />
       </SnackbarProvider>
     </Provider>
   );
@@ -15,4 +21,4 @@ function App() {
 
 export default App;
 
-// test push code 
+// test push code

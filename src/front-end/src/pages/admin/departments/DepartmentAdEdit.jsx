@@ -7,9 +7,16 @@ import {
 import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import { Button, Form } from "react-bootstrap";
+import { useSnackbar } from "notistack";
+
+
+
 
 const DepartmentEditAdmin = () => {
   const [validated, setValidated] = useState(false);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+
   const initialState = {
       id: 0,
       name: "",
@@ -42,10 +49,14 @@ const DepartmentEditAdmin = () => {
 
       updateDepartment(id, data).then((data) => {
         if (data) {
-          alert("Đã lưu thành công");
+          enqueueSnackbar("Đã lưu thành công", {
+            variant: "success",
+          }); 
           navigate(`/admin/department`);
         } else {
-          alert("Xảy ra lỗi khi lưu");
+          enqueueSnackbar("Đã xảy ra lỗi khi lưu", {
+            variant: "error",
+          }); 
         }
       });
     }

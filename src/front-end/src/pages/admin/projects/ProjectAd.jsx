@@ -9,14 +9,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../../../components/user/Loading";
 import { Table } from "react-bootstrap";
+import { useSnackbar } from "notistack";
+
 
 const ProjectAdmin = () => {
   const [getProject, setGetProject] = useState([]);
   const [reRender, setRender] = useState(false);
 
-
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     projectFilter = useSelector((state) => state.projectFilter);
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   let { id } = useParams,
     p = 1,
@@ -41,10 +44,15 @@ const ProjectAdmin = () => {
       if (window.confirm("Bạn có muốn xoá dự án này")) {
         const response = await deleteProject(id);
         if (response) {
-          alert("Đã xoá dự án");
-          
           setRender(true);
-        } else alert("Đã xảy ra lỗi xoá");
+          enqueueSnackbar("Xoá dự án thành công", {
+            variant: "success",
+          }); 
+        } else {
+          enqueueSnackbar("Đã xảy ra lỗi dự án", {
+            variant: "success",
+          }); 
+        }
       }
     }
   };
@@ -90,7 +98,7 @@ const ProjectAdmin = () => {
                       <tr key={index}>
                         <td>{item.name}</td>
                         <td>{item.shortDescription}</td>
-                        <td>{item.costProject}</td>
+                        <td>{item.costProject} VNĐ</td>
                         <td>{item.userNumber}</td>
                         {/* <td>{item.register}</td> */}
                         <td className="text-center">

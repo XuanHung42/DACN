@@ -10,6 +10,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
 import ResearchFilter from "../../../components/user/filter/ResearcherFilterModel";
+import { useSnackbar } from "notistack";
+
+
+
 
 const ResearchAdmin = () => {
   const [getResearcher, setGetResearcher] = useState([]);
@@ -17,6 +21,8 @@ const ResearchAdmin = () => {
 
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     researcherFilter = useSelector((state) => state.researcherFilter);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  
 
   let { id } = useParams,
     p = 1,
@@ -43,10 +49,16 @@ const ResearchAdmin = () => {
       if (window.confirm("Bạn có muốn xoá nhà khoa học này")) {
         const response = await deleteUserResearcher(id);
         if (response) {
-          alert("Đã xoá nhà khoa học");
+          enqueueSnackbar("Đã xoá thành công", {
+            variant: "success",
+          }); 
           
           setRender(true);
-        } else alert("Đã xảy ra lỗi xoá");
+        } else{
+          enqueueSnackbar("Đã xảy ra lỗi", {
+            variant: "error",
+          }); 
+        } 
       }
     }
   };
