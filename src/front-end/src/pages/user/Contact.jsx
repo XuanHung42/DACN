@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Header from "../../components/user/common/Header";
 import Footer from "../../components/user/common/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,8 +7,25 @@ import {
   faQuestionCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "react-bootstrap";
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
+
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs.sendForm('service_zzmtzvh', 'template_qeerh7w', form.current, 'XsTZC2H1dQ4aImZ2-')
+      .then((result) => {
+          console.log(result.text);
+          alert("Cảm ơn bạn đã gửi phản hồi cho chúng tôi")
+      }, (error) => {
+          console.log(error.text);
+          alert("Đã xảy ra lỗi khi gửi phản hồi tới chúng tôi")
+      });
+  };
+
   return (
     <>
       <Header />
@@ -23,10 +40,12 @@ const Contact = () => {
                 </span>
               </div>
               <div className="card-body">
-                <form action="" method="post">
+                <form ref={form} onSubmit={sendEmail}>
                   <div className="form-group">
                     <input
+                      id="name"
                       type="text"
+                      name="user_name"
                       className="form-control"
                       placeholder="Nhập tên của bạn"
                       required
@@ -34,30 +53,45 @@ const Contact = () => {
                   </div>
                   <div className="form-group py-3">
                     <input
+                      id="email"
                       type="email"
                       className="form-control"
+                      name="user_email"
                       placeholder="Nhập Email của bạn"
                       required
                     ></input>
                   </div>
                   <div className="form-group">
                     <textarea
+                      id="content"
                       type="text"
                       rows={6}
                       className="form-control"
+                      name="text_message"
                       placeholder="Nhập nội dung"
                       required
                     ></textarea>
                   </div>
                   <br />
                   <div className="justify-content-center d-flex">
-                    <Button type="submit" className="btn btn-primary">
+                    <Button type="submit" value="Send" className="btn btn-primary">
                       Gửi phản hồi
                     </Button>
                   </div>
                 </form>
               </div>
             </div>
+
+
+            {/* <script>
+              const name = document.getElementById('name')
+              const email = document.getElementById('email')
+              const content = document.getElementById('content')
+              submit.addEvenetListener
+
+            </script> */}
+
+
 
             <div class="col-6">
               <div class="card-header">
