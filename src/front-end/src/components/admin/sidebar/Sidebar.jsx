@@ -65,7 +65,7 @@ const Sidebar = () => {
                 </li>
               </Link>
             </div>
-            <div className="sidebar-wrapper">
+            {/* <div className="sidebar-wrapper">
               <Link className="sidebar-link">
                 <li>
                   <FontAwesomeIcon icon={faArrowCircleUp} />
@@ -80,19 +80,11 @@ const Sidebar = () => {
                   <span className="px-3">Liên hệ</span>
                 </li>
               </Link>
-            </div>
+            </div> */}
           </div>
 
           <div className="sidebar-main">
             <span className="sidebar-tile">Service</span>
-            <div className="sidebar-wrapper">
-              <Link className="sidebar-link">
-                <li>
-                  <FontAwesomeIcon icon={faCircleCheck} />
-                  <span className="px-3">Cài đặt</span>
-                </li>
-              </Link>
-            </div>
             <div className="sidebar-wrapper">
               <Link className="sidebar-link" to={`/`}>
                 <li>

@@ -9,9 +9,8 @@ import {
   updateUserResearcher,
 } from "../../../api/UserApi";
 import { Button, Form } from "react-bootstrap";
-// import { isEmptyOrSpaces } from "../../../utils/Utils";
 import { useSnackbar } from "notistack";
-
+import { isEmptyOrSpaces } from "../../../utils/Utils";
 
 const ResearchEditAdmin = () => {
   const [validated, setValidated] = useState(false);
@@ -20,7 +19,6 @@ const ResearchEditAdmin = () => {
   const initialState = {
       id: 0,
       name: "",
-      // urlSlug: "",
       email: "",
       password: "",
       // imageUrl: "",
@@ -72,14 +70,14 @@ const ResearchEditAdmin = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (e.currentTarget.checkValidity() === false) {
-      e.stopPropagation();
+      // e.stopPropagation();
       setValidated(true);
     } else {
-      let data = new FormData(e.target);
+      let formData = new FormData(e.target);
 
-      updateUserResearcher(data).then((data) => {
+      updateUserResearcher(formData).then((data) => {
         if (data) {
-          enqueueSnackbar("Đã xoá thành công", {
+          enqueueSnackbar("Đã thêm thành công", {
             variant: "success",
           }); 
           closeSnackbar()
@@ -105,7 +103,7 @@ const ResearchEditAdmin = () => {
             <h3 className="text-success py-3">Thêm/cập nhật nhà khoa học</h3>
             <Form
               method="post"
-              encType=""
+              encType="multipart/form-data"
               onSubmit={handleSubmit}
               noValidate
               validated={validated}
@@ -131,27 +129,6 @@ const ResearchEditAdmin = () => {
                   </Form.Control.Feedback>
                 </div>
               </div>
-
-              {/* <div className="row mb-3">
-                <Form.Label className="col-sm-2 col-form-label">
-                  UrlSlug
-                </Form.Label>
-                <div className="col-sm-10">
-                  <Form.Control
-                    type="text"
-                    name="urlSlug"
-                    title="Url Slug"
-                    required
-                    value={researcher.urlSlug || ""}
-                    onChange={(e) =>
-                      setResearcher({ ...researcher, urlSlug: e.target.value })
-                    }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Không được bỏ trống
-                  </Form.Control.Feedback>
-                </div>
-              </div> */}
 
               <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">
@@ -279,13 +256,13 @@ const ResearchEditAdmin = () => {
                 </div>
               </div>
 
-              {/* {!isEmptyOrSpaces(researcher.imageUrl) && (
+              {!isEmptyOrSpaces(researcher.imageUrl) && (
                 <div className="row mb-3">
                   <Form.Label className="col-sm-2 col-form-label">
                     Hình hiện tại
                   </Form.Label>
                   <div className="col-sm-10">
-                    <img src={researcher.imageUrl} alt={researcher.name} />
+                    <img src={`https://localhost:7284/${researcher.imageUrl}`} alt={researcher.name} />
                   </div>
                 </div>
               )}
@@ -310,7 +287,7 @@ const ResearchEditAdmin = () => {
                     Không được bỏ trống.
                   </Form.Control.Feedback>
                 </div>
-              </div> */}
+              </div>
 
               <div className="text-center">
                 <Button variant="success" type="submit">

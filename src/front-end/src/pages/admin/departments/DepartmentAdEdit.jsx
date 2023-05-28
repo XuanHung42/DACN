@@ -16,7 +16,6 @@ const DepartmentEditAdmin = () => {
   const [validated, setValidated] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-
   const initialState = {
       id: 0,
       name: "",

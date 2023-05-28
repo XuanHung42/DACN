@@ -42,7 +42,7 @@ const ProjectAdminEdit = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (e.currentTarget.checkValidity() === false) {
-      e.StopPropagation();
+      // e.StopPropagation();
       setValidated(true);
     } else {
       let formData = new FormData(e.target);
