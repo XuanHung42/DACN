@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useRef } from "react";
 import Header from "../../components/user/common/Header";
 import Footer from "../../components/user/common/Footer";
