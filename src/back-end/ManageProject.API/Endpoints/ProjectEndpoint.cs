@@ -48,16 +48,21 @@ public static class ProjectEndpoint
 			.Accepts<ProjectEditModel>("multipart/form-data")
 			.Produces(401)
 			.Produces<ApiResponse<ProjectDetail>>();
+        routeGroupBuilder.MapPut("/addUser", AddUserToProject)
+            .WithName("AddUserToProject")
+            //.Accepts<AddUserModel>("multipart/form-data")
+            .Produces(401)
+            .Produces<ApiResponse<Project>>();
 
-		//routeGroupBuilder.MapPost("/", CreateNewProject)
-		//    .WithName("CreateNewProject")
-		//    .AddEndpointFilter<ValidatorFilter<ProjectEditModel>>()
-		//    .Produces(401)
-		//    .Produces<ApiResponse<ProjectDto>>();
+        //routeGroupBuilder.MapPost("/", CreateNewProject)
+        //    .WithName("CreateNewProject")
+        //    .AddEndpointFilter<ValidatorFilter<ProjectEditModel>>()
+        //    .Produces(401)
+        //    .Produces<ApiResponse<ProjectDto>>();
 
 
-		// delete project
-		routeGroupBuilder.MapDelete("/{id:int}", DeleteProject)
+        // delete project
+        routeGroupBuilder.MapDelete("/{id:int}", DeleteProject)
 			.WithName("DeleteProject")
 			.Produces(401)
 			.Produces<ApiResponse<string>>();
@@ -186,5 +191,12 @@ public static class ProjectEndpoint
 			? Results.Ok(ApiResponse.Success("Project đã được xoá ", HttpStatusCode.NoContent))
 			: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Khong tim thay project"));
 	}
+	private static async Task<IResult> AddUserToProject(int projectId, List<int> userId, IProjectRepository projectRepository)
+	{
+		return await projectRepository.AddUserToProjectAsync(userId, projectId)
+            ? Results.Ok(ApiResponse.Success("User đã được thêm vào Project ", HttpStatusCode.Created))
+            : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Đã xảy ra lỗi" +
+			""));
+    }
 
 }

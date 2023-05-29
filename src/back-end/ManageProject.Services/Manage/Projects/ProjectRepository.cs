@@ -3,6 +3,7 @@ using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
 using ManageProject.Data.Contexts;
 using ManageProject.Services.Extensions;
+using ManageProject.Services.Manage.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.Extensions.Caching.Memory;
@@ -20,12 +21,16 @@ namespace ManageProject.Services.Manage.Projects
     {
         private readonly ManageDbContext _context;
         private readonly IMemoryCache _memoryCache;
+        private IUserRepository userRepository;
 
-        public ProjectRepository(ManageDbContext context, IMemoryCache memoryCache)
+        public ProjectRepository(ManageDbContext context, IMemoryCache memoryCache, IUserRepository userRepository)
         {
             _context = context;
             _memoryCache = memoryCache;
+            this.userRepository = userRepository;
         }
+
+
         //// cach lay ra het thuoc tinh cua user
         //public async Task<IList<ProjectItem>> GetProjectAsync(CancellationToken cancellationToken = default)
         //{
@@ -193,5 +198,33 @@ namespace ManageProject.Services.Manage.Projects
             return await _context.Set<Project>().CountAsync(cancellationToken);
 
 		}
+        public async Task<bool> AddUserToProjectAsync(List<int> userId, int projectId, CancellationToken cancellationToken= default)
+        {
+            var project = await GetProjectByIdAsync(projectId);
+            if (project == null)
+            {
+                return false;
+            }
+
+            
+            foreach( int userKey in userId)
+            {
+                var users = await userRepository.GetUserByIdAsync(userKey);  
+                if(users == null)
+                {
+                    return false;
+                }
+                project.Users.Add(users);
+            }
+            
+           // var users = await _context.Users.Where(u => userId.Contains(u.Id)).ToListAsync();
+          
+           //if(users.Count != userId.Count)
+           // {
+           //     return false;
+           // }
+            await _context.SaveChangesAsync();
+           return true;
+        }
 	}
 }

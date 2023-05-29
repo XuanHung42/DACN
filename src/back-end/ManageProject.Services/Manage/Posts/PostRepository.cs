@@ -8,6 +8,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -113,5 +114,24 @@ namespace ManageProject.Services.Manage.Posts
 		{
 			return await _context.Set<Post>().CountAsync(cancellationToken);
 		}
+		public async Task<bool> DeletePostAsync(int id, CancellationToken cancellationToken = default)
+		{
+			return await _context.Posts.Where(p => p.Id == id).ExecuteDeleteAsync(cancellationToken) > 0;
+		}
+
+		public async Task<bool> CreateOrUpdatePostAsync(Post post, CancellationToken cancellationToken = default)
+		{
+			if(post != null)
+			{
+				_context.Update(post);
+			}
+			else
+			{
+				_context.Add(post);
+			}
+			return await _context.SaveChangesAsync(cancellationToken) >0;
+		}
+
+
 	}
 }
