@@ -54,7 +54,8 @@ namespace ManageProject.Services.Manage.Projects
 		Task<bool> DeleteProjectByIdAsync(int projectId, CancellationToken cancellationToken = default);
 
         Task<int> CountTotalProjectAsync(CancellationToken cancellationToken = default);
-        Task<bool> AddUserToProjectAsync(List<int> userId, int projectId, CancellationToken cancellationToken = default);
+        Task<bool> AddUsersToProjectAsync(List<int> userIds, int projectId, CancellationToken cancellationToken = default);
+
 
 
 

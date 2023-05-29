@@ -11,6 +11,9 @@ namespace ManageProject.Core.Entities
 {
     public class Project: IEntity
     {
+        public Project() { 
+        Users= new List<User>();
+        }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

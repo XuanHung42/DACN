@@ -198,33 +198,28 @@ namespace ManageProject.Services.Manage.Projects
             return await _context.Set<Project>().CountAsync(cancellationToken);
 
 		}
-        public async Task<bool> AddUserToProjectAsync(List<int> userId, int projectId, CancellationToken cancellationToken= default)
+        public async Task<bool> AddUsersToProjectAsync(List<int> userIds, int projectId, CancellationToken cancellationToken = default)
         {
-            var project = await GetProjectByIdAsync(projectId);
+            var project = await _context.Projects.FindAsync(projectId);
             if (project == null)
             {
-                return false;
+                throw new ArgumentException($"Project with id {projectId} not found");
             }
 
-            
-            foreach( int userKey in userId)
+            var users = await _context.Users.Where(u => userIds.Contains(u.Id)).ToListAsync(cancellationToken);
+            if (users.Count != userIds.Count)
             {
-                var users = await userRepository.GetUserByIdAsync(userKey);  
-                if(users == null)
-                {
-                    return false;
-                }
-                project.Users.Add(users);
+                throw new ArgumentException("One or more users not found");
             }
-            
-           // var users = await _context.Users.Where(u => userId.Contains(u.Id)).ToListAsync();
-          
-           //if(users.Count != userId.Count)
-           // {
-           //     return false;
-           // }
-            await _context.SaveChangesAsync();
-           return true;
+
+            foreach (var user in users)
+            {
+                project.Users.Add(user);
+
+            }
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return true;
         }
-	}
+    }
 }

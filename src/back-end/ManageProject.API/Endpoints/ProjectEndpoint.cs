@@ -48,7 +48,7 @@ public static class ProjectEndpoint
 			.Accepts<ProjectEditModel>("multipart/form-data")
 			.Produces(401)
 			.Produces<ApiResponse<ProjectDetail>>();
-        routeGroupBuilder.MapPut("/addUser", AddUserToProject)
+        routeGroupBuilder.MapPost("/addUser", AddUserToProject)
             .WithName("AddUserToProject")
             //.Accepts<AddUserModel>("multipart/form-data")
             .Produces(401)
@@ -193,7 +193,7 @@ public static class ProjectEndpoint
 	}
 	private static async Task<IResult> AddUserToProject(int projectId, List<int> userId, IProjectRepository projectRepository)
 	{
-		return await projectRepository.AddUserToProjectAsync(userId, projectId)
+		return await projectRepository.AddUsersToProjectAsync(userId, projectId)
             ? Results.Ok(ApiResponse.Success("User đã được thêm vào Project ", HttpStatusCode.Created))
             : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Đã xảy ra lỗi" +
 			""));
