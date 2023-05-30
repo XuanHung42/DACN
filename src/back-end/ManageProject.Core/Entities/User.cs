@@ -14,7 +14,7 @@ namespace ManageProject.Core.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public string ImageUrl { get; set; }
-        public DateTime BirthDate { get; set; }
+        public DateTime BirthDate { get; set; } = DateTime.Now;
         public string UrlSlug { get; set; }
         public int DepartmentId { get; set; }
         public int RoleId { get; set; }
@@ -24,6 +24,8 @@ namespace ManageProject.Core.Entities
         public Role Role { get; set; }
         public IList<Post> Posts { get; set; }
 
-        // checkout test branch new
-    }
+		// checkout test branch new
+		public string RoleString { get; set; }
+		public UserToken UserToken { get; set; }
+	}
 }

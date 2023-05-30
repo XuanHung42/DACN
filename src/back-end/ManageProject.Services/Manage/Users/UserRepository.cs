@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Cryptography.X509Certificates;
 using SlugGenerator;
+using ManageProject.Data.Extensions;
 
 namespace ManageProject.Services.Manage.Users
 {
@@ -244,6 +245,47 @@ namespace ManageProject.Services.Manage.Users
 		public async Task<int> CountTotalUserAsync(CancellationToken cancellationToken = default)
 		{
 			return await _context.Set<User>().CountAsync(cancellationToken);
+		}
+
+		public async Task<bool> Register(string username, string password, string comfirmPassword, CancellationToken cancellationToken = default)
+		{
+			var user = _context.Set<User>().FirstOrDefault(x => x.Name == username);
+			if (user != null)
+			{
+				return false;
+			}
+			if (password != comfirmPassword)
+			{
+				return false;
+			}
+			_context.Add(new User()
+			{
+				Name = username,
+				UrlSlug = username.GenerateSlug(),
+				Password = password.EncodePasswordToBase64(),
+				RoleString = "user",
+				RoleId = 1,
+				DepartmentId = 1,
+
+
+			});
+			return await _context.SaveChangesAsync() > 0;
+		}
+
+		public async Task<User> Login(string username, string password, CancellationToken cancellationToken = default)
+		{
+			var user = _context.Set<User>().FirstOrDefault(x => x.Name == username);
+			if (user == null)
+			{
+				return null;
+
+			}
+			var decodePassword = user.Password.DecodeFrom64();
+			if (password != decodePassword)
+			{
+				return null;
+			}
+			return user;
 		}
 	}
 }

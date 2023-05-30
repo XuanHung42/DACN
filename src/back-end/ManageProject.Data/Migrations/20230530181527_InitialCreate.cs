@@ -91,13 +91,14 @@ namespace ManageProject.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UrlSlug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    UrlSlug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    RoleString = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false, defaultValue: "user")
                 },
                 constraints: table =>
                 {
@@ -173,6 +174,28 @@ namespace ManageProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserToken",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Token = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Expired = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserToken", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserToken_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Directory",
                 columns: table => new
                 {
@@ -230,6 +253,12 @@ namespace ManageProject.Data.Migrations
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserToken_UserId",
+                table: "UserToken",
+                column: "UserId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -240,6 +269,9 @@ namespace ManageProject.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Selected");
+
+            migrationBuilder.DropTable(
+                name: "UserToken");
 
             migrationBuilder.DropTable(
                 name: "Posts");

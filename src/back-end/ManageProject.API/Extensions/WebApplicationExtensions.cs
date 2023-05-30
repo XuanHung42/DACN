@@ -16,6 +16,9 @@ using ManageProject.Services.Manage.Projects;
 using ManageProject.Services.Manage.Processes;
 using ManageProject.Services.Manage.Roles;
 using ManageProject.Services.Manage.Posts;
+using ManageProject.Services.Manage.Account;
+using ManageProject.API.JwtToken;
+using WebApi.JwtToken;
 
 namespace ManageProject.API.Extensions
 {
@@ -44,7 +47,12 @@ namespace ManageProject.API.Extensions
             // post
             builder.Services.AddScoped<IPostRepository, PostRepository>();
 
-            return builder;
+			// account
+			builder.Services.AddScoped<IUserTokenRepository, UserTokenRepository>();
+			builder.Services.AddScoped<IJwtTokenRepository, JwtTokenRepository>();
+
+
+			return builder;
         }
         public static WebApplicationBuilder ConfigureCors(this WebApplicationBuilder builder)
         {

@@ -29,6 +29,7 @@ var app = builder.Build();
 
     app.MapPostEndpoints();
     app.MapDashboardEndpoint();
+    app.MapAccountEndpoint();
 
 	using (var scope = app.Services.CreateScope())
     {

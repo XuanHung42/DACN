@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManageProject.Data.Migrations
 {
     [DbContext(typeof(ManageDbContext))]
-    [Migration("20230516115751_InitialCreate")]
+    [Migration("20230530181527_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -238,7 +238,6 @@ namespace ManageProject.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -259,8 +258,14 @@ namespace ManageProject.Data.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UrlSlug")
+                    b.Property<string>("RoleString")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)")
+                        .HasDefaultValue("user");
+
+                    b.Property<string>("UrlSlug")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -271,6 +276,37 @@ namespace ManageProject.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("ManageProject.Core.Entities.UserToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Expired")
+                        .HasColumnType("datetime");
+
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Token")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserToken", (string)null);
                 });
 
             modelBuilder.Entity("PostProject", b =>
@@ -355,6 +391,17 @@ namespace ManageProject.Data.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("ManageProject.Core.Entities.UserToken", b =>
+                {
+                    b.HasOne("ManageProject.Core.Entities.User", "User")
+                        .WithOne("UserToken")
+                        .HasForeignKey("ManageProject.Core.Entities.UserToken", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("PostProject", b =>
                 {
                     b.HasOne("ManageProject.Core.Entities.Post", null)
@@ -405,6 +452,8 @@ namespace ManageProject.Data.Migrations
             modelBuilder.Entity("ManageProject.Core.Entities.User", b =>
                 {
                     b.Navigation("Posts");
+
+                    b.Navigation("UserToken");
                 });
 #pragma warning restore 612, 618
         }

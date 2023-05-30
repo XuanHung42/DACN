@@ -22,8 +22,7 @@ namespace ManageProject.Data.Mappings
                 .IsRequired();
 
             builder.Property(u => u.Email)
-                .HasMaxLength(100)
-                .IsRequired();
+                .HasMaxLength(100);
 
             builder.Property(u => u.Password)
                 .HasMaxLength(100)
@@ -33,8 +32,7 @@ namespace ManageProject.Data.Mappings
                 .HasMaxLength(200);
 
             builder.Property(u => u.UrlSlug)
-                .HasMaxLength(100)
-                .IsRequired();
+                .HasMaxLength(100);
 
             builder.Property(u => u.BirthDate)
                 .HasColumnType("datetime");
@@ -53,10 +51,18 @@ namespace ManageProject.Data.Mappings
             builder.HasMany(u => u.Projects)
                   .WithMany(pr => pr.Users)
                   .UsingEntity(s => s.ToTable("Selected"));
-                
 
 
-            // test code
-        }
+
+			// test code
+			builder.Property(x => x.RoleString)
+				.IsRequired()
+				.HasMaxLength(60)
+				.HasDefaultValue("user");
+
+			builder.HasOne<UserToken>(x => x.UserToken)
+			  .WithOne(s => s.User)
+			  .HasForeignKey<UserToken>(x => x.UserId);
+		}
     }
 }
