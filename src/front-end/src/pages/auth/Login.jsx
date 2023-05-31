@@ -38,7 +38,7 @@ const Login = () => {
               onClick={() => handleJustifyClick("tab1")}
               active={justifyActive === "tab1"}
             >
-              Login
+              Đăng nhập
             </MDBTabsLink>
           </MDBTabsItem>
           <MDBTabsItem>
@@ -46,7 +46,7 @@ const Login = () => {
               onClick={() => handleJustifyClick("tab2")}
               active={justifyActive === "tab2"}
             >
-              Register
+              Đăng ký
             </MDBTabsLink>
           </MDBTabsItem>
         </MDBTabs>
@@ -57,43 +57,49 @@ const Login = () => {
 
             <MDBInput
               wrapperClass="mb-4"
-              label="Email address"
+              label="Tên đăng nhập"
               id="form1"
-              type="email"
+              type="text"
             />
             <MDBInput
               wrapperClass="mb-4"
-              label="Password"
+              label="Mật khẩu"
               id="form2"
               type="password"
             />
 
         
-            <Button className="mb-4 w-100">Sign in</Button>
+            <Button className="mb-4 w-100">Đăng nhập</Button>
             <p className="text-center">
-              Not a member? Register
+              Bạn chưa có tài khoản? Bấm đăng ký ngay
             </p>
           </MDBTabsPane>
 
           <MDBTabsPane show={justifyActive === "tab2"}>
             <div className="text-center mb-5"></div>
 
-            <MDBInput wrapperClass="mb-4" label="Name" id="form1" type="text" />
+            {/* <MDBInput wrapperClass="mb-4" label="Name" id="form1" type="text" /> */}
             <MDBInput
               wrapperClass="mb-4"
-              label="Username"
+              label="Tên đăng nhập"
               id="form1"
               type="text"
             />
-            <MDBInput
+            {/* <MDBInput
               wrapperClass="mb-4"
               label="Email"
               id="form1"
               type="email"
+            /> */}
+            <MDBInput
+              wrapperClass="mb-4"
+              label="Mật khẩu"
+              id="form1"
+              type="password"
             />
             <MDBInput
               wrapperClass="mb-4"
-              label="Password"
+              label="Nhập lại mật khẩu"
               id="form1"
               type="password"
             />
