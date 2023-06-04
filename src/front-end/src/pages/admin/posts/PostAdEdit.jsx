@@ -1,10 +1,28 @@
 import React from "react";
 import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
+import { useNavigate } from "react-router-dom";
 
 
 
 const PostAdminEdit = () => {
+  const initialState = {
+    id: 0,
+    title: "",
+    shortDescription: "",
+    urlSlug: "",
+    status: false,
+    created: "",
+    file: "",
+    userId: 0,
+    departmentId: 0
+  };
+  const navigate = useNavigate();
+
+
+
+
+
   return (
     <>
       <div className="row">

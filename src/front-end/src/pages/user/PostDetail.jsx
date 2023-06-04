@@ -4,11 +4,10 @@ import Footer from "../../components/user/common/Footer";
 import { Link, useParams } from "react-router-dom";
 import { getPostDetailBySlug } from "../../api/PostApi";
 import { Table } from "react-bootstrap";
-import "./styles/style.scss"
-import { format } from 'date-fns'
+import "./styles/style.scss";
+import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-
+import { faEye, faFileDownload } from "@fortawesome/free-solid-svg-icons";
 
 const PostDetail = () => {
   const params = useParams();
@@ -49,24 +48,45 @@ const PostDetail = () => {
                 <tr>
                   <td className="post-lable w-25">Số lượt xem</td>
                   <td className="post-value">
-                    <FontAwesomeIcon icon={faEye} className="text-danger px-1"/>
+                    <FontAwesomeIcon
+                      icon={faEye}
+                      className="text-danger px-1"
+                    />
                     {postDetail.viewCount}
                   </td>
                 </tr>
                 <tr>
                   <td className="post-lable w-25">File dự án</td>
-                  <td className="post-value">{postDetail.file}</td>
+                  <td className="post-value">
+                    {postDetail.file === null ? (
+                      <div>Chưa có file đính kèm</div>
+                    ) : (
+                      <Link
+                        to={`https://localhost:7284/${postDetail.file}`}
+                        className="text-decoration-none text-danger"
+                      >
+                        Tải file xuống
+                        <FontAwesomeIcon
+                          icon={faFileDownload}
+                          fontSize={50}
+                          className="text-danger px-2"
+                        />
+                      </Link>
+                    )}
+                  </td>
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Đăng ngày</td>
-                  <td className="post-value">{format(new Date(postDetail.created), 'dd/MM/yyyy')}</td>
+                  <td className="post-value">
+                    {format(new Date(postDetail.created), "dd/MM/yyyy")}
+                  </td>
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Đăng bởi tác giả: </td>
                   <td className="post-value">
                     <p>{postDetail.user.name}</p>
                     <p className="post-link">
-                      <Link to={`mailto:${postDetail.user.email}`} >
+                      <Link to={`mailto:${postDetail.user.email}`}>
                         <div>{postDetail.user.email}</div>
                       </Link>
                     </p>
@@ -74,7 +94,7 @@ const PostDetail = () => {
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Thuộc khoa</td>
-                  <td className="post-value">{postDetail.department.name}</td>
+                  <td className="post-value">{postDetail.department?.name}</td>
                 </tr>
               </tbody>
             </Table>

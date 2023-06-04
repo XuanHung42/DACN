@@ -8,6 +8,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -131,7 +132,14 @@ namespace ManageProject.Services.Manage.Posts
 			}
 			return await _context.SaveChangesAsync(cancellationToken) >0;
 		}
-
+		public async Task<bool> IsPostSlugIsExistedAsync(int id, string slug, CancellationToken cancellationToken= default)
+		{
+			return await _context.Posts.AnyAsync(x => x.Id != id && x.UrlSlug == slug, cancellationToken);
+		}
+		public async Task<Post> GetPostByIdAsync(int id, CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Post>().FindAsync(id);
+		}
 
 	}
 }
