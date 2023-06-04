@@ -3,8 +3,13 @@ import { Link } from "react-router-dom";
 import MainMenu from "../menu/MainMenu";
 import logo from "../image/logo_dlu.png";
 import { Image } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const user = useSelector((state) => state.auth.login.crurrentUser);
+  const token = user?.result.token;
+
+
   return (
     <header className="bg-success sticky-top">
       <nav className="container-fluid navbar navbar-expand-lg navbar-dark">
@@ -30,9 +35,15 @@ const Header = () => {
             <MainMenu />
           </div>
           <div className="button d-flex">
-            <div className="px-2">
-              <Link className="btn btn-primary"  to={`/login`}>Đăng nhập</Link>
-            </div>
+            {user != null ? (
+              <Link className="px-2 text-decoration-none" to="/">
+                Đăng xuất
+              </Link>
+            ) : (
+              <div className="px-2">
+                <Link className="btn btn-primary"  to={`/login`}>Đăng nhập</Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>

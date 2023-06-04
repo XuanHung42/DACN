@@ -13,15 +13,15 @@ export const LoginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
   try {
     const response = await axios.post("https://localhost:7284/api/account/login", user);
-
+    
     const data = response.data;
     if (data.isSuccess === false){
-      alert("xảy ra lỗi");
+      alert("Xảy ra lỗi không thể đăng nhập");
       return;
     }
     dispatch(loginSuccess(response.data));
     navigate("/");
-
+    alert("Đăng nhập thành công")
   } catch (error) {
     dispatch(loginFail());
   }
@@ -35,10 +35,12 @@ export const RegisterUser = async (user, dispatch, navigate) => {
 
     const data = response.data;
     if (data.isSuccess === false){
-      alert("đã xảy ra lỗi")
+      alert("Xảy ra lỗi không thể đăng ký")
+      return;
     }
     dispatch(registerSuccess());
-    navigate("/signin");
+    navigate("/register");
+    alert("Đăng ký tài khoản thành công")
   } catch (error) {
     dispatch(registerFail);
   }
