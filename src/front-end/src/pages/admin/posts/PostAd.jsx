@@ -6,7 +6,7 @@ import Loading from "../../../components/user/Loading";
 import { Table } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { format } from 'date-fns'
 import PostFilter from "../../../components/user/filter/PostFilterModel";
 import { useSelector } from "react-redux";
@@ -50,6 +50,12 @@ const PostAdmin = () => {
           </div>
           <div className="post-content">
             <PostFilter/>
+            <Link
+              className="btn btn-success mb-2"
+              to={`/admin/post/edit`}
+            >
+              Thêm mới <FontAwesomeIcon icon={faAdd} />
+            </Link>
             {isVisibleLoading ? (
               <Loading />
             ) : (

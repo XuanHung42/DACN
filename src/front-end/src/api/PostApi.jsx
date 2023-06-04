@@ -1,4 +1,4 @@
-import { get_api } from "./Method";
+import { get_api, post_api } from "./Method";
 
 
 
@@ -37,4 +37,17 @@ export function getFilterPost(
   url.searchParams.append('PageNumber', pageNumber);
 
   return get_api(url.href);
+}
+
+
+
+export async function getPostById(id = 0) {
+  if (id > 0) {
+    return get_api(`https://localhost:7284/api/posts/${id}`);
+  }
+}
+
+
+export async function updateAndAddPost(formData){
+  return post_api('https://localhost:7284/api/posts',formData)
 }
