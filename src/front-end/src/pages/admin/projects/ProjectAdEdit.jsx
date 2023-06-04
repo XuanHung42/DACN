@@ -46,7 +46,7 @@ const ProjectAdminEdit = () => {
       setValidated(true);
     } else {
       let formData = new FormData(e.target);
-      console.log(formData);
+      console.log("dadasdsadsadsadsa: ",formData);
       updateAndAddProject(formData).then((data) => {
         console.log("Project", project);
         console.log("data", data);

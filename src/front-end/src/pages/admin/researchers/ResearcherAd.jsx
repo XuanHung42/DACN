@@ -52,7 +52,6 @@ const ResearchAdmin = () => {
           enqueueSnackbar("Đã xoá thành công", {
             variant: "success",
           }); 
-          
           setRender(true);
         } else{
           enqueueSnackbar("Đã xảy ra lỗi", {

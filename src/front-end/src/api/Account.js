@@ -39,8 +39,8 @@ export const RegisterUser = async (user, dispatch, navigate) => {
       return;
     }
     dispatch(registerSuccess());
-    navigate("/register");
     alert("Đăng ký tài khoản thành công")
+    navigate("/login");
   } catch (error) {
     dispatch(registerFail);
   }

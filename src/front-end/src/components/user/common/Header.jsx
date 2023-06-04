@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 const Header = () => {
   const user = useSelector((state) => state.auth.login.crurrentUser);
-  const token = user?.result.token;
+  
 
 
   return (

@@ -63,7 +63,7 @@ namespace ManageProject.API.Endpoints
             routeGroupBuilder.MapGet("/slugDetail/{slug:regex(^[a-z0-9_-]+$)}", GetDetailUserBySlugAsync)
                 .WithName("GetDetailUserBySlugAsync")
                 .Produces<ApiResponse<UserDto>>();
-            routeGroupBuilder.MapDelete("/", DeleteUser)
+            routeGroupBuilder.MapDelete("/{id:int}", DeleteUser)
             .WithName("DeleteAnAuthor")
             .Produces(401)
             .Produces<ApiResponse<string>>();

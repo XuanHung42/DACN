@@ -13,36 +13,37 @@ import { useSnackbar } from "notistack";
 import { isEmptyOrSpaces } from "../../../utils/Utils";
 
 const ResearchEditAdmin = () => {
-  const [validated, setValidated] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [validated, setValidated] = useState(false);
 
   const initialState = {
       id: 0,
+      urlSlug: "",
       name: "",
       email: "",
       password: "",
-      // imageUrl: "",
+      imageUrl: "",
       birthDate: "",
-      roleId: "",
-      departmentId: "",
+      roleId: 0,
+      departmentId: 0,
     },
-    [researcher, setResearcher] = useState(initialState),
     [filterRole, setFilterRole] = useState({ roleList: [] }),
     [filterDepartment, setFilterDepartment] = useState({ departmentList: [] });
 
   const navigate = useNavigate();
 
+  const [researcher, setResearcher] = useState(initialState);
   let { id } = useParams();
   id = id ?? 0;
 
   useEffect(() => {
     document.title = "Thêm, cập nhật nhà khoa học";
     getUserResearchertById(id).then((data) => {
-      if (data) {
-        setResearcher(data);
-      } else {
-        setResearcher(initialState);
-      }
+      if (data)
+        setResearcher({
+          ...data,
+        });
+      else setResearcher(initialState);
     });
 
     getUserFilterRole().then((data) => {
@@ -64,28 +65,26 @@ const ResearchEditAdmin = () => {
         setFilterDepartment({ departmentList: [] });
       }
     });
-    
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (e.currentTarget.checkValidity() === false) {
-      // e.stopPropagation();
+      e.stopPropagation();
       setValidated(true);
     } else {
-      let formData = new FormData(e.target);
+      let form = new FormData(e.target);
 
-      updateUserResearcher(formData).then((data) => {
+      updateUserResearcher(form).then((data) => {
         if (data) {
           enqueueSnackbar("Đã thêm thành công", {
             variant: "success",
-          }); 
-          closeSnackbar()
+          });
           navigate(`/admin/researcher`);
         } else {
           enqueueSnackbar("Đã xảy ra lỗi", {
             variant: "error",
-          }); 
+          });
         }
       });
     }
@@ -132,11 +131,32 @@ const ResearchEditAdmin = () => {
 
               <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">
-                  Email
+                  UrlSlug
                 </Form.Label>
                 <div className="col-sm-10">
                   <Form.Control
                     type="text"
+                    name="urlSlug"
+                    title="Url Slug"
+                    required
+                    value={researcher.urlSlug || ""}
+                    onChange={(e) =>
+                      setResearcher({ ...researcher, urlSlug: e.target.value })
+                    }
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Không được bỏ trống.
+                  </Form.Control.Feedback>
+                </div>
+              </div>
+
+              <div className="row mb-3">
+                <Form.Label className="col-sm-2 col-form-label">
+                  Email
+                </Form.Label>
+                <div className="col-sm-10">
+                  <Form.Control
+                    type="email"
                     name="email"
                     title="Email"
                     required
@@ -146,11 +166,10 @@ const ResearchEditAdmin = () => {
                     }
                   />
                   <Form.Control.Feedback type="invalid">
-                    Không được bỏ trống
+                    Không được bỏ trống.
                   </Form.Control.Feedback>
                 </div>
               </div>
-
               <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">
                   Mật khẩu
@@ -262,7 +281,10 @@ const ResearchEditAdmin = () => {
                     Hình hiện tại
                   </Form.Label>
                   <div className="col-sm-10">
-                    <img src={`https://localhost:7284/${researcher.imageUrl}`} alt={researcher.name} />
+                    <img
+                      src={`https://localhost:7284/${researcher.imageUrl}`}
+                      alt={researcher.name}
+                    />
                   </div>
                 </div>
               )}

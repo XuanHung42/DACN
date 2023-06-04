@@ -1,20 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 
-import {
-  MDBContainer,
-  MDBTabs,
-  MDBTabsItem,
-  MDBTabsLink,
-  MDBTabsContent,
-  MDBTabsPane,
-} from "mdb-react-ui-kit";
-
 import Header from "../../components/user/common/Header";
 import Footer from "../../components/user/common/Footer";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginUser, RegisterUser } from "../../api/Account";
+import { LoginUser } from "../../api/Account";
 import "./Auth.scss"
 import { useSnackbar } from "notistack";
 
