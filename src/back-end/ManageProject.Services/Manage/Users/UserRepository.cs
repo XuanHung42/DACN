@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Cryptography.X509Certificates;
 using SlugGenerator;
+using ManageProject.Services.Manage.Processes;
+using ManageProject.Services.Manage.Projects;
 
 namespace ManageProject.Services.Manage.Users
 {
@@ -20,6 +22,7 @@ namespace ManageProject.Services.Manage.Users
     {
         private readonly ManageDbContext _context;
         private readonly IMemoryCache _memoryCache;
+        private IProjectRepository projectRepository ;
 
         public UserRepository(ManageDbContext context, IMemoryCache memoryCache)
         {
@@ -245,5 +248,29 @@ namespace ManageProject.Services.Manage.Users
 		{
 			return await _context.Set<User>().CountAsync(cancellationToken);
 		}
-	}
+
+        public async Task<bool> AddProjectsToUserAsync(List<int> projectIds, int userId, CancellationToken cancellationToken = default)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                throw new ArgumentException($"User with id {userId} not found");
+            }
+
+            var projects = await _context.Projects.Where(u => projectIds.Contains(u.Id)).ToListAsync(cancellationToken);
+            if (projects.Count != projectIds.Count)
+            {
+                throw new ArgumentException("One or more projects not found");
+            }
+
+            foreach (var project in projects)
+            {
+                user.Projects.Add(project);
+
+            }
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return true;
+        }
+    }
 }

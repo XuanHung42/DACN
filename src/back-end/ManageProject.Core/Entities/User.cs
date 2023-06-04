@@ -9,6 +9,9 @@ namespace ManageProject.Core.Entities
 {
     public class User:IEntity
     {
+        public User() { 
+            Projects = new List<Project>();
+        }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }

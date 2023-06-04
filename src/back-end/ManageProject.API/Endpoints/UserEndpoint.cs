@@ -72,6 +72,10 @@ namespace ManageProject.API.Endpoints
          .Accepts<IFormFile>("multipart/form-data")
          .Produces<string>()
          .Produces(400);
+            routeGroupBuilder.MapPost("/addProjects", AddProjectsToUser)
+                .WithName("AddProjectToUser")
+                .Produces(401)
+                .Produces<ApiResponse<User>>();
 
 
 			// get filter role 
@@ -289,6 +293,14 @@ namespace ManageProject.API.Endpoints
                 })
             };
             return Results.Ok(ApiResponse.Success(model));
+        }
+
+        private static async Task<IResult> AddProjectsToUser(int userId, List<int> projectId,IUserRepository userRepository)
+        {
+            return await userRepository.AddProjectsToUserAsync(projectId, userId)
+            ? Results.Ok(ApiResponse.Success("Projects đã được thêm vào User", HttpStatusCode.Created))
+            : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Đã xảy ra lỗi" + ""));
+
         }
     }
 }

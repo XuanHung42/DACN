@@ -42,5 +42,7 @@ namespace ManageProject.Services.Manage.Users
         Task<User> GetUserDetailBySlug(string slug, CancellationToken cancellationToken = default);
 
         Task<int> CountTotalUserAsync(CancellationToken cancellationToken = default);
+
+        Task<bool> AddProjectsToUserAsync(List<int> projectIds, int userId, CancellationToken cancellationToken = default);
     }
 }
