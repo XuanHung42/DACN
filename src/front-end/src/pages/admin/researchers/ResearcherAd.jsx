@@ -12,9 +12,6 @@ import { format } from "date-fns";
 import ResearchFilter from "../../../components/user/filter/ResearcherFilterModel";
 import { useSnackbar } from "notistack";
 
-
-
-
 const ResearchAdmin = () => {
   const [getResearcher, setGetResearcher] = useState([]);
   const [reRender, setRender] = useState(false);
@@ -22,7 +19,6 @@ const ResearchAdmin = () => {
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     researcherFilter = useSelector((state) => state.researcherFilter);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  
 
   let { id } = useParams,
     p = 1,
@@ -41,8 +37,8 @@ const ResearchAdmin = () => {
     );
   }, [researcherFilter, ps, p, reRender]);
 
-  // delete 
-  const handleDeleteUser = (e, id ) => {
+  // delete
+  const handleDeleteUser = (e, id) => {
     e.preventDefault();
     RemoveResearcher(id);
     async function RemoveResearcher(id) {
@@ -51,13 +47,13 @@ const ResearchAdmin = () => {
         if (response) {
           enqueueSnackbar("Đã xoá thành công", {
             variant: "success",
-          }); 
+          });
           setRender(true);
-        } else{
+        } else {
           enqueueSnackbar("Đã xảy ra lỗi", {
             variant: "error",
-          }); 
-        } 
+          });
+        }
       }
     }
   };
@@ -101,7 +97,19 @@ const ResearchAdmin = () => {
                     getResearcher.map((item, index) => (
                       <tr key={index}>
                         <td>{item.name}</td>
-                        <td>{item.email}</td>
+                        <td>
+                          {item.email === null ? (
+                            <span className="text-danger">
+                              Tác giả chưa cập nhật email
+                            </span>
+                          ) : (
+                            <Link
+                              to={`mailto:${item.email}`}
+                            >
+                              {item.email}
+                            </Link>
+                          )}
+                        </td>
                         <td>
                           {format(new Date(item.birthDate), "dd/MM/yyyy")}
                         </td>

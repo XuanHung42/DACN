@@ -6,7 +6,7 @@ import Loading from "../../../components/user/Loading";
 import { Table } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { format } from 'date-fns'
 import PostFilter from "../../../components/user/filter/PostFilterModel";
 import { useSelector } from "react-redux";
@@ -50,6 +50,12 @@ const PostAdmin = () => {
           </div>
           <div className="post-content">
             <PostFilter/>
+            <Link
+              className="btn btn-success mb-2"
+              to={`/admin/post/edit`}
+            >
+              Thêm mới <FontAwesomeIcon icon={faAdd} />
+            </Link>
             {isVisibleLoading ? (
               <Loading />
             ) : (
@@ -59,6 +65,7 @@ const PostAdmin = () => {
                     <th>Tên post</th>
                     <th>Mô tả</th>
                     <th>Ngày đăng</th>
+                    <th>Đăng bởi</th>
                     {/* <th>Trạng thái</th> */}
                     <th>Sửa</th>
                     <th>Xoá</th>
@@ -71,6 +78,7 @@ const PostAdmin = () => {
                         <td>{item.title}</td>
                         <td>{item.shortDescription}</td>
                         <td>{format(new Date(item.created), 'dd/MM/yyyy')}</td>
+                        <td>{item.user?.name}</td>
                         {/* <td>{item.status}</td> */}
                         <td className="text-center">
                           <Link to={`/admin/post/edit/${item.id}`}>

@@ -82,10 +82,10 @@ const ResearcherDetail = () => {
                     )}
                   </td>
                 </tr>
-                <tr>
+                {/* <tr>
                   <td className="post-lable w-25">Thuộc khoa</td>
                   <td className="post-value">{reseacherDetail.departmentId}</td>
-                </tr>
+                </tr> */}
               </tbody>
             </Table>
           </div>
