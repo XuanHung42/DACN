@@ -90,7 +90,7 @@ const ResearchAdmin = () => {
                   <tr>
                     <th>Họ tên</th>
                     <th>Email</th>
-                    <th>Ngày sinh</th>
+                    <th>Ngày tham gia</th>
                     <th>Thuộc khoa</th>
                     <th>Sửa</th>
                     <th>Xoá</th>

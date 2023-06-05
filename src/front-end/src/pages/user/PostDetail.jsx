@@ -7,7 +7,7 @@ import { Table } from "react-bootstrap";
 import "./styles/style.scss"
 import { format } from 'date-fns'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faFileDownload } from "@fortawesome/free-solid-svg-icons";
 
 
 const PostDetail = () => {
@@ -55,7 +55,23 @@ const PostDetail = () => {
                 </tr>
                 <tr>
                   <td className="post-lable w-25">File dự án</td>
-                  <td className="post-value">{postDetail.file}</td>
+                  <td className="post-value">
+                    {postDetail.file === null ? (
+                      <div>Chưa có file đính kèm</div>
+                    ) : (
+                      <Link
+                        to={`https://localhost:7284/${postDetail.file}`}
+                        className="text-decoration-none text-danger"
+                      >
+                        Tải file xuống
+                        <FontAwesomeIcon
+                          icon={faFileDownload}
+                          fontSize={50}
+                          className="text-danger px-2"
+                        />
+                      </Link>
+                    )}
+                  </td>
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Đăng ngày</td>

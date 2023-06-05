@@ -75,12 +75,18 @@ const DepartmentManage = () => {
                                         Họ tên: {users.name}
                                       </div>
                                     </Link>
-                                    <Link
-                                      className="text-danger text-decoration-none"
-                                      to={`mailto:${users.email}`}
-                                    >
-                                      Email: {users.email}
-                                    </Link>
+                                    {users.email === null ? (
+                                      <span className="text-danger">
+                                        Email: Tác giả chưa cập nhật email
+                                      </span>
+                                    ) : (
+                                      <Link
+                                        className="text-danger text-decoration-none"
+                                        to={`mailto:${users.email}`}
+                                      >
+                                        Email: {users.email}
+                                      </Link>
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -122,9 +128,12 @@ const DepartmentManage = () => {
                                     )}
                                   </span>
                                   <span>
-                                    Lượt xem: 
+                                    Lượt xem:
                                     {posts.viewCount}
-                                    <FontAwesomeIcon icon={faEye} className="text-danger px-1"/>
+                                    <FontAwesomeIcon
+                                      icon={faEye}
+                                      className="text-danger px-1"
+                                    />
                                   </span>
                                 </div>
                               </div>
