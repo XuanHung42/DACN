@@ -18,9 +18,8 @@ namespace ManageProject.Core.DTO
 		public int UserId { get; set; }
 		public bool Status { get; set; }
 		public User User { get; set; }
-        public int ViewCount { get; set; }
+		public int ViewCount { get; set; }
+		//public Department Department { get; set; }
 
-        //public Department Department { get; set; }
-
-    }
+	}
 }

@@ -47,6 +47,17 @@ namespace ManageProject.API.Endpoints
 			.WithName("GetLimitNByNewId")
 			.Produces<ApiResponse<IList<PostDto>>>();
 
+			// get by id
+			routeGroupBuilder.MapGet("/{id:int}", GetPostByIdAsync)
+				.WithName("GetPostByIdAsync")
+				.Produces<ApiResponse<PostItem>>();
+			
+			// delete by id
+			routeGroupBuilder.MapDelete("/{id:int}", DeletePostById)
+				.WithName("DeletePostById")
+				.Produces(401)
+				.Produces<ApiResponse<string>>();
+
 			return app;
 		}
 
@@ -120,6 +131,7 @@ namespace ManageProject.API.Endpoints
 			post.Title = model.Title;
 			post.UrlSlug = model.UrlSlug ?? slug;
 			post.UserId = model.UserId;
+			post.DepartmentId = model.DepartmentId;
 			post.ShortDescription = model.ShortDescription;
 			post.Status= model.Status;
 			post.Created= DateTime.Now;
@@ -137,5 +149,23 @@ namespace ManageProject.API.Endpoints
 			return Results.Ok(ApiResponse.Success(mapper.Map<PostItem>(post), HttpStatusCode.Created));
 		}
 
+		// get post by id
+		private static async Task<IResult> GetPostByIdAsync(
+			int id, IPostRepository postRepository, IMapper mapper)
+		{
+			var post = await postRepository.GetPostById(id);
+			return post == null
+				? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy bài đăng có id = {id}"))
+				: Results.Ok(ApiResponse.Success(mapper.Map<PostItem>(post)));
+		}
+
+		// delete by id
+		private static async Task<IResult> DeletePostById(
+			int id, IPostRepository postRepository)
+		{
+			return await postRepository.DeletePostAsync(id)
+				? Results.Ok(ApiResponse.Success("Bai dang da duoc xoa ", HttpStatusCode.NoContent))
+				: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Khong tim thay bai dang "));
+		}
 	}
 }

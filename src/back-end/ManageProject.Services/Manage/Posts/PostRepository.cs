@@ -141,9 +141,11 @@ namespace ManageProject.Services.Manage.Posts
 			return await _context.Set<Post>().Include(p => p.Department).Include(p => p.Projects).FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
 		}
 
+		public async Task<Post> GetPostById(int postId, CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Post>().FindAsync(postId);
+		}
 
-
-
-
+	
 	}
 }
