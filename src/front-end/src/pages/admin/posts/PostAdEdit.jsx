@@ -175,6 +175,7 @@ const PostAdminEdit = () => {
                     type="text"
                     name="created"
                     title="Created"
+                    placeholder="05-06-2023"
                     required
                     value={post.created || ""}
                     onChange={(e) =>

@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
-import { getAllPost } from "../../../api/PostApi";
+import { deletePost, getAllPost } from "../../../api/PostApi";
 import Loading from "../../../components/user/Loading";
 import { Table } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { format } from 'date-fns'
+import { format } from "date-fns";
 import PostFilter from "../../../components/user/filter/PostFilterModel";
 import { useSelector } from "react-redux";
 import { getFilterPost } from "../../../api/PostApi";
-// import { useSnackbar } from "notistack";
-
-
+import { useSnackbar } from "notistack";
 
 const PostAdmin = () => {
   const [getPost, setGetPost] = useState([]);
-  const [isVisibleLoading, setIsVisibleLoading] = useState(true), postFilter = useSelector((state) => state.postFilter);
-  // const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true),
+    postFilter = useSelector((state) => state.postFilter);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [reRender, setRender] = useState(false);
 
   let { id } = useParams,
-  p = 1,
-  ps = 10;
+    p = 1,
+    ps = 10;
 
   useEffect(() => {
     getFilterPost(postFilter.title, postFilter.shortDescription).then(
@@ -35,7 +35,27 @@ const PostAdmin = () => {
         setIsVisibleLoading(false);
       }
     );
-  }, [postFilter, ps, p]);
+  }, [postFilter, ps, p, reRender]);
+
+  const hanldeDeletePost = (e, id) => {
+    e.preventDefault();
+    DeletePost(id);
+    async function DeletePost(id) {
+      if (window.confirm("Bạn có muốn xoá bài đăng này")) {
+        const response = await deletePost(id);
+        if (response) {
+          enqueueSnackbar("Đã xoá thành công", {
+            variant: "success",
+          });
+          setRender(true);
+        } else {
+          enqueueSnackbar("Đã xoá thành công", {
+            variant: "error",
+          });
+        }
+      }
+    }
+  };
 
   return (
     <>
@@ -49,11 +69,8 @@ const PostAdmin = () => {
             <h3>Quản lý bài đăng</h3>
           </div>
           <div className="post-content">
-            <PostFilter/>
-            <Link
-              className="btn btn-success mb-2"
-              to={`/admin/post/edit`}
-            >
+            <PostFilter />
+            <Link className="btn btn-success mb-2" to={`/admin/post/edit`}>
               Thêm mới <FontAwesomeIcon icon={faAdd} />
             </Link>
             {isVisibleLoading ? (
@@ -77,7 +94,7 @@ const PostAdmin = () => {
                       <tr key={index}>
                         <td>{item.title}</td>
                         <td>{item.shortDescription}</td>
-                        <td>{format(new Date(item.created), 'dd/MM/yyyy')}</td>
+                        <td>{format(new Date(item.created), "dd/MM/yyyy")}</td>
                         <td>{item.user?.name}</td>
                         {/* <td>{item.status}</td> */}
                         <td className="text-center">
@@ -86,7 +103,7 @@ const PostAdmin = () => {
                           </Link>
                         </td>
                         <td className="text-center">
-                          <div>
+                          <div onClick={(e) => hanldeDeletePost(e, item.id)}>
                             <FontAwesomeIcon icon={faTrash} color="red" />
                           </div>
                         </td>
