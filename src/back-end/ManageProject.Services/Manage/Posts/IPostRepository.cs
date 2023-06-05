@@ -36,6 +36,8 @@ namespace ManageProject.Services.Manage.Posts
 		Task<bool> DeletePostAsync(int id, CancellationToken cancellationToken = default);
 		Task<bool> CreateOrUpdatePostAsync(Post post, CancellationToken cancellationToken = default);
 
+		Task<bool> IsPostSlugIsExistedAsync(int id, string slug, CancellationToken cancellationToken = default);
+		Task<Post> GetPostByIdAsync(int id, CancellationToken cancellationToken = default);
 
     }
 }

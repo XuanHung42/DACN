@@ -48,6 +48,7 @@ namespace ManageProject.Services.Manage.Users
 		// login
 		Task<User> Login(string username, string password, CancellationToken cancellationToken = default);
 
+        Task<bool> AddProjectsToUserAsync(List<int> projectIds, int userId, CancellationToken cancellationToken = default);
 
 
 	}
