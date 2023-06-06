@@ -6,7 +6,7 @@ import { Image } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 const Header = () => {
-  const user = useSelector((state) => state.auth.login.crurrentUser);
+  const user = useSelector((state) => state.auth.login.currentUser);
   
 
 
@@ -36,9 +36,13 @@ const Header = () => {
           </div>
           <div className="button d-flex">
             {user != null ? (
+             <>
+              <p>
+                {user.name}
+              </p>
               <Link className="px-2 text-decoration-none" to="/">
                 Đăng xuất
-              </Link>
+              </Link></>
             ) : (
               <div className="px-2">
                 <Link className="btn btn-primary"  to={`/login`}>Đăng nhập</Link>

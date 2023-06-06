@@ -1,26 +1,27 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { getProjectById, updateAndAddProject } from "../../../api/ProjectApi";
 import { Button, Form } from "react-bootstrap";
-import { decode } from "../../../utils/Utils";
+import { decode, isInteger } from "../../../utils/Utils";
 import { useSnackbar } from "notistack";
 
 const ProjectAdminEdit = () => {
   const initialState = {
     id: 0,
-    name: "",
-    description: "",
-    shortDescription: "",
-    urlSlug: "",
-    costProject: "",
+    name: '',
+    description: '',
+    shortDescription: '',
+    urlSlug: '',
+    costProject: '',
     userNumber: 0,
     register: false,
     processId: 0,
   };
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const [validated, setValidated] = useState(false);
 
   const [project, setProject] = useState(initialState);
   let { id } = useParams();
@@ -30,7 +31,7 @@ const ProjectAdminEdit = () => {
     getProjectById(id).then((data) => {
       if (data) {
         setProject({
-          ...data,
+          ...data
         });
       } else {
         setProject(initialState);
@@ -38,15 +39,14 @@ const ProjectAdminEdit = () => {
     });
   }, []);
 
-  const [validated, setValidated] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (e.currentTarget.checkValidity() === false) {
-      // e.StopPropagation();
+      e.StopPropagation();
       setValidated(true);
     } else {
       let formData = new FormData(e.target);
-      console.log("dadasdsadsadsadsa: ",formData);
+      console.log(formData);
       updateAndAddProject(formData).then((data) => {
         console.log("Project", project);
         console.log("data", data);
@@ -65,6 +65,11 @@ const ProjectAdminEdit = () => {
       });
     }
   };
+  if(id&& !isInteger(id))
+  return(
+      <Navigate to = {`/400?redirectTo=/admin/products`}/>
+       
+  )
 
   return (
     <>
@@ -94,8 +99,9 @@ const ProjectAdminEdit = () => {
                   title="Name"
                   required
                   value={project.name || ""}
-                  onChange={(e) =>
-                    setProject({ ...project, name: e.target.value })
+                  onChange={(e) =>setProject({ 
+                      ...project,
+                       name: e.target.value })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -114,8 +120,11 @@ const ProjectAdminEdit = () => {
                   title="UrlSlug"
                   required
                   value={project.urlSlug || ""}
-                  onChange={(e) =>
-                    setProject({ ...project, urlSlug: e.target.value })
+                  onChange={(e) =>setProject(
+                      { 
+                        ...project, 
+                        urlSlug: e.target.value 
+                      })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -134,8 +143,7 @@ const ProjectAdminEdit = () => {
                   title="Description"
                   required
                   value={decode(project.description || "")}
-                  onChange={(e) =>
-                    setProject({ ...project, description: e.target.value })
+                  onChange={(e) =>setProject({ ...project, description: e.target.value })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -156,8 +164,7 @@ const ProjectAdminEdit = () => {
                   title="ShortDescription"
                   required
                   value={decode(project.shortDescription || "")}
-                  onChange={(e) =>
-                    setProject({ ...project, shortDescription: e.target.value })
+                  onChange={(e) =>setProject({ ...project, shortDescription: e.target.value })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -177,8 +184,7 @@ const ProjectAdminEdit = () => {
                   title="Cost Project"
                   required
                   value={project.costProject || ""}
-                  onChange={(e) =>
-                    setProject({ ...project, costProject: e.target.value })
+                  onChange={(e) =>setProject({ ...project, costProject: e.target.value })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -198,8 +204,7 @@ const ProjectAdminEdit = () => {
                   title="User Number"
                   required
                   value={project.userNumber || ""}
-                  onChange={(e) =>
-                    setProject({ ...project, userNumber: e.target.value })
+                  onChange={(e) =>setProject({ ...project, userNumber: e.target.value })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -219,8 +224,7 @@ const ProjectAdminEdit = () => {
                   title="Process Id"
                   required
                   value={project.processId || ""}
-                  onChange={(e) =>
-                    setProject({ ...project, processId: e.target.value })
+                  onChange={(e) =>setProject({ ...project, processId: e.target.value })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -238,8 +242,7 @@ const ProjectAdminEdit = () => {
                     name="register"
                     checked={project.register}
                     title="register"
-                    onChange={(e) =>
-                      setProject({ ...project, register: e.target.checked })
+                    onChange={(e) =>setProject({ ...project, register: e.target.checked })
                     }
                   />
                   <Form.Label className="form-check-label">

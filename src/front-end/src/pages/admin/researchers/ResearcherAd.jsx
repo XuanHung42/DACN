@@ -33,6 +33,7 @@ const ResearchAdmin = () => {
           setGetResearcher([]);
         }
         setIsVisibleLoading(false);
+      console.log("research", data.items)
       }
     );
   }, [researcherFilter, ps, p, reRender]);

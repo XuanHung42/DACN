@@ -172,7 +172,7 @@ namespace ManageProject.API.Endpoints
             user.UrlSlug = model.UrlSlug;
             user.DepartmentId = model.DepartmentId;
             user.Email = model.Email;
-            user.BirthDate = DateTime.Now;
+            user.BirthDate =model.BirthDate;
             user.UrlSlug = model.Name.GenerateSlug();
             user.RoleId = model.RoleId;
             user.Password = model.Password;

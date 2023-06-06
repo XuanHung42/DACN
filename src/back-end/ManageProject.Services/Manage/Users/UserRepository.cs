@@ -23,7 +23,7 @@ namespace ManageProject.Services.Manage.Users
     {
         private readonly ManageDbContext _context;
         private readonly IMemoryCache _memoryCache;
-        private IProjectRepository projectRepository ;
+        private IProjectRepository projectRepository;
 
         public UserRepository(ManageDbContext context, IMemoryCache memoryCache)
         {
@@ -57,9 +57,9 @@ namespace ManageProject.Services.Manage.Users
                     .AsNoTracking()
                     .WhereIf(!string.IsNullOrEmpty(name),
                     x => x.Name.Contains(name))
-					.WhereIf(!string.IsNullOrEmpty(email),
-					x => x.Email.Contains(email))
-					.Select(u => new UserItem()
+                    .WhereIf(!string.IsNullOrEmpty(email),
+                    x => x.Email.Contains(email))
+                    .Select(u => new UserItem()
                     {
                         Id = u.Id,
                         Name = u.Name,
@@ -69,6 +69,7 @@ namespace ManageProject.Services.Manage.Users
                         ImageUrl = u.ImageUrl,
                         UrlSlug = u.UrlSlug,
                         DepartmentId = u.Department.Id,
+                        BirthDate= u.BirthDate,
                     })
                     .ToPagedListAsync(pagingParams, cancellationToken);
 
@@ -245,52 +246,52 @@ namespace ManageProject.Services.Manage.Users
             }
         }
 
-		public async Task<int> CountTotalUserAsync(CancellationToken cancellationToken = default)
-		{
-			return await _context.Set<User>().CountAsync(cancellationToken);
-		}
+        public async Task<int> CountTotalUserAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<User>().CountAsync(cancellationToken);
+        }
 
-		public async Task<bool> Register(string username, string password, string comfirmPassword, CancellationToken cancellationToken = default)
-		{
-			var user = _context.Set<User>().FirstOrDefault(x => x.Name == username);
-			if (user != null)
-			{
-				return false;
-			}
-			if (password != comfirmPassword)
-			{
-				return false;
-			}
-			_context.Add(new User()
-			{
-				Name = username,
-				UrlSlug = username.GenerateSlug(),
-				Password = password.EncodePasswordToBase64(),
+        public async Task<bool> Register(string username, string password, string comfirmPassword, CancellationToken cancellationToken = default)
+        {
+            var user = _context.Set<User>().FirstOrDefault(x => x.Name == username);
+            if (user != null)
+            {
+                return false;
+            }
+            if (password != comfirmPassword)
+            {
+                return false;
+            }
+            _context.Add(new User()
+            {
+                Name = username,
+                UrlSlug = username.GenerateSlug(),
+                Password = password.EncodePasswordToBase64(),
                 // default info user register
-				RoleString = "user",
-				RoleId = 2,
-				DepartmentId = 1,
+                RoleString = "user",
+                RoleId = 2,
+                DepartmentId = 1,
 
 
-			});
-			return await _context.SaveChangesAsync() > 0;
-		}
+            });
+            return await _context.SaveChangesAsync() > 0;
+        }
 
-		public async Task<User> Login(string username, string password, CancellationToken cancellationToken = default)
-		{
-			var user = _context.Set<User>().FirstOrDefault(x => x.Name == username);
-			if (user == null)
-			{
-				return null;
+        public async Task<User> Login(string username, string password, CancellationToken cancellationToken = default)
+        {
+            var user = _context.Set<User>().FirstOrDefault(x => x.Name == username);
+            if (user == null)
+            {
+                return null;
 
-			}
-			var decodePassword = user.Password.DecodeFrom64();
-			if (password != decodePassword)
-			{
-				return null;
-			}
-			return user;
-		}
+            }
+            var decodePassword = user.Password.DecodeFrom64();
+            if (password != decodePassword)
+            {
+                return null;
+            }
+            return user;
+        }
         public async Task<bool> AddProjectsToUserAsync(List<int> projectIds, int userId, CancellationToken cancellationToken = default)
         {
             var user = await _context.Users.FindAsync(userId);
@@ -315,4 +316,4 @@ namespace ManageProject.Services.Manage.Users
             return true;
         }
     }
-}
+	}

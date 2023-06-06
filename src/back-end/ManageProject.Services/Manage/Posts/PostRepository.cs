@@ -138,8 +138,9 @@ namespace ManageProject.Services.Manage.Posts
 		}
 		public async Task<Post> GetPostByIdAsync(int id, CancellationToken cancellationToken = default)
 		{
-			return await _context.Set<Post>().Include(p => p.Department).Include(p => p.Projects).FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+			return await _context.Set<Post>().FindAsync(id);
 		}
+
 
 		public async Task<Post> GetPostById(int postId, CancellationToken cancellationToken = default)
 		{
@@ -147,5 +148,6 @@ namespace ManageProject.Services.Manage.Posts
 		}
 
 	
+
 	}
 }
