@@ -257,7 +257,6 @@ const PostAdminEdit = () => {
                 </div>
               </div>
 
-              
               <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">
                   Mã phòng khoa

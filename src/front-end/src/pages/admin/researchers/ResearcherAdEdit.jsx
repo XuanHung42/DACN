@@ -74,9 +74,11 @@ const ResearchEditAdmin = () => {
       setValidated(true);
     } else {
       let form = new FormData(e.target);
+      console.log("form", form)
 
       updateUserResearcher(form).then((data) => {
         if (data) {
+          console.log("data", data)
           enqueueSnackbar("Đã thêm thành công", {
             variant: "success",
           });

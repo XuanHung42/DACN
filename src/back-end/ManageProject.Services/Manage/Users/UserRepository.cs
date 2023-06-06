@@ -69,6 +69,7 @@ namespace ManageProject.Services.Manage.Users
                         ImageUrl = u.ImageUrl,
                         UrlSlug = u.UrlSlug,
                         DepartmentId = u.Department.Id,
+                        BirthDate= u.BirthDate,
                     })
                     .ToPagedListAsync(pagingParams, cancellationToken);
 
