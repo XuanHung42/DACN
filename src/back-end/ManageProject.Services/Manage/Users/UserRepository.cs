@@ -46,9 +46,11 @@ namespace ManageProject.Services.Manage.Users
                     RoleId = u.Role.Id,
                     UrlSlug = u.UrlSlug,
                     Password = u.Password,
-                    Projects = u.Projects
+					//Projects = u.Projects
+					DepartmentName = u.Department.Name
 
-                })
+
+				})
                 .ToListAsync(cancellationToken);
         }
         public async Task<IPagedList<UserItem>> GetPagedUserAsync(IPagingParams pagingParams, string name = null, string email = null, CancellationToken cancellationToken = default)
@@ -70,6 +72,7 @@ namespace ManageProject.Services.Manage.Users
                         UrlSlug = u.UrlSlug,
                         DepartmentId = u.Department.Id,
                         BirthDate= u.BirthDate,
+                        DepartmentName = u.Department.Name
                     })
                     .ToPagedListAsync(pagingParams, cancellationToken);
 

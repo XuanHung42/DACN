@@ -60,9 +60,10 @@ namespace ManageProject.API.Endpoints
          .Accepts<UserEditModel>("multipart/form-data")
 
                  .Produces<ApiResponse<UserItem>>();
+
             routeGroupBuilder.MapGet("/slugDetail/{slug:regex(^[a-z0-9_-]+$)}", GetDetailUserBySlugAsync)
                 .WithName("GetDetailUserBySlugAsync")
-                .Produces<ApiResponse<UserDto>>();
+			.Produces<ApiResponse<UserItem>>();
             routeGroupBuilder.MapDelete("/{id:int}", DeleteUser)
             .WithName("DeleteAnAuthor")
             .Produces(401)

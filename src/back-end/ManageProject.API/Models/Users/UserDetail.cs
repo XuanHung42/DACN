@@ -14,6 +14,7 @@ namespace ManageProject.API.Models.Users
         public DateTime BirthDate { get; set; }
         public string UrlSlug { get; set; }
         public int DepartmentId { get; set; }
+        public string DepartmentName { get; set; }
         public int RoleId { get; set; }
 
         //public Department Department { get; set; }

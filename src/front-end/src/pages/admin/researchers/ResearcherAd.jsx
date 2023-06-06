@@ -3,7 +3,11 @@ import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { deleteUserResearcher, getFilterResearch } from "../../../api/UserApi";
+import {
+  deleteUserResearcher,
+  getFilterResearch,
+  getUserFilterDepartment,
+} from "../../../api/UserApi";
 import Loading from "../../../components/user/Loading";
 import { Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +19,9 @@ import { useSnackbar } from "notistack";
 const ResearchAdmin = () => {
   const [getResearcher, setGetResearcher] = useState([]);
   const [reRender, setRender] = useState(false);
+  // const [filterDepartment, setFilterDepartment] = useState({
+  //   departmentList: [],
+  // });
 
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     researcherFilter = useSelector((state) => state.researcherFilter);
@@ -33,7 +40,7 @@ const ResearchAdmin = () => {
           setGetResearcher([]);
         }
         setIsVisibleLoading(false);
-      console.log("research", data.items)
+        console.log("research", data.items);
       }
     );
   }, [researcherFilter, ps, p, reRender]);
@@ -104,9 +111,7 @@ const ResearchAdmin = () => {
                               Tác giả chưa cập nhật email
                             </span>
                           ) : (
-                            <Link
-                              to={`mailto:${item.email}`}
-                            >
+                            <Link to={`mailto:${item.email}`}>
                               {item.email}
                             </Link>
                           )}
@@ -114,7 +119,9 @@ const ResearchAdmin = () => {
                         <td>
                           {format(new Date(item.birthDate), "dd/MM/yyyy")}
                         </td>
-                        <td>{item.departmentId}</td>
+                        <td>
+                          {item.departmentName}
+                        </td>
 
                         <td className="text-center">
                           <Link to={`/admin/researcher/edit/${item.id}`}>
