@@ -29,7 +29,7 @@ const PostAdminEdit = () => {
   id = id ?? 0;
 
   useEffect(() => {
-    document.title = "Thêm/ cập nhật bài đăng";
+    document.title = "Thêm/ cập nhật đăng bài";
     getPostById(id).then((data) => {
       if (data) {
         setPost({
@@ -72,7 +72,7 @@ const PostAdminEdit = () => {
           <Sidebar />
         </div>
         <div className="col-10">
-          <h3 className="text-success py-3">Thêm/cập nhật bài đăng</h3>
+          <h3 className="text-success py-3">Thêm/cập nhật đăng bài công trình khoa học</h3>
           <div className="post-content">
             <Form
               method="post"

@@ -89,7 +89,7 @@ const ProjectAdmin = () => {
                     <tr>
                       <th>Tên dự án</th>
                       <th>Mô tả ngắn</th>
-                      <th>Chi phí</th>
+                      <th>Kinh phí thực hiện</th>
                       <th>Số người</th>
                       {/* <th>Đăng ký</th> */}
                       <th>Sửa</th>

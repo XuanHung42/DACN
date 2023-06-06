@@ -41,7 +41,7 @@ const DashboardAdmin = () => {
         </div>
         <div className="card-body">
           <div className="text-success">
-            <h3>Bài đăng</h3>
+            <h3>Đăng bài</h3>
             <FontAwesomeIcon icon={faPen} fontSize={30} />
             <span className="text-danger px-5 display-6">{dashboardItem.countPost}</span>
           </div>

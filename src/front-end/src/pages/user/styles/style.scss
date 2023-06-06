@@ -1,3 +1,11 @@
 .post-link{
   width: fit-content;
 }
+
+.image_slide{
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  object-fit: cover;
+  cursor: grab;
+}

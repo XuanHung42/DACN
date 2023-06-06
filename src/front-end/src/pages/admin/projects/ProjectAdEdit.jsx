@@ -168,7 +168,7 @@ const ProjectAdminEdit = () => {
 
             <div className="row mb-3">
               <Form.Label className="col-sm-2 col-form-label">
-                Chi phí dự án
+                Kinh phí dự án
               </Form.Label>
               <div className="col-sm-10">
                 <Form.Control

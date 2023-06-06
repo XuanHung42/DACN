@@ -20,7 +20,7 @@ const Sidebar = () => {
       <div className="sidebar">
         <ul>
           <div className="sidebar-main">
-            <span className="sidebar-tile">Main</span>
+            <span className="sidebar-tile">Bảng điều khiển</span>
             <Link className="sidebar-link" to={`/admin`}>
               <li>
                 <FontAwesomeIcon icon={faDashboard} />
@@ -30,7 +30,7 @@ const Sidebar = () => {
           </div>
 
           <div className="sidebar-main">
-            <span className="sidebar-tile">List</span>
+            <span className="sidebar-tile">Quản lý</span>
             <div className="sidebar-wrapper">
               <Link className="sidebar-link" to={`/admin/researcher`}>
                 <li>
@@ -52,7 +52,7 @@ const Sidebar = () => {
               <Link className="sidebar-link" to={`/admin/post`}>
                 <li>
                   <FontAwesomeIcon icon={faPen} />
-                  <span className="px-3">Bài đăng</span>
+                  <span className="px-3">Đăng bài</span>
                 </li>
               </Link>
             </div>
@@ -84,7 +84,7 @@ const Sidebar = () => {
           </div>
 
           <div className="sidebar-main">
-            <span className="sidebar-tile">Service</span>
+            <span className="sidebar-tile">Cài đặt</span>
             <div className="sidebar-wrapper">
               <Link className="sidebar-link" to={`/`}>
                 <li>

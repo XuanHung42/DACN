@@ -81,7 +81,7 @@ const DepartmentEditAdmin = () => {
               <Form.Control type="hidden" name="id" value={department.id} />
               <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">
-                  Tên dịch vụ
+                  Tên phòng khoa
                 </Form.Label>
                 <div className="col-sm-10">
                   <Form.Control

@@ -66,7 +66,7 @@ const PostAdmin = () => {
         </div>
         <div className="col-10">
           <div className="title py-3 text-danger">
-            <h3>Quản lý bài đăng</h3>
+            <h3>Quản lý đăng bài công trình khoa học</h3>
           </div>
           <div className="post-content">
             <PostFilter />

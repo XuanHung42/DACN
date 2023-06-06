@@ -94,7 +94,7 @@ const DepartmentManage = () => {
                           ))}
                         </div>
                       </Tab>
-                      <Tab title="Bài đăng" key={index} eventKey="posts">
+                      <Tab title="Công trình khoa học" key={index} eventKey="posts">
                         <div className="row">
                           {item.posts.map((posts, i) => (
                             <div className="col-6" key={i}>

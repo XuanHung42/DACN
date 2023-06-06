@@ -105,7 +105,7 @@ const ResearcherManage = () => {
               </div>
             )}
           </Tab>
-          <Tab eventKey="post" title="Tất cả đơn vị khoa">
+          <Tab eventKey="post" title="Tất cả Khoa">
             <DepartmentFilter />
             {isVisibleLoading ? (
               <Loading />
@@ -133,7 +133,7 @@ const ResearcherManage = () => {
                   ))
                 ) : (
                   <h2 className="text-warning text-center py-3">
-                    Không tìm thấy đơn vị khoa
+                    Không tìm thấy đơn vị
                   </h2>
                 )}
               </div>

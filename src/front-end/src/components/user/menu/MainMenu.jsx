@@ -5,7 +5,7 @@ const MainMenu = () => {
   return (
     <ul className="navbar-nav ">
       <MenuItem link="/home" title={"Trang chủ"}/>
-      <MenuItem link={"/department"} title="Đơn vị khoa"/>
+      <MenuItem link={"/department"} title="Khoa"/>
       <MenuItem link={"/research"} title="Kết quả nghiên cứu"/>
       <MenuItem link={"/records"} title="Hồ sơ khoa học"/>
       <MenuItem link={"/contact"} title="Liên hệ"/>
