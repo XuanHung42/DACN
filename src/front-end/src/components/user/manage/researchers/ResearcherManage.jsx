@@ -80,12 +80,18 @@ const ResearcherManage = () => {
                                 Họ tên: {item.name}
                               </div>
                             </Link>
-                            <Link
-                              className="text-danger text-decoration-none"
-                              to={`mailto:${item.email}`}
-                            >
-                              Email: {item.email}
-                            </Link>
+
+                            {item.email === null ? (
+                              <span className="text-danger">Email: Tác giả chưa cập nhật email</span>
+                            ) : (
+                              <Link
+                                className="text-danger text-decoration-none"
+                                to={`mailto:${item.email}`}
+                              >
+                                Email: {item.email}
+                              </Link>
+
+                            )}
                           </div>
                         </div>
                       </div>

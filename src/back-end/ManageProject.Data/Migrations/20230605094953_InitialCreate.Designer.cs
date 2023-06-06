@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManageProject.Data.Migrations
 {
     [DbContext(typeof(ManageDbContext))]
-    [Migration("20230530181527_InitialCreate")]
+    [Migration("20230605094953_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -59,7 +59,7 @@ namespace ManageProject.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("DepartmentId")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("File")
@@ -344,6 +344,8 @@ namespace ManageProject.Data.Migrations
                     b.HasOne("ManageProject.Core.Entities.Department", "Department")
                         .WithMany("Posts")
                         .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_Post_Department");
 
                     b.HasOne("ManageProject.Core.Entities.User", "User")

@@ -1,4 +1,7 @@
-import { get_api, post_api } from "./Method";
+
+
+import { delete_api, get_api, post_api } from "./Method";
+
 
 
 
@@ -42,12 +45,27 @@ export function getFilterPost(
 
 
 export async function getPostById(id = 0) {
-  if (id > 0) {
-    return get_api(`https://localhost:7284/api/posts/${id}`);
-  }
+  return get_api(`https://localhost:7284/api/posts/${id}`);
 }
+
 
 
 export async function updateAndAddPost(formData){
   return post_api('https://localhost:7284/api/posts',formData)
 }
+
+ 
+
+
+
+
+export async function updateAndAddNewPost(formData){
+  return post_api('https://localhost:7284/api/posts',formData)
+}
+
+export async function deletePost(id = 0) {
+  return delete_api(`https://localhost:7284/api/posts/${id}`);
+}
+
+
+

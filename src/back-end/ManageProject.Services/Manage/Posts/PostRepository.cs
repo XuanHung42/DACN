@@ -141,5 +141,13 @@ namespace ManageProject.Services.Manage.Posts
 			return await _context.Set<Post>().FindAsync(id);
 		}
 
+
+		public async Task<Post> GetPostById(int postId, CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Post>().FindAsync(postId);
+		}
+
+	
+
 	}
 }

@@ -43,10 +43,13 @@ namespace ManageProject.Services.Manage.Users
 
         Task<int> CountTotalUserAsync(CancellationToken cancellationToken = default);
 
+
 		Task<bool> Register(string username, string password, string comfirmPassword, CancellationToken cancellationToken = default);
 		// login
 		Task<User> Login(string username, string password, CancellationToken cancellationToken = default);
         Task<bool> AddProjectsToUserAsync(List<int> projectIds, int userId, CancellationToken cancellationToken = default);
 
-    }
+
+	}
+
 }

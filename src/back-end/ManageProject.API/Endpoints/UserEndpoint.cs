@@ -295,6 +295,7 @@ namespace ManageProject.API.Endpoints
             return Results.Ok(ApiResponse.Success(model));
         }
 
+        // test
         private static async Task<IResult> AddProjectsToUser(int userId, List<int> projectId,IUserRepository userRepository)
         {
             return await userRepository.AddProjectsToUserAsync(projectId, userId)

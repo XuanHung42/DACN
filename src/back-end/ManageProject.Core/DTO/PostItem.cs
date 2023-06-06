@@ -16,12 +16,12 @@ namespace ManageProject.Core.DTO
 		public string File { get; set; }
 		public DateTime Created { get; set; }
 		public int UserId { get; set; }
+		public int DepartmentId { get; set; }
 		public bool Status { get; set; }
 		public User User { get; set; }
+
 		public Department Department { get; set; }
         public int ViewCount { get; set; }
 
-        //public Department Department { get; set; }
-
-    }
+	}
 }

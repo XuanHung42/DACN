@@ -51,23 +51,29 @@ const ResearcherDetail = () => {
                   <td className="post-lable w-25">Email</td>
                   <td className="post-value">
                     <div className="post-link">
-                      <Link to={`mailto:${reseacherDetail.email}`}>
-                        <div>{reseacherDetail.email}</div>
-                      </Link>
+                      {reseacherDetail.email === null ? (
+                        <span className="text-danger">
+                          Email: Tác giả chưa cập nhật email
+                        </span>
+                      ) : (
+                        <Link
+                          className="text-danger text-decoration-none"
+                          to={`mailto:${reseacherDetail.email}`}
+                        >
+                          Email: {reseacherDetail.email}
+                        </Link>
+                      )}
                     </div>
                   </td>
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Hình ảnh</td>
                   <td className="post-value">
-                    <img
-                      src={getImage(reseacherDetail.imageUrl)}
-                      alt=""
-                    />
+                    <img src={getImage(reseacherDetail.imageUrl)} alt="" />
                   </td>
                 </tr>
                 <tr>
-                  <td className="post-lable w-25">Ngày sinh</td>
+                  <td className="post-lable w-25">Ngày tham gia</td>
                   <td className="post-value">
                     {" "}
                     {format(
@@ -76,10 +82,10 @@ const ResearcherDetail = () => {
                     )}
                   </td>
                 </tr>
-                <tr>
+                {/* <tr>
                   <td className="post-lable w-25">Thuộc khoa</td>
                   <td className="post-value">{reseacherDetail.departmentId}</td>
-                </tr>
+                </tr> */}
               </tbody>
             </Table>
           </div>

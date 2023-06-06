@@ -128,9 +128,9 @@ namespace ManageProject.Data.Migrations
                     UrlSlug = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     File = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    DepartmentId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Created = table.Column<DateTime>(type: "datetime", nullable: false),
-                    DepartmentId = table.Column<int>(type: "int", nullable: true),
                     ViewCount = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
@@ -140,7 +140,8 @@ namespace ManageProject.Data.Migrations
                         name: "FK_Post_Department",
                         column: x => x.DepartmentId,
                         principalTable: "Department",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Posts_Users",
                         column: x => x.UserId,

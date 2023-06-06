@@ -39,5 +39,7 @@ namespace ManageProject.Services.Manage.Posts
 		Task<bool> IsPostSlugIsExistedAsync(int id, string slug, CancellationToken cancellationToken = default);
 		Task<Post> GetPostByIdAsync(int id, CancellationToken cancellationToken = default);
 
-    }
+		Task<Post> GetPostById(int postId, CancellationToken cancellationToken = default);
+   
+	}
 }
