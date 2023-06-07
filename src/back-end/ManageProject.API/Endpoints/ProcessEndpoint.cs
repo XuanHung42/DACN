@@ -7,6 +7,7 @@ using ManageProject.Core.Entities;
 using ManageProject.Services.Manage.Processes;
 using ManageProject.WebApi.Filters;
 using MapsterMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
 
 namespace ManageProject.API.Endpoints;
@@ -46,6 +47,10 @@ public static class ProcessEndpoint
 			.Produces(401)
 			.Produces<ApiResponse<string>>();
 
+		// combobox
+		routeGroupBuilder.MapGet("/combobox", GetFilterProcess)
+			.WithName("GetFilterProcess")
+			.Produces<ApiResponse<ProcessFilterModel>>();
 
 
 		return app;
@@ -112,5 +117,22 @@ public static class ProcessEndpoint
 		return await processRepository.DeleteProcessById(id)
 			? Results.Ok(ApiResponse.Success("Process có id nhập vào đã được xoá ", HttpStatusCode.NoContent))
 			: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy process có id = {id}"));
+	}
+
+	// fiter id process
+	private static async Task<IResult> GetFilterProcess(
+		IProcessRepository processRepository
+		)
+	{
+		var model = new ProcessFilterModel()
+		{
+			ProcessList = (await processRepository.GetProcessListCombobox())
+			.Select(r => new SelectListItem()
+			{
+				Text = r.Name,
+				Value = r.Id.ToString()
+			})
+		};
+		return Results.Ok(ApiResponse.Success(model));
 	}
 }

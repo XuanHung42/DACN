@@ -61,5 +61,15 @@ namespace ManageProject.Services.Manage.Processes
 				.ExecuteDeleteAsync(cancellationToken) > 0;
 		}
 
+		public async Task<IList<ProcessItem>> GetProcessListCombobox(CancellationToken cancellationToken = default)
+		{
+			IQueryable<Process> processes = _context.Set<Process>();
+			return await processes.OrderBy(pc => pc.Name)
+				.Select(pc => new ProcessItem()
+				{
+					Id = pc.Id,
+					Name = pc.Name,
+				}).ToListAsync(cancellationToken);
+		}
 	}
 }

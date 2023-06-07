@@ -42,3 +42,10 @@ export async function deleteProject(id = 0) {
 export async function updateAndAddProject(formData){
   return post_api('https://localhost:7284/api/projects',formData)
 }
+
+
+
+export async function getProcessListCombobox() {
+  return get_api(`https://localhost:7284/api/processes/combobox`);
+}
+
