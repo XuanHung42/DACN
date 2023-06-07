@@ -17,26 +17,13 @@ namespace ManageProject.Data.Mappings
 
             builder.HasKey(pc => pc.Id);
 
-            builder.Property(pc => pc.ExcutionTime)
+            builder.Property(pc => pc.Name)
              .HasMaxLength(500)
              .IsRequired();
 
-            builder.Property(c => c.Start)
+            builder.Property(pc => pc.UrlSlug)
                 .IsRequired()
                 .HasDefaultValue(false);
-            builder.Property(c => c.StartMaking)
-                .IsRequired()
-                .HasDefaultValue(false);
-            builder.Property(c => c.WriteReport)
-                .IsRequired()
-                .HasDefaultValue(false);
-            builder.Property(c => c.Complete)
-                .IsRequired()
-                .HasDefaultValue(false);
-            builder.Property(c => c.Status)
-                .IsRequired()
-                .HasDefaultValue(false);
-            
 
         }
     }

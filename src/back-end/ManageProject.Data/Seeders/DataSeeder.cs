@@ -131,40 +131,34 @@ namespace ManageProject.Data.Seeders
                 new()
                 {
                    
-                    ExcutionTime= "2 month",
-                   Complete= true,
-                    Start= true,
-                    StartMaking= true,
-                    Status= true,
-                    WriteReport= true,
+                    Name = "Chưa đăng ký",
+                    UrlSlug = "chua-dang-ky"
+                    
                 },
                  new()
                 {
-                  
+				    Name = "Đã đăng ký",
+					UrlSlug = "da-dang-ky"
 
-                    ExcutionTime= "1 month",
-                    Complete= false,
-                    Start= true,
-                    StartMaking= true,
-                    Status= true,
-                    WriteReport= false,
-                },
-                  new()
+
+				},
+				  new()
+				{
+					Name = "Đang tạm dừng",
+					UrlSlug = "dang-tam-dung"
+				},
+
+				  new()
                 {
-                   
-                    ExcutionTime= "3 month",
-                    Complete= false,
-                    Start= false,
-                    StartMaking= false,
-                    Status= true,
-                    WriteReport= false,
-                }
+					Name = "Đã hoàn thành",
+					UrlSlug = "da-hoan-thanh"
+				}
+				 
 
-
-            };
+			};
             foreach (var process in processes)
             {
-                if (!_dbContext.Processs.Any(a => a.ExcutionTime == process.ExcutionTime && a.Id == a.Id))
+                if (!_dbContext.Processs.Any(a => a.UrlSlug == process.UrlSlug))
                 {
                     _dbContext.Processs.Add(process);
                 }
