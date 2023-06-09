@@ -42,6 +42,7 @@ const Project = () => {
                 <th>Mô tả ngắn</th>
                 <th>Kinh phí thực hiện</th>
                 <th>Số thành viên</th>
+                <th>Trạng thái</th>
                 <th>Đăng ký</th>
               </tr>
             </thead>
@@ -53,10 +54,10 @@ const Project = () => {
                     <td>{item.shortDescription}</td>
                     <td>{item.costProject}</td>
                     <td>{item.userNumber}</td>
+                    <td className="text-danger">{item.process?.name}</td>
                     <td className="text-center">
                       <Button className="btn-success" onClick={(e) => alert("Chức năng này đang được phát triển")}>Đăng ký</Button>
                     </td>
-
                   </tr>
                 ))
               ) : (
