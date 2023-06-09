@@ -9,3 +9,10 @@
   object-fit: cover;
   cursor: grab;
 }
+
+.avata > img{
+ width: 10rem;
+ height: 10rem;
+ overflow: hidden;
+ object-fit: cover;
+}

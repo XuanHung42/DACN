@@ -47,10 +47,12 @@ const Header = () => {
           <div className="button d-flex align-items-center">
             {user != null ? (
               <>
+                <span className="text-white">
                   Xin chào
-                <span className="px-1">
-                  {user.result.name}
-                  {console.log("Check user: ", user.result)}
+                  <Link to={`/profile/${user.result.id}`} className="px-1 text-decoration-none text-white">
+                   {user.result.name}
+                  </Link>
+                  {/* {console.log("Check user: ", user.result)} */}
                 </span>
                 <div className="px-2">
                   <Button className="btn-danger" onClick={hanldeLogout}>

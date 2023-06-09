@@ -1,4 +1,5 @@
 ﻿using ManageProject.Core.Contracts;
+using ManageProject.Core.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace ManageProject.Core.Entities
         public string UrlSlug { get; set; }
         public int DepartmentId { get; set; }
         public int RoleId { get; set; }
- 
+
         public Department Department { get; set; }
         public IList<Project> Projects { get; set; }
         public Role Role { get; set; }

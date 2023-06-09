@@ -73,7 +73,7 @@ const ResearcherDetail = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="post-lable w-25">Ngày tham gia</td>
+                  <td className="post-lable w-25">Ngày sinh</td>
                   <td className="post-value">
                     {" "}
                     {format(

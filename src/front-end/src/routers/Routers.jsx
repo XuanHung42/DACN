@@ -19,6 +19,8 @@ import PostAdmin from "../pages/admin/posts/PostAd";
 import PostAdminEdit from "../pages/admin/posts/PostAdEdit";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import Profile from "../pages/user/Profile";
+import EditProfile from "../pages/user/EditProfile";
 
 
 const Routers = () => {
@@ -30,6 +32,11 @@ const Routers = () => {
         <Route path="/:slug" element={<PostDetail />} />
         <Route path="/home" element={<Home />} />
         <Route path="/home/:slug" element={<ResearcherDetail />} />
+        
+        <Route path="/profile/:id" element={<Profile/>}/>
+        <Route path="/profile/edit/:id" element={<EditProfile/>}/>
+
+
         <Route path="/department" element={<Department />} />
         <Route
           path="/department/researcher/:slug"

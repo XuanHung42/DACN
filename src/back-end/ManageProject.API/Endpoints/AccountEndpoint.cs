@@ -61,11 +61,11 @@ namespace ManageProject.API.Endpoints
 			return Results.Ok(ApiResponse.Success(new UserTokenModel()
 			{
 				Id = user.Id,
-				Role = user.RoleString,
+				Role = user.RoleId,
 				Name = user.Name,
 				//Email = user.Email,
 				Token = token,
-				Expired = DateTime.UtcNow.AddDays(4)
+				Expired = DateTime.UtcNow.AddDays(4),
 			}));
 		}
 

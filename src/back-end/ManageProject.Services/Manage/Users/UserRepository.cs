@@ -271,7 +271,7 @@ namespace ManageProject.Services.Manage.Users
                 UrlSlug = username.GenerateSlug(),
                 Password = password.EncodePasswordToBase64(),
                 // default info user register
-                RoleString = "user",
+                //RoleString = "user",
                 RoleId = 2,
                 DepartmentId = 1,
 

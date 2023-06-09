@@ -54,13 +54,13 @@ namespace ManageProject.Data.Mappings
 
 
 
-			// test code
-			builder.Property(x => x.RoleString)
-				.IsRequired()
-				.HasMaxLength(60)
-				.HasDefaultValue("user");
+            // test code
+            builder.Property(x => x.RoleString)
+                .IsRequired()
+                .HasMaxLength(60)
+                .HasDefaultValue("user");
 
-			builder.HasOne<UserToken>(x => x.UserToken)
+            builder.HasOne<UserToken>(x => x.UserToken)
 			  .WithOne(s => s.User)
 			  .HasForeignKey<UserToken>(x => x.UserId);
 		}

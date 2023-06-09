@@ -6,7 +6,6 @@ import { Link, useParams } from "react-router-dom";
 import {
   deleteUserResearcher,
   getFilterResearch,
-  getUserFilterDepartment,
 } from "../../../api/UserApi";
 import Loading from "../../../components/user/Loading";
 import { Table } from "react-bootstrap";
@@ -94,7 +93,7 @@ const ResearchAdmin = () => {
                   <tr>
                     <th>Họ tên</th>
                     <th>Email</th>
-                    <th>Ngày tham gia</th>
+                    <th>Ngày sinh</th>
                     <th>Thuộc khoa</th>
                     <th>Sửa</th>
                     <th>Xoá</th>
