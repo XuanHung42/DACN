@@ -1,14 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import MainMenu from "../menu/MainMenu";
 import logo from "../image/logo_dlu.png";
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 const Header = () => {
   const user = useSelector((state) => state.auth.login.currentUser);
-  
-
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [users, setUser] = useState();
+  const naviagate = useNavigate();
+  const hanldeLogout = () => {
+    setUser({});
+    setUsername("");
+    setPassword("");
+    localStorage.clear();
+    
+   
+  };
 
   return (
     <header className="bg-success sticky-top">
@@ -34,18 +44,25 @@ const Header = () => {
           >
             <MainMenu />
           </div>
-          <div className="button d-flex">
+          <div className="button d-flex align-items-center">
             {user != null ? (
-             <>
-              <p>
-                {user.name}
-              </p>
-              <Link className="px-2 text-decoration-none" to="/">
-                Đăng xuất
-              </Link></>
+              <>
+                  Xin chào
+                <span className="px-1">
+                  {user.result.name}
+                  {console.log("Check user: ", user.result)}
+                </span>
+                <div className="px-2">
+                  <Button className="btn-danger" onClick={hanldeLogout}>
+                    Đăng xuất
+                  </Button>
+                </div>
+              </>
             ) : (
               <div className="px-2">
-                <Link className="btn btn-primary"  to={`/login`}>Đăng nhập</Link>
+                <Link className="btn btn-primary" to={`/login`}>
+                  Đăng nhập
+                </Link>
               </div>
             )}
           </div>

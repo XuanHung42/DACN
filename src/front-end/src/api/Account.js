@@ -20,8 +20,10 @@ export const LoginUser = async (user, dispatch, navigate) => {
       return;
     }
     dispatch(loginSuccess(response.data));
+
+    console.log("Chécdcdssdcsdcdsdsc", response.data)
     navigate("/");
-    alert("Đăng nhập thành công")
+    // alert("Đăng nhập thành công")
   } catch (error) {
     dispatch(loginFail());
   }

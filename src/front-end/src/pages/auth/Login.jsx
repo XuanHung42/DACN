@@ -1,23 +1,23 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-
-import Header from "../../components/user/common/Header";
-import Footer from "../../components/user/common/Footer";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../api/Account";
 import "./Auth.scss"
 import { useSnackbar } from "notistack";
+import Layout from "../../components/user/common/Layout";
 
 
 const Login = (props) => {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  // const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   
   const [userNameLogin, setUserNameLogin] = useState("");
   const [passwordLogin, setPasswordLogin] = useState("");
 
   const dispatch = useDispatch();
   const naviagate = useNavigate();
+
+ 
 
   const hanldeLogin = (e) => {
     e.preventDefault();
@@ -29,12 +29,9 @@ const Login = (props) => {
     // enqueueSnackbar("Đăng nhập thành công", {
     //   variant: "success",
     // }); 
-   
-    
   };
   return (
-    <>
-      <Header />
+    <Layout>
       <div className="text-center mt-5 text-danger">
         <h2>Đăng Nhập</h2>
       </div>
@@ -72,8 +69,7 @@ const Login = (props) => {
         </form>
       </div>
 
-      <Footer />
-    </>
+    </Layout>
   );
 };
 export default Login;
