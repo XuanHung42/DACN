@@ -8,18 +8,17 @@ import store from "../../../redux/Store";
 
 const Header = () => {
   let user = useSelector((state) => state.auth.login.currentUser);
-   // sử dụng useDispatch để gọi action logout
- 
+  // sử dụng useDispatch để gọi action logout
+
   const handleLogout = () => {
-    user=null;
+    user = null;
     localStorage.removeItem("token");
-    
-    window.location.reload()
-     // Gọi action logout để đăng xuất người dùng
+
+    window.location.reload();
+    // Gọi action logout để đăng xuất người dùng
     // Thực hiện các thao tác khác để đăng xuất người dùng (nếu cần)
   };
 
-  
   return (
     <header className="bg-success sticky-top">
       <nav className="container-fluid navbar navbar-expand-lg navbar-dark">
@@ -44,17 +43,27 @@ const Header = () => {
           >
             <MainMenu />
           </div>
-          <div className="button d-flex">
-            {(user != null)? (
-             <>
-              <p>
-                {user.name}
-              </p>
-              <Link className="px-2 text-decoration-none" to="/"
-                onClick={handleLogout}
-              >
-                Đăng xuất
-              </Link></>
+          <div className="button d-flex align-items-center">
+            {user != null ? (
+              <>
+                <span className="text-white">
+                  Xin chào
+                  <Link
+                    to={`/profile/${user.result.id}`}
+                    className="px-1 text-decoration-none text-white"
+                  >
+                    {user.result.name}
+                  </Link>
+                  {console.log("Check user: ", user.result)}
+                </span>
+                <Link
+                  className="btn btn-danger px-2 text-decoration-none"
+                  to="/"
+                  onClick={handleLogout}
+                >
+                  Đăng xuất
+                </Link>
+              </>
             ) : (
               <div className="px-2">
                 <Link className="btn btn-primary" to={`/login`}>

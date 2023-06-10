@@ -9,7 +9,7 @@ import Layout from "../../components/user/common/Layout";
 
 
 const Login = (props) => {
-  // const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   
   const [userNameLogin, setUserNameLogin] = useState("");
   const [passwordLogin, setPasswordLogin] = useState("");
