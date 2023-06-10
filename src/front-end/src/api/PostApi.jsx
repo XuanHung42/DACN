@@ -26,7 +26,7 @@ export async function getPostDetailBySlug(urlSlug = ''){
 export function getFilterPost(
   title = '',
   shortDescription = '',
-  pageSize = 10,
+  pageSize = 2,
   pageNumber = 1,
   sortColumn = '',
   sortOrder = ''

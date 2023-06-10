@@ -12,9 +12,16 @@ import PostFilter from "../../../components/user/filter/PostFilterModel";
 import { useSelector } from "react-redux";
 import { getFilterPost } from "../../../api/PostApi";
 import { useSnackbar } from "notistack";
+import Pager from "../../../components/pager/Pager";
 
-const PostAdmin = () => {
-  const [getPost, setGetPost] = useState([]);
+const PostAdmin = ({postQuery}) => {
+  const {querySearch, params}= "";
+  const[metadata, setMetadata]= useState({})
+  const [pageNumber, setPageNumber]= useState(1);
+  const [getPost, setGetPost] = useState([{
+    items:[],
+    metadata:{}
+  }]);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     postFilter = useSelector((state) => state.postFilter);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -23,20 +30,47 @@ const PostAdmin = () => {
   let { id } = useParams,
     p = 1,
     ps = 10;
-
+    function updatePageNumber(inc){
+      setPageNumber((curentVal)=> curentVal+ inc)
+    }
+  
   useEffect(() => {
-    getFilterPost(postFilter.title, postFilter.shortDescription).then(
+   loadPost();
+   async function loadPost(){
+    const parameters = new URLSearchParams({
+       pageNumber: Object.fromEntries(querySearch|| '').length> 0 ? 1: pageNumber||1,
+      
+      pageSize: 2,
+      ...Object.fromEntries(querySearch||""),
+      ...params
+    });
+    function setData(props){
+      setGetPost(
+        props.items
+      );
+       setMetadata(props.metadata);
+
+    }
+    getFilterPost(parameters.title, parameters.shortDescription, parameters.pageSize, pageNumber).then(
       (data) => {
         if (data) {
-          setGetPost(data.items);
+          
+         setData(data);
         } else {
           setGetPost([]);
         }
+        
         setIsVisibleLoading(false);
       }
     );
-  }, [postFilter, ps, p, reRender]);
 
+    console.log(getPost);
+   }
+
+
+    
+  }, [postFilter, ps, p, reRender, pageNumber,params]);
+  
   const hanldeDeletePost = (e, id) => {
     e.preventDefault();
     DeletePost(id);
@@ -58,7 +92,7 @@ const PostAdmin = () => {
   };
 
   return (
-    <>
+    
       <div className="row">
         <Navbar />
         <div className="col-2">
@@ -118,13 +152,25 @@ const PostAdmin = () => {
                       </td>
                     </tr>
                   )}
+                   
                 </tbody>
+                
               </Table>
-            )}
+              
+            )
+            
+            }
+             <Pager metadata={metadata}
+        
+             onPageChange={updatePageNumber}/>
+            
           </div>
+        
         </div>
       </div>
-    </>
+      
+    
+    
   );
 };
 export default PostAdmin;

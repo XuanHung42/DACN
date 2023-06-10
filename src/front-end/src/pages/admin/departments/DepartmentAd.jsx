@@ -3,22 +3,25 @@ import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { deleteDepartment, getFilterDepartment } from "../../../api/DepartmentApi";
+import {
+  deleteDepartment,
+  getFilterDepartment,
+} from "../../../api/DepartmentApi";
 import Loading from "../../../components/user/Loading";
-import {Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import DepartmentFilter from "../../../components/user/filter/DepartmentFilterModel";
 import { useSnackbar } from "notistack";
-
-
-
+import { current } from "@reduxjs/toolkit";
+import Pager from "../../../components/pager/Pager";
 
 const DepartmentAdmin = () => {
   const [getDepartment, setGetDepartment] = useState([]);
   const [reRender, setRender] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
+  const [metadata, setMetadata] = useState({});
+  const [pageNumber, setPageNumber] = useState(1);
 
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     departmentFilter = useSelector((state) => state.departmentFilter);
@@ -26,19 +29,29 @@ const DepartmentAdmin = () => {
   let { id } = useParams,
     p = 1,
     ps = 10;
-
+    function updatePageNumber(inc) {
+      setPageNumber((currentVal) => currentVal + inc);
+    }
   useEffect(() => {
-    getFilterDepartment(departmentFilter.name).then((data) => {
-      if (data) {
-        setGetDepartment(data.items);
-      } else {
-        setGetDepartment([]);
+    loadDepartment();
+    async function loadDepartment() {
+      function setData(props) {
+        setGetDepartment(props.items);
+        setMetadata(props.metadata);
       }
-      setIsVisibleLoading(false);
-    });
-  }, [departmentFilter, ps, p, reRender]);
+      getFilterDepartment(departmentFilter.name, 2,pageNumber).then((data) => {
+        if (data) {
+          setData(data);
+        } else {
+          setData([]);
+        }
+        setIsVisibleLoading(false);
+      });
+    }
+  }, [departmentFilter, ps, p, reRender,pageNumber]);
 
-  const handleDeleteDepartment = (e, id ) => {
+
+  const handleDeleteDepartment = (e, id) => {
     e.preventDefault();
     RemoveDepartment(id);
     async function RemoveDepartment(id) {
@@ -47,13 +60,13 @@ const DepartmentAdmin = () => {
         if (response) {
           enqueueSnackbar("Đã xoá thành công", {
             variant: "success",
-          }); 
+          });
           setRender(true);
-        } else{
+        } else {
           enqueueSnackbar("Đã xoá thành công", {
             variant: "error",
-          }); 
-        } 
+          });
+        }
       }
     }
   };
@@ -100,7 +113,9 @@ const DepartmentAdmin = () => {
                           </Link>
                         </td>
                         <td className="text-center">
-                          <div onClick={(e) => handleDeleteDepartment(e, item.id)}>
+                          <div
+                            onClick={(e) => handleDeleteDepartment(e, item.id)}
+                          >
                             <FontAwesomeIcon icon={faTrash} color="red" />
                           </div>
                         </td>
@@ -118,6 +133,7 @@ const DepartmentAdmin = () => {
                 </tbody>
               </Table>
             )}
+            <Pager metadata={metadata} onPageChange={updatePageNumber} />
           </div>
         </div>
       </div>

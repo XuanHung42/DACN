@@ -15,10 +15,13 @@ import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
 import ResearchFilter from "../../../components/user/filter/ResearcherFilterModel";
 import { useSnackbar } from "notistack";
+import Pager from "../../../components/pager/Pager";
 
 const ResearchAdmin = () => {
   const [getResearcher, setGetResearcher] = useState([]);
   const [reRender, setRender] = useState(false);
+  const [metadata, setMetadata] = useState({});
+  const [pageNumber, setPageNumber] = useState(1);
   // const [filterDepartment, setFilterDepartment] = useState({
   //   departmentList: [],
   // });
@@ -26,25 +29,38 @@ const ResearchAdmin = () => {
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     researcherFilter = useSelector((state) => state.researcherFilter);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  
 
   let { id } = useParams,
     p = 1,
-    ps = 10;
+    ps = 2;
 
   useEffect(() => {
-    getFilterResearch(researcherFilter.name, researcherFilter.email).then(
-      (data) => {
+    loadResearch();
+    async function loadResearch() {
+      function setData(props) {
+        setGetResearcher(props.items);
+        setMetadata(props.metadata);
+      }
+      getFilterResearch(
+        researcherFilter.name,
+        researcherFilter.email,
+        ps,
+        pageNumber
+      ).then((data) => {
         if (data) {
-          setGetResearcher(data.items);
+          setData(data);
         } else {
-          setGetResearcher([]);
+          setData([]);
         }
         setIsVisibleLoading(false);
         console.log("research", data.items);
-      }
-    );
-  }, [researcherFilter, ps, p, reRender]);
-
+      });
+    }
+  }, [researcherFilter, ps, p, reRender, pageNumber]);
+  function updatePageNumber(inc) {
+    setPageNumber((currentVal) => currentVal + inc);
+  }
   // delete
   const handleDeleteUser = (e, id) => {
     e.preventDefault();
@@ -119,9 +135,7 @@ const ResearchAdmin = () => {
                         <td>
                           {format(new Date(item.birthDate), "dd/MM/yyyy")}
                         </td>
-                        <td>
-                          {item.departmentName}
-                        </td>
+                        <td>{item.departmentName}</td>
 
                         <td className="text-center">
                           <Link to={`/admin/researcher/edit/${item.id}`}>
@@ -147,6 +161,7 @@ const ResearchAdmin = () => {
                 </tbody>
               </Table>
             )}
+            <Pager metadata={metadata} onPageChange={updatePageNumber} />
           </div>
         </div>
       </div>

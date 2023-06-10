@@ -31,12 +31,8 @@ namespace ManageProject.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ExcutionTime = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Start = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    StartMaking = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    WriteReport = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    Complete = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    UrlSlug = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "False")
                 },
                 constraints: table =>
                 {
@@ -146,8 +142,7 @@ namespace ManageProject.Data.Migrations
                         name: "FK_Posts_Users",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

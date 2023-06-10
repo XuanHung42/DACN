@@ -6,6 +6,7 @@ import { getProjectById, updateAndAddProject } from "../../../api/ProjectApi";
 import { Button, Form } from "react-bootstrap";
 import { decode, isInteger } from "../../../utils/Utils";
 import { useSnackbar } from "notistack";
+import { getProcessListCombobox } from "../../../api/ProjectApi";
 
 const ProjectAdminEdit = () => {
   const initialState = {
@@ -23,6 +24,7 @@ const ProjectAdminEdit = () => {
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
 
+  const [filterProcess, setFilterProcess] = useState({processList: []});
   const [project, setProject] = useState(initialState);
   let { id } = useParams();
   id = id ?? 0;
@@ -37,6 +39,20 @@ const ProjectAdminEdit = () => {
         setProject(initialState);
       }
     });
+
+    // get filter combobox
+    getProcessListCombobox().then((data) => {
+      if (data){
+        setFilterProcess({
+          processList: data.processList,
+        });
+      }
+      else{
+        setFilterProcess({processList: []});
+      }
+    });
+
+
   }, []);
 
   const handleSubmit = (e) => {
@@ -214,26 +230,36 @@ const ProjectAdminEdit = () => {
             </div>
 
             <div className="row mb-3">
-              <Form.Label className="col-sm-2 col-form-label">
-                Tiến trình
-              </Form.Label>
-              <div className="col-sm-10">
-                <Form.Control
-                  type="text"
-                  name="processId"
-                  title="Process Id"
-                  required
-                  value={project.processId || ""}
-                  onChange={(e) =>setProject({ ...project, processId: e.target.value })
-                  }
-                />
-                <Form.Control.Feedback type="invalid">
-                  Không được bỏ trống
-                </Form.Control.Feedback>
+                <Form.Label className="col-sm-2 col-form-label">
+                  Tiến trình
+                </Form.Label>
+                <div className="col-sm-10">
+                  <Form.Select
+                    name="processId"
+                    title="Process Id"
+                    value={project.processId}
+                    required
+                    onChange={(e) =>
+                      setProject({
+                        ...project,
+                        processId: e.target.value,
+                      })
+                    }
+                  >
+                    {filterProcess.processList.length > 0 &&
+                      filterProcess.processList.map((item, index) => (
+                        <option key={index} value={item.value}>
+                          {item.text}
+                        </option>
+                      ))}
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Không được bỏ trống.
+                  </Form.Control.Feedback>
+                </div>
               </div>
-            </div>
 
-            <div className="row mb-3">
+            {/* <div className="row mb-3">
               <div className="col-sm-10 offset-sm-2">
                 <div className="form-check">
                   <input
@@ -250,7 +276,7 @@ const ProjectAdminEdit = () => {
                   </Form.Label>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="text-center">
               <Button variant="success" type="submit">

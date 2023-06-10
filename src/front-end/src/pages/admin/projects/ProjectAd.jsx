@@ -11,31 +11,51 @@ import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../../../components/user/Loading";
 import { Table } from "react-bootstrap";
 import { useSnackbar } from "notistack";
-import Pager from "../../../components/user/common/PageFlex";
+import Pager from "../../../components/pager/Pager";
 
 const ProjectAdmin = () => {
+  const {querySearch, params}= "";
   const [getProject, setGetProject] = useState([]);
   const [reRender, setRender] = useState(false);
+  const [pageNumber, setPageNumber]= useState(1);
+  const [metadata, setMetadata]= useState({})
 
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     projectFilter = useSelector((state) => state.projectFilter);
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
   let { id } = useParams,
     p = 1,
     ps = 10;
 
   useEffect(() => {
-    getFilterProject(projectFilter.name).then((data) => {
-      if (data) {
-        setGetProject(data.items);
-      } else {
-        setGetProject([]);
+    loadProject();
+    async function loadProject() {
+      const parameters= new URLSearchParams({
+        pageNumber: Object.fromEntries(querySearch|| '').length> 0 ? 1: pageNumber||1,
+      
+        pageSize: 2,
+        ...Object.fromEntries(querySearch||""),
+        ...params
+        
+      })
+      function setData(props) {
+          setGetProject(props.items);
+          setMetadata(props.metadata);
+        
       }
-      setIsVisibleLoading(false);
-    });
-  }, [projectFilter, ps, p, reRender]);
+
+      getFilterProject(projectFilter.name, parameters.pageSize, pageNumber).then((data) => {
+        if (data) {
+          setData(data)
+        } else {
+          setData([]);
+        }
+        setIsVisibleLoading(false);
+      });
+      
+    }
+  }, [projectFilter, ps, p, reRender,pageNumber]);
 
   // delete project
   const handleDeleteProject = (e, id) => {
@@ -58,7 +78,7 @@ const ProjectAdmin = () => {
     }
   };
 
-  const [pageNumber, setPageNumber] = useState(1);
+  
   function updatePageNumber(inc) {
     setPageNumber((currentVal) => currentVal + inc);
   }
@@ -130,14 +150,14 @@ const ProjectAdmin = () => {
                     )}
                   </tbody>
                 </Table>
-                <Pager 
-                  pageCount={getProject.pageCount}
-                  hasNextPage={getProject.hasNextPage}
-                  hasPrevPage={getProject.hasPrevPage}
-                  onPageChange={updatePageNumber}
-                />
+               
               </>
             )}
+             <Pager 
+                  metadata={metadata}
+                  
+                  onPageChange={updatePageNumber}
+                />
           </div>
         </div>
       </div>
