@@ -21,6 +21,9 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Profile from "../pages/user/Profile";
 import EditProfile from "../pages/user/EditProfile";
+import DashboardAdmin from "../components/admin/dashboard/Dashboard";
+import ProcessAdmin from "../pages/admin/process/ProcessAd";
+import ProcessEditAdmin from "../pages/admin/process/ProcessAdEdit";
 
 
 const Routers = () => {
@@ -67,13 +70,10 @@ const Routers = () => {
 
         {/* routers admin */}
 
-        <Route path="/admin" element={<LayoutAdmin />} />
+        <Route path="/admin" element={<DashboardAdmin />} />
         <Route path="/admin/researcher" element={<ResearchAdmin />} />
         <Route path="/admin/researcher/edit" element={<ResearchEditAdmin />} />
-        <Route
-          path="/admin/researcher/edit/:id"
-          element={<ResearchEditAdmin />}
-        />
+        <Route path="/admin/researcher/edit/:id" element={<ResearchEditAdmin />}/>
         <Route path="/admin/project" element={<ProjectAdmin />} />
         <Route path="/admin/project/edit" element={<ProjectAdminEdit />} />
         <Route path="/admin/project/edit/:id" element={<ProjectAdminEdit />} />
@@ -81,14 +81,13 @@ const Routers = () => {
         <Route path="/admin/post/edit" element={<PostAdminEdit />} />
         <Route path="/admin/post/edit/:id" element={<PostAdminEdit />} />
         <Route path="/admin/department" element={<DepartmentAdmin />} />
-        <Route
-          path="/admin/department/edit"
-          element={<DepartmentEditAdmin />}
-        />
-        <Route
-          path="/admin/department/edit/:id"
-          element={<DepartmentEditAdmin />}
-        />
+        <Route path="/admin/department/edit" element={<DepartmentEditAdmin />}/>
+        <Route path="/admin/department/edit/:id" element={<DepartmentEditAdmin />}/>
+        <Route path="/admin/process" element={<ProcessAdmin />}/>
+        <Route path="/admin/process/edit" element={<ProcessEditAdmin />}/>
+        <Route path="/admin/process/edit/:id" element={<ProcessEditAdmin />}/>
+
+
       </Routes>
     </BrowserRouter>
   );

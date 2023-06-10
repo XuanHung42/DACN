@@ -3,7 +3,7 @@ import Navbar from "../navbar/Navbar";
 import Sidebar from "../sidebar/Sidebar";
 import DashboardAdmin from "../dashboard/Dashboard";
 
-const LayoutAdmin = () => {
+const LayoutAdmin = ({children}) => {
   return (
     <>
       <div className="layout-admin">
@@ -13,7 +13,8 @@ const LayoutAdmin = () => {
             <Sidebar />
           </div>
           <div className="col-10">
-            <DashboardAdmin/>
+            {/* <DashboardAdmin/> */}
+            {children}
           </div>
         </div>
       </div>

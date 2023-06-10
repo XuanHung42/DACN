@@ -2,6 +2,7 @@ import { faBook, faHome, faPen,faUser } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { getAllDashboard } from "../../../api/DashboardApi";
+import LayoutAdmin from "../layout/LayoutAd";
 
 
 
@@ -23,7 +24,7 @@ const DashboardAdmin = () => {
 
 
   return (
-    <>
+    <LayoutAdmin>
       <div className="d-flex mt-5">
         <div className="card-body">
           <div className="text-success">
@@ -54,7 +55,7 @@ const DashboardAdmin = () => {
           </div>
         </div>
       </div>
-    </>
+    </LayoutAdmin>
   )
 }
 export default DashboardAdmin;

@@ -65,15 +65,15 @@ const Sidebar = () => {
                 </li>
               </Link>
             </div>
-            {/* <div className="sidebar-wrapper">
-              <Link className="sidebar-link">
+            <div className="sidebar-wrapper">
+              <Link className="sidebar-link" to={`/admin/process`}>
                 <li>
                   <FontAwesomeIcon icon={faArrowCircleUp} />
-                  <span className="px-3">Tiến trình</span>
+                  <span className="px-3">Tiến độ</span>
                 </li>
               </Link>
             </div>
-            <div className="sidebar-wrapper">
+            {/* <div className="sidebar-wrapper">
               <Link className="sidebar-link">
                 <li>
                   <FontAwesomeIcon icon={faPhone} />

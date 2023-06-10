@@ -8,21 +8,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
-  const [validated, setValidated] = useState(false);
 
   const initialState = {
     id: 0,
     urlSlug: "",
     name: "",
     email: "",
-    // password: "",
     imageUrl: "",
     birthDate: "",
     departmentName: "",
-    // roleId: 0,
   };
-
-  // const naviagate = useNavigate();
 
   const [userResearcher, setUserResearcher] = useState(initialState);
   let { id } = useParams();
@@ -78,10 +73,7 @@ const Profile = () => {
               name="name"
               title="Name"
               required
-              value={userResearcher.name || ""}
-              onChange={(e) =>
-                setUserResearcher({ ...userResearcher, name: e.target.value })
-              }
+              value={userResearcher.name}
             />
           </div>
         </div>
@@ -97,10 +89,7 @@ const Profile = () => {
               name="email"
               title="Email"
               required
-              value={userResearcher.email || ""}
-              onChange={(e) =>
-                setUserResearcher({ ...userResearcher, email: e.target.value })
-              }
+              value={userResearcher.email}
             />
           </div>
         </div>
@@ -116,13 +105,7 @@ const Profile = () => {
               name="birthDate"
               title="BirthDate"
               required
-              value={userResearcher.birthDate || ""}
-              onChange={(e) =>
-                setUserResearcher({
-                  ...userResearcher,
-                  birthDate: e.target.value,
-                })
-              }
+              value={userResearcher.birthDate}
             />
           </div>
         </div>
@@ -138,13 +121,7 @@ const Profile = () => {
               name="departmentName"
               title="departmentName"
               required
-              value={userResearcher.departmentName || ""}
-              onChange={(e) =>
-                setUserResearcher({
-                  ...userResearcher,
-                  departmentName: e.target.value,
-                })
-              }
+              value={userResearcher.departmentName}
             />
           </div>
         </div>

@@ -10,7 +10,7 @@ import {
 import { Button, Form } from "react-bootstrap";
 import "./styles/style.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faSave, faSignOut } from "@fortawesome/free-solid-svg-icons";
+import { faSave, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { isEmptyOrSpaces } from "../../utils/Utils";
 import { useSnackbar } from "notistack";
 
@@ -101,7 +101,7 @@ const EditProfile = () => {
           enqueueSnackbar("Đã thêm thành công", {
             variant: "success",
           });
-          navigate(`/admin/researcher`);
+          navigate(`/profile/${userResearcher.id}`);
         } else {
           enqueueSnackbar("Đã xảy ra lỗi", {
             variant: "error",

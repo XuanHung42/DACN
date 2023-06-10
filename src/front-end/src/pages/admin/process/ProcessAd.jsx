@@ -1,48 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import LayoutAdmin from "../../../components/admin/layout/LayoutAd";
 import { Link, useParams } from "react-router-dom";
-import {
-  deleteDepartment,
-  getFilterDepartment,
-} from "../../../api/DepartmentApi";
-import Loading from "../../../components/user/Loading";
-import { Table } from "react-bootstrap";
+import { deleteProcess, getAllProcess } from "../../../api/Process";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import DepartmentFilter from "../../../components/user/filter/DepartmentFilterModel";
+import Loading from "../../../components/user/Loading";
+import { Table } from "react-bootstrap";
 import { useSnackbar } from "notistack";
-import LayoutAdmin from "../../../components/admin/layout/LayoutAd"; // layout admin
 
-
-const DepartmentAdmin = () => {
-  const [getDepartment, setGetDepartment] = useState([]);
+const ProcessAdmin = () => {
+  const [getProcess, setGetProcess] = useState([]);
   const [reRender, setRender] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const [isVisibleLoading, setIsVisibleLoading] = useState(true),
-    departmentFilter = useSelector((state) => state.departmentFilter);
-
-  let { id } = useParams,
-    p = 1,
-    ps = 10;
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true);
 
   useEffect(() => {
-    getFilterDepartment(departmentFilter.name).then((data) => {
+    getAllProcess().then((data) => {
       if (data) {
-        setGetDepartment(data.items);
+        setGetProcess(data);
       } else {
-        setGetDepartment([]);
+        setGetProcess([]);
       }
       setIsVisibleLoading(false);
     });
-  }, [departmentFilter, ps, p, reRender]);
+  }, [reRender]);
 
-  const handleDeleteDepartment = (e, id) => {
+
+  // handle delete process
+  const handleDeleteProcess = (e, id) => {
     e.preventDefault();
-    RemoveDepartment(id);
-    async function RemoveDepartment(id) {
-      if (window.confirm("Bạn có muốn xoá phòng khoa này")) {
-        const response = await deleteDepartment(id);
+    RemoveProcess(id);
+    async function RemoveProcess(id) {
+      if (window.confirm("Bạn có muốn xoá tiến độ này")) {
+        const response = await deleteProcess(id);
         if (response) {
           enqueueSnackbar("Đã xoá thành công", {
             variant: "success",
@@ -55,42 +46,41 @@ const DepartmentAdmin = () => {
         }
       }
     }
-  };
+  }
 
   return (
-    <LayoutAdmin>
-      <div className="title py-3 text-danger">
-        <h3>Quản lý phòng khoa</h3>
-      </div>
-      <div className="department-content">
-        <DepartmentFilter />
-        <Link className="btn btn-success mb-2" to={`/admin/department/edit`}>
+    <>
+      <LayoutAdmin>
+        <div className="title py-3 text-danger">
+          <h3>Quản lý tiến độ</h3>
+        </div>
+        <Link className="btn btn-success mb-2" to={`/admin/process/edit`}>
           Thêm mới <FontAwesomeIcon icon={faAdd} />
         </Link>
 
         {isVisibleLoading ? (
-          <Loading />
+          <Loading/>
         ) : (
           <Table striped responsive bordered>
             <thead>
               <tr>
-                <th>Tên khoa</th>
+                <th>Tên tiến độ</th>
                 <th>Sửa</th>
                 <th>Xoá</th>
               </tr>
             </thead>
             <tbody>
-              {getDepartment.length > 0 ? (
-                getDepartment.map((item, index) => (
+              {getProcess.length > 0 ? (
+                getProcess.map((item, index) => (
                   <tr key={index}>
                     <td>{item.name}</td>
                     <td className="text-center">
-                      <Link to={`/admin/department/edit/${item.id}`}>
+                      <Link to={`/admin/process/edit/${item.id}`}>
                         <FontAwesomeIcon icon={faEdit} />
                       </Link>
                     </td>
                     <td className="text-center">
-                      <div onClick={(e) => handleDeleteDepartment(e, item.id)}>
+                      <div onClick={(e) => handleDeleteProcess(e, item.id)}>
                         <FontAwesomeIcon icon={faTrash} color="red" />
                       </div>
                     </td>
@@ -108,8 +98,8 @@ const DepartmentAdmin = () => {
             </tbody>
           </Table>
         )}
-      </div>
-    </LayoutAdmin>
+      </LayoutAdmin>
+    </>
   );
 };
-export default DepartmentAdmin;
+export default ProcessAdmin;
