@@ -288,7 +288,9 @@ namespace ManageProject.Services.Manage.Users
                 return null;
 
             }
-            var decodePassword = user.Password.DecodeFrom64();
+            //var decodePassword = user.Password.DecodeFrom64();
+            var decodePassword = user.Password;
+
             if (password != decodePassword)
             {
                 return null;

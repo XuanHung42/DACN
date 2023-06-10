@@ -10,7 +10,7 @@ export async function getAllProject(){
 // 
 export function getFilterProject(
   name = '',
-  pageSize = 5,
+  pageSize = 3,
   pageNumber = 1,
   sortColumn = '',
   sortOrder = ''

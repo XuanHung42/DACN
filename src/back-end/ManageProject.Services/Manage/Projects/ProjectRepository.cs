@@ -211,6 +211,10 @@ namespace ManageProject.Services.Manage.Projects
             {
                 throw new ArgumentException("One or more users not found");
             }
+            if(users.Count>= project.UserNumber)
+            {
+                throw new ArgumentException("Quá số người đăng ký");
+            }
 
             foreach (var user in users)
             {

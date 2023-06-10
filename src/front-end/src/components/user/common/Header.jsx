@@ -1,25 +1,25 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import MainMenu from "../menu/MainMenu";
 import logo from "../image/logo_dlu.png";
-import { Button, Image } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { Image } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import store from "../../../redux/Store";
 
 const Header = () => {
-  const user = useSelector((state) => state.auth.login.currentUser);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [users, setUser] = useState();
-  const naviagate = useNavigate();
-  const hanldeLogout = () => {
-    setUser({});
-    setUsername("");
-    setPassword("");
-    localStorage.clear();
+  let user = useSelector((state) => state.auth.login.currentUser);
+   // sử dụng useDispatch để gọi action logout
+ 
+  const handleLogout = () => {
+    user=null;
+    localStorage.removeItem("token");
     
-   
+    window.location.reload()
+     // Gọi action logout để đăng xuất người dùng
+    // Thực hiện các thao tác khác để đăng xuất người dùng (nếu cần)
   };
 
+  
   return (
     <header className="bg-success sticky-top">
       <nav className="container-fluid navbar navbar-expand-lg navbar-dark">
@@ -44,22 +44,17 @@ const Header = () => {
           >
             <MainMenu />
           </div>
-          <div className="button d-flex align-items-center">
-            {user != null ? (
-              <>
-                <span className="text-white">
-                  Xin chào
-                  <Link to={`/profile/${user.result.id}`} className="px-1 text-decoration-none text-white">
-                   {user.result.name}
-                  </Link>
-                  {/* {console.log("Check user: ", user.result)} */}
-                </span>
-                <div className="px-2">
-                  <Button className="btn-danger" onClick={hanldeLogout}>
-                    Đăng xuất
-                  </Button>
-                </div>
-              </>
+          <div className="button d-flex">
+            {(user != null)? (
+             <>
+              <p>
+                {user.name}
+              </p>
+              <Link className="px-2 text-decoration-none" to="/"
+                onClick={handleLogout}
+              >
+                Đăng xuất
+              </Link></>
             ) : (
               <div className="px-2">
                 <Link className="btn btn-primary" to={`/login`}>

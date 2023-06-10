@@ -37,6 +37,8 @@ const ResearchEditAdmin = () => {
   id = id ?? 0;
 
   useEffect(() => {
+
+    
     document.title = "Thêm, cập nhật nhà khoa học";
     getUserResearchertById(id).then((data) => {
       if (data)

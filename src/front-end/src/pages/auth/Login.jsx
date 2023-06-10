@@ -25,7 +25,18 @@ const Login = (props) => {
       userName: userNameLogin,
       password: passwordLogin,
     };
-    LoginUser(newUser, dispatch, naviagate);
+    LoginUser(newUser, dispatch, naviagate).then(
+      ()=>{
+        // lưu đăng nhập vào Local Store
+        localStorage.setItem("isLoggedIn", true)
+        
+      }
+    ).catch((error)=>{
+      enqueueSnackbar("Đăng nhập không thành công: " + error.message, {
+        variant: "error",
+      });
+    });
+    
     // enqueueSnackbar("Đăng nhập thành công", {
     //   variant: "success",
     // }); 
