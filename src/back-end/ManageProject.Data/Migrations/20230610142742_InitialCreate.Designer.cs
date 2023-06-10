@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManageProject.Data.Migrations
 {
     [DbContext(typeof(ManageDbContext))]
-    [Migration("20230607141412_InitialCreate")]
+    [Migration("20230610142742_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -145,10 +145,18 @@ namespace ManageProject.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<int>("ProcessId")
                         .HasColumnType("int");
@@ -160,6 +168,12 @@ namespace ManageProject.Data.Migrations
 
                     b.Property<string>("ShortDescription")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<int?>("TopicId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UrlSlug")
                         .IsRequired()
@@ -177,6 +191,8 @@ namespace ManageProject.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProcessId");
+
+                    b.HasIndex("TopicId");
 
                     b.ToTable("Project", (string)null);
                 });
@@ -202,6 +218,30 @@ namespace ManageProject.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles", (string)null);
+                });
+
+            modelBuilder.Entity("ManageProject.Core.Entities.Topic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("UrlSlug")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("False");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Topics", (string)null);
                 });
 
             modelBuilder.Entity("ManageProject.Core.Entities.User", b =>
@@ -350,7 +390,13 @@ namespace ManageProject.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Process_Project");
 
+                    b.HasOne("ManageProject.Core.Entities.Topic", "Topic")
+                        .WithMany("Projects")
+                        .HasForeignKey("TopicId");
+
                     b.Navigation("Process");
+
+                    b.Navigation("Topic");
                 });
 
             modelBuilder.Entity("ManageProject.Core.Entities.User", b =>
@@ -430,6 +476,11 @@ namespace ManageProject.Data.Migrations
             modelBuilder.Entity("ManageProject.Core.Entities.Role", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ManageProject.Core.Entities.Topic", b =>
+                {
+                    b.Navigation("Projects");
                 });
 
             modelBuilder.Entity("ManageProject.Core.Entities.User", b =>

@@ -29,8 +29,16 @@ namespace ManageProject.Data.Mappings
                 .HasMaxLength(300)
                 .IsRequired();
 
+            builder.Property(p => p.StartDate)
+                .HasColumnType("datetime");
 
-            builder.Property(p => p.UserNumber)
+			builder.Property(p => p.EndDate)
+				.HasColumnType("datetime");
+
+            builder.Property(p => p.Note)
+                .HasMaxLength(300);
+
+			builder.Property(p => p.UserNumber)
               .IsRequired()
               .HasDefaultValue(0);
 

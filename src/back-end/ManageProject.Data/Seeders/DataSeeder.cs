@@ -32,7 +32,8 @@ namespace ManageProject.Data.Seeders
 
            
             var processes = AddProcesses();
-            var project = AddProjects(users,processes);
+            var topics = AddTopic();
+            var project = AddProjects(users,processes, topics);
             var posts = AddPosts(users, project, departments);
 
 
@@ -166,7 +167,49 @@ namespace ManageProject.Data.Seeders
             _dbContext.SaveChanges();
             return processes;
         }
-        private IList<Department> AddDeparments()
+		private IList<Topic> AddTopic()
+		{
+			var topics = new List<Topic>()
+			{
+				new()
+				{
+
+					Name = "Khoa học",
+					UrlSlug = "khoa-hoc"
+
+				},
+				 new()
+				{
+					Name = "Công nghệ",
+					UrlSlug = "cong-nghe"
+
+
+				},
+				  new()
+				{
+					Name = "Giao-duc",
+					UrlSlug = "giao-duc"
+				},
+
+				  new()
+				{
+					Name = "Xã hội",
+					UrlSlug = "xa-hoi"
+				}
+
+
+			};
+			foreach (var topic in topics)
+			{
+				if (!_dbContext.Topics.Any(t => t.UrlSlug == topic.UrlSlug))
+				{
+					_dbContext.Topics.Add(topic);
+				}
+			}
+			_dbContext.SaveChanges();
+			return topics;
+		}
+		private IList<Department> AddDeparments()
         {
             var deparments = new List<Department>() {
                 new()
@@ -205,7 +248,7 @@ namespace ManageProject.Data.Seeders
             _dbContext.SaveChanges();
             return deparments;
         }
-        private IList<Project> AddProjects(IList<User> users, IList<Process> processes)
+        private IList<Project> AddProjects(IList<User> users, IList<Process> processes, IList<Topic> topics)
         {
             var projects = new List<Project>()
             {
@@ -215,67 +258,81 @@ namespace ManageProject.Data.Seeders
                     UrlSlug="xay-dung-ung-dung-quan-ly-cong-viec",
                     Description="Xây dựng hoàn thiện một ứng dụng để quản lý công việc cho nhân viên",
                     ShortDescription="Quản lý công việc",
-                    CostProject= "1000000 VND",
-                    UserNumber=1,
+                    CostProject= "1000000",
+                    UserNumber=2,
                     Users=  new List<User>()
                     {
                         users[1], users[2]
                     },
                     Register = false,
-                    Process= processes[0]
+                    Process= processes[0],
+                    Topic = topics[1],
+					StartDate= DateTime.Now,
+					EndDate= new DateTime(2023,6,26),// ngay nghiem thu
+                    Note ="Sửa lại báo cáo"
 
-
-
-                },
+				},
                  new()
                 {
-                    Name= "Xây dựng ứng dụng quản lý công việc",
-                    UrlSlug="xay-dung-ung-dung-quan-ly-cong-viec",
-                    Description="Xây dựng hoàn thiện một ứng dụng để quản lý công việc cho nhân viên",
-                    ShortDescription="Quản lý công việc",
-                    CostProject= "1000000 VND",
-                    UserNumber=1,
+                    Name= "Xây dựng ứng dụng quản lý thời gian",
+                    UrlSlug="xay-dung-ung-dung-quan-ly-thoi-gian",
+                    Description="Xây dựng hoàn thiện một ứng dụng để quản lý thời gian cho nhân viên",
+                    ShortDescription="Quản lý thời gian",
+                    CostProject= "2000000",
+                    UserNumber=2,
                     Users=  new List<User>()
                     {
                         users[1], users[2]
                     },
                     Register = false,
-                    Process= processes[2]
+                    Process= processes[2],
+					Topic = topics[1],
+					StartDate= DateTime.Now,
+					EndDate= new DateTime(2023,8,26),// ngay nghiem thu
+					Note =""
 
 
-                },
+
+				},
                   new()
                 {
                     Name= "Xây dựng ứng dụng thu hoạch",
                     UrlSlug="xay-dung-ung-dung-quan-ly-thu-hoach",
                     Description="Xây dựng hoàn thiện một ứng dụng để quản lý công tác thu hoạch",
                     ShortDescription="Quản lý thu hoạch",
-                    CostProject= "1100000 VND",
+                    CostProject= "1100000",
                     UserNumber=1,
                     Users= new List < User >() {
                         users[1]
 
                     },
                     Register = false,
-                    Process= processes[1]
+                    Process= processes[1],
+					Topic = topics[0],
+					StartDate= DateTime.Now,
+					EndDate= new DateTime(2023,9,16),// ngay nghiem thu
+					Note ="Thực hiện tốt"
 
 
-                },
+				},
                    new()
                 {
                     Name= "Tìm hiểu về luật an toàn giao thông",
                     UrlSlug="tim-hieu-luat-an-toan-giao-thong",
                     Description="Tìm hiểu về luật an toàn giao thông",
                     ShortDescription="Quản lý công việc",
-                    CostProject= "200000 VND",
-                    UserNumber=1,
+                    CostProject= "600000",
+                    UserNumber=2,
                     Users= new List < User >() { users[1], users[2] },
                     Register = true,
+                    Process= processes[0],
+                    Topic= topics[3],
+					StartDate= DateTime.Now,
+					EndDate= new DateTime(2023,8,12),// ngay nghiem thu
+					Note =""
 
-                    Process= processes[0]
-
-                }
-            };
+				}
+			};
             foreach (var project in projects)
             {
                 if (!_dbContext.Projects.Any(a => a.UrlSlug == project.UrlSlug))

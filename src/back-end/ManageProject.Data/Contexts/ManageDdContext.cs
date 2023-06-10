@@ -24,6 +24,8 @@ namespace ManageProject.Data.Contexts
 		public DbSet<Role> Roles { get; set; }
 
 		public DbSet<User> Users { get; set; }
+		
+		public DbSet<Topic> Topics { get; set; }
 
         
         public ManageDbContext(DbContextOptions<ManageDbContext> options) : base(options) { }

@@ -54,30 +54,17 @@ namespace ManageProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Project",
+                name: "Topics",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    ShortDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UrlSlug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CostProject = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    UserNumber = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    Register = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ProcessId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    UrlSlug = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "False")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Project", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Process_Project",
-                        column: x => x.ProcessId,
-                        principalTable: "Processes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Topics", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,6 +101,42 @@ namespace ManageProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Project",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ShortDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UrlSlug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CostProject = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    UserNumber = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    StartDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Register = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ProcessId = table.Column<int>(type: "int", nullable: false),
+                    TopicId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Project", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Process_Project",
+                        column: x => x.ProcessId,
+                        principalTable: "Processes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Project_Topics_TopicId",
+                        column: x => x.TopicId,
+                        principalTable: "Topics",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
@@ -146,6 +169,28 @@ namespace ManageProject.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserToken",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Token = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Expired = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserToken", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserToken_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Selected",
                 columns: table => new
                 {
@@ -164,28 +209,6 @@ namespace ManageProject.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Selected_Users_UsersId",
                         column: x => x.UsersId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserToken",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Token = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Expired = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserToken", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserToken_Users_UserId",
-                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -236,6 +259,11 @@ namespace ManageProject.Data.Migrations
                 column: "ProcessId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Project_TopicId",
+                table: "Project",
+                column: "TopicId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Selected_UsersId",
                 table: "Selected",
                 column: "UsersId");
@@ -280,6 +308,9 @@ namespace ManageProject.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Processes");
+
+            migrationBuilder.DropTable(
+                name: "Topics");
 
             migrationBuilder.DropTable(
                 name: "Department");
