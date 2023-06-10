@@ -112,7 +112,6 @@ const Contact = () => {
                   height="360px"
                   style={{ border: 0 }}
                   aria-hidden="false"
-                  tabindex="0"
                   title="map"
                 ></iframe>
               </div>

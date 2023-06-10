@@ -8,6 +8,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { isEmptyOrSpaces } from "../../../utils/Utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileDownload } from "@fortawesome/free-solid-svg-icons";
+import { getUserFilterDepartment } from "../../../api/UserApi";
 
 const PostAdminEdit = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -23,7 +24,7 @@ const PostAdminEdit = () => {
     file: "",
     userId: 0,
     departmentId: 0,
-  };
+  },  [filterDepartment, setFilterDepartment] = useState({ departmentList: [] });
   const [post, setPost] = useState(initialState);
   let { id } = useParams();
   id = id ?? 0;
@@ -39,6 +40,18 @@ const PostAdminEdit = () => {
         setPost(initialState);
       }
     });
+
+
+    // filter department
+    getUserFilterDepartment().then((data) => {
+      if (data) {
+        setFilterDepartment({
+          departmentList: data.departmentList,
+        });
+      } else {
+        setFilterDepartment({ departmentList: [] });
+      }
+    })
   }, []);
 
   const [validated, setValidated] = useState(false);
@@ -238,7 +251,7 @@ const PostAdminEdit = () => {
 
               <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">
-                  Mã nhà khoa học
+                  Mã số ID nhà khoa học
                 </Form.Label>
                 <div className="col-sm-10">
                   <Form.Control
@@ -259,19 +272,28 @@ const PostAdminEdit = () => {
 
               <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">
-                  Mã phòng khoa
+                  Phòng khoa
                 </Form.Label>
                 <div className="col-sm-10">
-                  <Form.Control
-                    type="text"
+                  <Form.Select
                     name="departmentId"
-                    title="Department Id"
+                    title="department Id"
+                    value={post.departmentId}
                     required
-                    value={post.departmentId || ""}
                     onChange={(e) =>
-                      setPost({ ...post, departmentId: e.target.value })
+                      setPost({
+                        ...post,
+                        departmentId: e.target.value,
+                      })
                     }
-                  />
+                  >
+                    {filterDepartment.departmentList.length > 0 &&
+                      filterDepartment.departmentList.map((item, index) => (
+                        <option key={index} value={item.value}>
+                          {item.text}
+                        </option>
+                      ))}
+                  </Form.Select>
                   <Form.Control.Feedback type="invalid">
                     Không được bỏ trống.
                   </Form.Control.Feedback>
