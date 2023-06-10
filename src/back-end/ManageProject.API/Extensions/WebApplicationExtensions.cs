@@ -19,6 +19,7 @@ using ManageProject.Services.Manage.Posts;
 using ManageProject.Services.Manage.Account;
 using ManageProject.API.JwtToken;
 using WebApi.JwtToken;
+using ManageProject.Services.Manage.Topics;
 
 namespace ManageProject.API.Extensions
 {
@@ -51,6 +52,8 @@ namespace ManageProject.API.Extensions
 			builder.Services.AddScoped<IUserTokenRepository, UserTokenRepository>();
 			builder.Services.AddScoped<IJwtTokenRepository, JwtTokenRepository>();
 
+            // topic
+            builder.Services.AddScoped<ITopicRepository, TopicRepository>();
 
 			return builder;
         }

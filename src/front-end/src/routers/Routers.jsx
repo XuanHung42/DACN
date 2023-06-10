@@ -24,6 +24,8 @@ import EditProfile from "../pages/user/EditProfile";
 import DashboardAdmin from "../components/admin/dashboard/Dashboard";
 import ProcessAdmin from "../pages/admin/process/ProcessAd";
 import ProcessEditAdmin from "../pages/admin/process/ProcessAdEdit";
+import TopicAdmin from "../pages/admin/topics/TopicAd";
+import TopicAdminEdit from "../pages/admin/topics/TopicAdEdit";
 
 
 const Routers = () => {
@@ -86,6 +88,11 @@ const Routers = () => {
         <Route path="/admin/process" element={<ProcessAdmin />}/>
         <Route path="/admin/process/edit" element={<ProcessEditAdmin />}/>
         <Route path="/admin/process/edit/:id" element={<ProcessEditAdmin />}/>
+        <Route path="/admin/topic" element={<TopicAdmin />}/>
+        <Route path="/admin/topic/edit" element={<TopicAdminEdit />}/>
+        <Route path="/admin/topic/edit/:id" element={<TopicAdminEdit />}/>
+
+
 
 
       </Routes>

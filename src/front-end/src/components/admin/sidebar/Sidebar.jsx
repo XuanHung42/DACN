@@ -2,6 +2,8 @@ import {
   faArrowCircleUp,
   faBook,
   faCircleCheck,
+  faCode,
+  faCodeBranch,
   faDashboard,
   faHomeAlt,
   faPen,
@@ -73,14 +75,14 @@ const Sidebar = () => {
                 </li>
               </Link>
             </div>
-            {/* <div className="sidebar-wrapper">
-              <Link className="sidebar-link">
+            <div className="sidebar-wrapper">
+              <Link className="sidebar-link" to={`/admin/topic`}>
                 <li>
-                  <FontAwesomeIcon icon={faPhone} />
-                  <span className="px-3">Liên hệ</span>
+                  <FontAwesomeIcon icon={faCodeBranch} />
+                  <span className="px-3">Lĩnh vực</span>
                 </li>
               </Link>
-            </div> */}
+            </div>
           </div>
 
           <div className="sidebar-main">

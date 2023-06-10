@@ -53,6 +53,10 @@ namespace ManageProject.API.Mapsters
             config.NewConfig<PostEditModel, Post>();
 
 
+            config.NewConfig<Topic, TopicItem>()
+                .Map(dest => dest.Id, src => src.Id);
+
+
         }
     }
 }

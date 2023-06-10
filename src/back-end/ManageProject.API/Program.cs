@@ -30,6 +30,7 @@ var app = builder.Build();
     app.MapPostEndpoints();
     app.MapDashboardEndpoint();
     app.MapAccountEndpoint();
+    app.MapTopicEndpoints();
 
 	using (var scope = app.Services.CreateScope())
     {
