@@ -20,9 +20,14 @@ namespace ManageProject.API.Models.Project
 
         public int UserNumber { get; set; }
 
-        public bool Register { get; set; }
+        public DateTime StartDate { get; set; }
+		public DateTime EndDate { get; set; }
+
+		public bool Register { get; set; }
 
         public int ProcessId { get; set; }
+        public int TopicId { get; set; }
+        public string Note { get; set; }
         //public string SelectUsers { get; set; }
 
         //public List<string> GetSelectedUsers()
@@ -44,9 +49,12 @@ namespace ManageProject.API.Models.Project
                 CostProject = (form["CostProject"]),
                 UserNumber = int.Parse(form["UserNumber"]),
                 Register = form["Register"] != "false",
-                ProcessId = int.Parse(form["ProcessId"])
-
-            };
+				StartDate = DateTime.Parse(form["StartDate"]),
+				EndDate = DateTime.Parse(form["EndDate"]),
+				ProcessId = int.Parse(form["ProcessId"]),
+                TopicId = int.Parse(form["TopicId"]),
+                Note = form["Note"]
+			};
         }
 
     }

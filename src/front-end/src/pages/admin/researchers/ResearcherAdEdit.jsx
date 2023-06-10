@@ -197,11 +197,11 @@ const ResearchEditAdmin = () => {
 
               <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">
-                  Ngày tham gia
+                  Ngày sinh
                 </Form.Label>
                 <div className="col-sm-10">
                   <Form.Control
-                    type="text"
+                    type="datetime-local"
                     name="birthDate"
                     title="BirthDate"
                     required

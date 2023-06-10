@@ -1,6 +1,6 @@
-﻿namespace ManageProject.API.Models.Process
+﻿namespace ManageProject.API.Models.Topic
 {
-	public class ProcessDto
+	public class TopicDto
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }

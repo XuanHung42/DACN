@@ -192,7 +192,7 @@ const EditProfile = () => {
                 Email của bạn
               </Form.Label>
               <Form.Control
-                type="Email"
+                type="email"
                 name="email"
                 title="Email"
                 required
@@ -216,9 +216,9 @@ const EditProfile = () => {
                 Ngày sinh
               </Form.Label>
               <Form.Control
-                type="text"
+                type="datetime-local"
                 name="birthDate"
-                title="BirthDate"
+                title="Birth Date"
                 required
                 value={userResearcher.birthDate || ""}
                 onChange={(e) =>

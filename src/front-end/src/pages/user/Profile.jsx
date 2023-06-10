@@ -100,7 +100,7 @@ const Profile = () => {
               Ngày sinh
             </Form.Label>
             <Form.Control
-              type="text"
+              type="datetime-local"
               disabled
               name="birthDate"
               title="BirthDate"

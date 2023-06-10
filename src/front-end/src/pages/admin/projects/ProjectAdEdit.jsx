@@ -11,20 +11,25 @@ import { getProcessListCombobox } from "../../../api/ProjectApi";
 const ProjectAdminEdit = () => {
   const initialState = {
     id: 0,
-    name: '',
-    description: '',
-    shortDescription: '',
-    urlSlug: '',
-    costProject: '',
+    name: "",
+    description: "",
+    shortDescription: "",
+    urlSlug: "",
+    costProject: "",
+    startDate: "",
+    endDate: "",
+    note: "",
     userNumber: 0,
     register: false,
     processId: 0,
+    topicId: 0,
+
   };
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
 
-  const [filterProcess, setFilterProcess] = useState({processList: []});
+  const [filterProcess, setFilterProcess] = useState({ processList: [] });
   const [project, setProject] = useState(initialState);
   let { id } = useParams();
   id = id ?? 0;
@@ -33,7 +38,7 @@ const ProjectAdminEdit = () => {
     getProjectById(id).then((data) => {
       if (data) {
         setProject({
-          ...data
+          ...data,
         });
       } else {
         setProject(initialState);
@@ -42,17 +47,14 @@ const ProjectAdminEdit = () => {
 
     // get filter combobox
     getProcessListCombobox().then((data) => {
-      if (data){
+      if (data) {
         setFilterProcess({
           processList: data.processList,
         });
-      }
-      else{
-        setFilterProcess({processList: []});
+      } else {
+        setFilterProcess({ processList: [] });
       }
     });
-
-
   }, []);
 
   const handleSubmit = (e) => {
@@ -66,14 +68,12 @@ const ProjectAdminEdit = () => {
       updateAndAddProject(formData).then((data) => {
         console.log("Project", project);
         console.log("data", data);
-        if (data)
-        {
+        if (data) {
           enqueueSnackbar("Đã lưu thành công", {
             variant: "success",
           });
-          navigate(`/admin/project`)
-        }
-        else
+          navigate(`/admin/project`);
+        } else
           enqueueSnackbar("Đã xảy ra lỗi", {
             variant: "error",
             closeSnackbar,
@@ -81,11 +81,8 @@ const ProjectAdminEdit = () => {
       });
     }
   };
-  if(id&& !isInteger(id))
-  return(
-      <Navigate to = {`/400?redirectTo=/admin/products`}/>
-       
-  )
+  if (id && !isInteger(id))
+    return <Navigate to={`/400?redirectTo=/admin/products`} />;
 
   return (
     <>
@@ -115,9 +112,11 @@ const ProjectAdminEdit = () => {
                   title="Name"
                   required
                   value={project.name || ""}
-                  onChange={(e) =>setProject({ 
+                  onChange={(e) =>
+                    setProject({
                       ...project,
-                       name: e.target.value })
+                      name: e.target.value,
+                    })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -136,11 +135,11 @@ const ProjectAdminEdit = () => {
                   title="UrlSlug"
                   required
                   value={project.urlSlug || ""}
-                  onChange={(e) =>setProject(
-                      { 
-                        ...project, 
-                        urlSlug: e.target.value 
-                      })
+                  onChange={(e) =>
+                    setProject({
+                      ...project,
+                      urlSlug: e.target.value,
+                    })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -159,7 +158,8 @@ const ProjectAdminEdit = () => {
                   title="Description"
                   required
                   value={decode(project.description || "")}
-                  onChange={(e) =>setProject({ ...project, description: e.target.value })
+                  onChange={(e) =>
+                    setProject({ ...project, description: e.target.value })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -180,7 +180,8 @@ const ProjectAdminEdit = () => {
                   title="ShortDescription"
                   required
                   value={decode(project.shortDescription || "")}
-                  onChange={(e) =>setProject({ ...project, shortDescription: e.target.value })
+                  onChange={(e) =>
+                    setProject({ ...project, shortDescription: e.target.value })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -200,7 +201,56 @@ const ProjectAdminEdit = () => {
                   title="Cost Project"
                   required
                   value={project.costProject || ""}
-                  onChange={(e) =>setProject({ ...project, costProject: e.target.value })
+                  onChange={(e) =>
+                    setProject({ ...project, costProject: e.target.value })
+                  }
+                />
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống
+                </Form.Control.Feedback>
+              </div>
+            </div>
+
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Ngày thực hiện
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="datetime-local"
+                  name="startDate"
+                  title="Start Date"
+                  required
+                  value={project.startDate || ""}
+                  onChange={(e) =>
+                    setProject({
+                      ...project,
+                      startDate: e.target.value,
+                    })
+                  }
+                />
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống
+                </Form.Control.Feedback>
+              </div>
+            </div>
+
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Ngày kết thúc
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="datetime-local"
+                  name="endDate"
+                  title="End Date"
+                  required
+                  value={project.endDate || ""}
+                  onChange={(e) =>
+                    setProject({
+                      ...project,
+                      endDate: e.target.value,
+                    })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -220,7 +270,8 @@ const ProjectAdminEdit = () => {
                   title="User Number"
                   required
                   value={project.userNumber || ""}
-                  onChange={(e) =>setProject({ ...project, userNumber: e.target.value })
+                  onChange={(e) =>
+                    setProject({ ...project, userNumber: e.target.value })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -230,34 +281,75 @@ const ProjectAdminEdit = () => {
             </div>
 
             <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Lưu ý
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  as="textarea"
+                  type="text"
+                  name="note"
+                  title="Note"
+                  value={decode(project.note || "")}
+                  onChange={(e) =>
+                    setProject({ ...project, note: e.target.value })
+                  }
+                />
+                {/* <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống
+                </Form.Control.Feedback> */}
+              </div>
+            </div>
+            <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">
-                  Tiến trình
+                  Lĩnh vực
                 </Form.Label>
                 <div className="col-sm-10">
-                  <Form.Select
-                    name="processId"
-                    title="Process Id"
-                    value={project.processId}
+                  <Form.Control
+                    type="text"
+                    name="topicId"
+                    title="Topic Id"
                     required
+                    value={project.topicId || ""}
                     onChange={(e) =>
-                      setProject({
-                        ...project,
-                        processId: e.target.value,
-                      })
+                      setProject({ ...project, topicId: e.target.value })
                     }
-                  >
-                    {filterProcess.processList.length > 0 &&
-                      filterProcess.processList.map((item, index) => (
-                        <option key={index} value={item.value}>
-                          {item.text}
-                        </option>
-                      ))}
-                  </Form.Select>
+                  />
                   <Form.Control.Feedback type="invalid">
                     Không được bỏ trống.
                   </Form.Control.Feedback>
                 </div>
               </div>
+
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Tiến trình
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Select
+                  name="processId"
+                  title="Process Id"
+                  value={project.processId}
+                  required
+                  onChange={(e) =>
+                    setProject({
+                      ...project,
+                      processId: e.target.value,
+                    })
+                  }
+                >
+                  {filterProcess.processList.length > 0 &&
+                    filterProcess.processList.map((item, index) => (
+                      <option key={index} value={item.value}>
+                        {item.text}
+                      </option>
+                    ))}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống.
+                </Form.Control.Feedback>
+              </div>
+            </div>
 
             {/* <div className="row mb-3">
               <div className="col-sm-10 offset-sm-2">

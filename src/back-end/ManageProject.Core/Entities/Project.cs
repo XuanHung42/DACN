@@ -28,6 +28,7 @@ namespace ManageProject.Core.Entities
         public bool Register { get; set; }  // trạng thái
         public int UserId { get; set; }
         public int ProcessId { get; set; }
+        public int TopicId { get; set; }
         public IList<User> Users { get; set; }
         public IList<Post> Posts { get; set; }
         public Process Process { get; set; }

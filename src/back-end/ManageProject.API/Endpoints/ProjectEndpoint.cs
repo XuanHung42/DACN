@@ -149,8 +149,12 @@ public static class ProjectEndpoint
 		project.ShortDescription = model.ShortDescription;
 		project.CostProject = model.CostProject;
 		project.UserNumber = model.UserNumber;
+		project.StartDate = model.StartDate;
+		project.EndDate = model.EndDate;
 		project.Register = model.Register;
 		project.ProcessId = model.ProcessId;
+		project.TopicId = model.TopicId;
+		project.Note = model.Note;
 
 
 		await projectRepository.CreateOrUpdateProjectAsync(project);

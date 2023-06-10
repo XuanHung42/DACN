@@ -185,10 +185,9 @@ const PostAdminEdit = () => {
                 </Form.Label>
                 <div className="col-sm-10">
                   <Form.Control
-                    type="text"
+                    type="datetime-local"
                     name="created"
                     title="Created"
-                    placeholder="05-06-2023"
                     required
                     value={post.created || ""}
                     onChange={(e) =>
