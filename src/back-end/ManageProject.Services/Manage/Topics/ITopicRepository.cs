@@ -1,4 +1,5 @@
 ﻿using ManageProject.Core.DTO;
+using ManageProject.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace ManageProject.Services.Manage.Topics
 		// getall
 		Task<IList<TopicItem>> GetAllTopicAsync (CancellationToken cancellationToken = default);
 
+		Task<Topic> GetTopicById(int topicId);
 
-
+		Task<bool> AddOrUpdateTopicAsync(Topic topic, CancellationToken cancellationToken = default);
 	}
 }
