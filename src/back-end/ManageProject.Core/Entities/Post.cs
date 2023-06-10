@@ -23,5 +23,7 @@ namespace ManageProject.Core.Entities
         public IList<Project> Projects { get; set; }
         public User User { get; set; }
         public int ViewCount { get; set; }
+
+        // test code new branch
     }
 }
