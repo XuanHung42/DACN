@@ -42,7 +42,11 @@ const authSlice = createSlice({
       state.register.error = true;
       state.register.success = false;
     },
-  }
+    logout: (state)=>{
+      state.login.currentUser=null;
+      localStorage.removeItem("token")
+    }}
+
 })
 
 export const {

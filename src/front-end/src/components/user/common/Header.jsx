@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import MainMenu from "../menu/MainMenu";
 import logo from "../image/logo_dlu.png";
 import { Image } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import store from "../../../redux/Store";
 
 const Header = () => {
-  const user = useSelector((state) => state.auth.login.currentUser);
+  let user = useSelector((state) => state.auth.login.currentUser);
+   // sử dụng useDispatch để gọi action logout
+ 
+  const handleLogout = () => {
+    user=null;
+    localStorage.removeItem("token");
+    
+    window.location.reload()
+     // Gọi action logout để đăng xuất người dùng
+    // Thực hiện các thao tác khác để đăng xuất người dùng (nếu cần)
+  };
+
   
-
-
   return (
     <header className="bg-success sticky-top">
       <nav className="container-fluid navbar navbar-expand-lg navbar-dark">
@@ -35,12 +45,14 @@ const Header = () => {
             <MainMenu />
           </div>
           <div className="button d-flex">
-            {user != null ? (
+            {(user != null)? (
              <>
               <p>
                 {user.name}
               </p>
-              <Link className="px-2 text-decoration-none" to="/">
+              <Link className="px-2 text-decoration-none" to="/"
+                onClick={handleLogout}
+              >
                 Đăng xuất
               </Link></>
             ) : (
