@@ -8,6 +8,7 @@ using ManageProject.Services.Manage.Processes;
 using ManageProject.Services.Manage.Topics;
 using ManageProject.WebApi.Filters;
 using MapsterMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 using System.Net;
 
@@ -43,6 +44,10 @@ namespace ManageProject.API.Endpoints
 				.Produces(401)
 				.Produces<ApiResponse<string>>();
 
+
+			routeGroupBuilder.MapGet("/combobox", FilterComboboxTopic)
+				.WithName("FilterComboboxTopic")
+				.Produces<ApiResponse<TopicFilterModel>>();
 
 			return app;
 		}
@@ -105,6 +110,22 @@ namespace ManageProject.API.Endpoints
 			return await topicRepository.DeleteTopicAsync(id)
 			? Results.Ok(ApiResponse.Success("Topic có id nhập vào đã được xoá ", HttpStatusCode.NoContent))
 			: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy topic có id = {id}"));
+		}
+
+		// filter combobox
+		private static async Task<IResult> FilterComboboxTopic(
+			ITopicRepository topicRepository)
+		{
+			var model = new TopicFilterModel()
+			{
+				TopicList = (await topicRepository.GetTopicListCombobox())
+				.Select(t => new SelectListItem()
+				{
+					Text = t.Name,
+					Value = t.Id.ToString()
+				})
+			};
+			return Results.Ok(ApiResponse.Success(model));
 		}
 	}
 }

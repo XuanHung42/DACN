@@ -18,5 +18,7 @@ namespace ManageProject.Services.Manage.Topics
 		Task<bool> AddOrUpdateTopicAsync(Topic topic, CancellationToken cancellationToken = default);
 	
 		Task<bool> DeleteTopicAsync(int topicId, CancellationToken cancellationToken = default);
+	
+		Task<IList<TopicItem>> GetTopicListCombobox(CancellationToken cancellationToken = default);
 	}
 }
