@@ -40,7 +40,7 @@ const ProcessAdmin = () => {
           });
           setRender(true);
         } else {
-          enqueueSnackbar("Đã xoá thành công", {
+          enqueueSnackbar("Đã xảy ra lỗi xoá", {
             variant: "error",
           });
         }
@@ -52,7 +52,7 @@ const ProcessAdmin = () => {
     <>
       <LayoutAdmin>
         <div className="title py-3 text-danger">
-          <h3>Quản lý tiến độ</h3>
+          <h3>Quản lý trạng thái tiến độ thực hiện dự án</h3>
         </div>
         <Link className="btn btn-success mb-2" to={`/admin/process/edit`}>
           Thêm mới <FontAwesomeIcon icon={faAdd} />
