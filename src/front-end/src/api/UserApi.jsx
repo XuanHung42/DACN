@@ -58,3 +58,7 @@ export async function getUserFilterRole() {
 export async function getUserFilterDepartment() {
   return get_api(`https://localhost:7284/api/users/filterDepartment`);
 }
+
+export async function addProjectsToUser(projectIds, userId) {
+  return post_api("https://localhost:7284/api/users/addProjects", {userId, projectIds})
+}

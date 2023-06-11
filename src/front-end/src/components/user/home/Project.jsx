@@ -5,30 +5,90 @@ import { getFilterProject } from "../../../api/ProjectApi";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ProjectFilter from "../filter/ProjectFilterModel";
+import { addProjectsToUser } from "../../../api/UserApi";
+import { useSnackbar } from "notistack";
 
 const Project = () => {
   const [getProject, setGetProject] = useState([]);
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+  const projectFilter = useSelector((state) => state.projectFilter);
+  const user = useSelector((state) => state.auth.login.currentUser);
 
-  const [isVisibleLoading, setIsVisibleLoading] = useState(true),
-    projectFilter = useSelector((state) => state.projectFilter);
+  const { enqueueSnackbar } = useSnackbar();
+  const [isRegistered, setIsRegistered] = useState([]);
+  let { id } = useParams();
+  let p = 1;
+  let ps = 10;
 
-  let { id } = useParams,
-    p = 1,
-    ps = 10;
+  const handleRegister = (projectId, index) => {
+    if (user != null && user.result != null) {
+      const hasUserRegistered = getProject[index].users.some(
+        (userThis) => userThis.id === user.result.id
+      );
+      if (hasUserRegistered) {
+        setIsRegistered((prevState) => {
+          const newState = [...prevState];
+          newState[index] = true;
+          return newState;
+        });
+        enqueueSnackbar("Bạn đã đăng ký dự án này rồi", { variant: "warning" });
+      } else {
+        addProjectsToUser(user.result.id, [projectId]).then(() => {
+          // Cập nhật lại danh sách các dự án trong getProject sau khi đăng ký thành công
+          getFilterProject(projectFilter.name).then((data) => {
+            if (data) {
+              setGetProject(data.items);
+              setIsRegistered((prevState) => {
+                const newState = [...prevState];
+                newState[index] = true;
+                return newState;
+              });
+              localStorage.setItem(`isRegistered_${projectId}`, true);
+              enqueueSnackbar("Đăng ký thành công", { variant: "success" });
+            } else {
+              setGetProject([]);
+            }
+          });
+        });
+      }
+    } else {
+      enqueueSnackbar("Bạn cần đăng nhập để đăng ký dự án", { variant: "error" });
+    }
+  };
 
   useEffect(() => {
     getFilterProject(projectFilter.name).then((data) => {
       if (data) {
-        console.log("data check abc: ", data);
         setGetProject(data.items);
+        setIsRegistered(data.items.map((project) => {
+          const key = `isRegistered_${project.id}`;
+          return localStorage.getItem(key) === "true";
+        }));
+        const hasUserRegistered = data.items.some(
+          (project) =>
+            project.id === id &&
+            user &&
+            user.result &&
+            project.users.some((userThis) => userThis.id === user.result.id)
+        );
+        if (hasUserRegistered) {
+          setIsRegistered((prevState) => {
+            const newState = [...prevState];
+            const index = data.items.findIndex((project) => project.id === id);
+            newState[index] = true;
+            return newState;
+          });
+          
+        }
       } else {
         setGetProject([]);
+        setIsRegistered([]);
       }
       setIsVisibleLoading(false);
     });
-  }, [projectFilter, ps, p]);
+  }, [projectFilter, ps, p, id, user]);
 
-  return (
+ return (
     <div>
       <ProjectFilter />
       {isVisibleLoading ? (
@@ -56,7 +116,13 @@ const Project = () => {
                     <td>{item.userNumber}</td>
                     <td className="text-danger">{item.process?.name}</td>
                     <td className="text-center">
-                      <Button className="btn-success" onClick={(e) => alert("Chức năng này đang được phát triển")}>Đăng ký</Button>
+                      <Button
+                        className="btn-success"
+                        onClick={() => handleRegister(item.id, index)}
+                        disabled={isRegistered[index]}
+                      >
+                        {isRegistered[index] ? "Đã đăng ký" : "Đăng ký"}
+                      </Button>
                     </td>
                   </tr>
                 ))
@@ -76,4 +142,5 @@ const Project = () => {
     </div>
   );
 };
+
 export default Project;

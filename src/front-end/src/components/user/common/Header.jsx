@@ -8,15 +8,13 @@ import store from "../../../redux/Store";
 
 const Header = () => {
   let user = useSelector((state) => state.auth.login.currentUser);
-  // sử dụng useDispatch để gọi action logout
-
+  console.log()
   const handleLogout = () => {
     user = null;
     localStorage.removeItem("token");
 
     window.location.reload();
-    // Gọi action logout để đăng xuất người dùng
-    // Thực hiện các thao tác khác để đăng xuất người dùng (nếu cần)
+   
   };
 
   return (

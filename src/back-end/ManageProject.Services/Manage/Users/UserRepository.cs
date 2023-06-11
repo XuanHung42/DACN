@@ -288,8 +288,8 @@ namespace ManageProject.Services.Manage.Users
                 return null;
 
             }
-            var decodePassword = user.Password.DecodeFrom64();
-            //var decodePassword = user.Password;
+            //var decodePassword = user.Password.DecodeFrom64();
+            var decodePassword = user.Password;
 
             if (password != decodePassword)
             {
@@ -305,7 +305,7 @@ namespace ManageProject.Services.Manage.Users
                 throw new ArgumentException($"User with id {userId} not found");
             }
 
-            var projects = await _context.Projects.Where(u => projectIds.Contains(u.Id)).ToListAsync(cancellationToken);
+            var projects = await _context.Projects.Where(p => projectIds.Contains(p.Id)).ToListAsync(cancellationToken);
             if (projects.Count != projectIds.Count)
             {
                 throw new ArgumentException("One or more projects not found");
@@ -313,9 +313,13 @@ namespace ManageProject.Services.Manage.Users
 
             foreach (var project in projects)
             {
+                if (project.UserNumber <= project.Users.Count)
+                {
+                    throw new ArgumentException($"Project with id {project.Id} has reached maximum user capacity");
+                }
                 user.Projects.Add(project);
-
             }
+
             await _context.SaveChangesAsync(cancellationToken);
 
             return true;
