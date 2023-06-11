@@ -16,5 +16,7 @@ namespace ManageProject.Services.Manage.Topics
 		Task<Topic> GetTopicById(int topicId);
 
 		Task<bool> AddOrUpdateTopicAsync(Topic topic, CancellationToken cancellationToken = default);
+	
+		Task<bool> DeleteTopicAsync(int topicId, CancellationToken cancellationToken = default);
 	}
 }

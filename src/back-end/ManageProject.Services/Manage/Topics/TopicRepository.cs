@@ -54,5 +54,11 @@ namespace ManageProject.Services.Manage.Topics
 			}
 			return await _context.SaveChangesAsync(cancellationToken) > 0;
 		}
+
+		public async Task<bool> DeleteTopicAsync(int topicId, CancellationToken cancellationToken = default)
+		{
+			return await _context.Topics.Where(t => t.Id == topicId)
+				.ExecuteDeleteAsync(cancellationToken) > 0;
+		}
 	}
 }
