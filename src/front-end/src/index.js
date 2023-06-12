@@ -16,11 +16,10 @@ import { Provider } from "react-redux";
 import { loginSuccess } from "./redux/account/Account";
 import store from "./redux/Store";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-const token = localStorage.getItem("token"); // Lấy token từ Local Storage
-if (token) {
+const user = JSON.parse(localStorage.getItem("user"));
+if (user) {
   // Nếu token đã được lưu trữ trong Local Storage
-  store.dispatch(loginSuccess({ result: { token } })); // Sử dụng action loginSuccess để khôi phục trạng thái đăng nhập
+  store.dispatch(loginSuccess(user)); // Sử dụng action loginSuccess để khôi phục trạng thái đăng nhập
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

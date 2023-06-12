@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import Loading from "../Loading";
 import { getFilterProject } from "../../../api/ProjectApi";
@@ -13,15 +13,19 @@ const Project = () => {
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const projectFilter = useSelector((state) => state.projectFilter);
   const user = useSelector((state) => state.auth.login.currentUser);
-
-  const { enqueueSnackbar } = useSnackbar();
+ const { enqueueSnackbar } = useSnackbar();
   const [isRegistered, setIsRegistered] = useState([]);
-  let { id } = useParams();
+  const { id } = useParams();
+  const [userProjects, setUserProjects] = useState([]);
+
   let p = 1;
   let ps = 10;
 
   const handleRegister = (projectId, index) => {
+    
+  
     if (user != null && user.result != null) {
+      // Kiểm tra xem người dùng đã đăng ký cho dự án hiện tại hay chưa
       const hasUserRegistered = getProject[index].users.some(
         (userThis) => userThis.id === user.result.id
       );
@@ -31,10 +35,11 @@ const Project = () => {
           newState[index] = true;
           return newState;
         });
+        console.log("user", user);
+        console.log("checj", hasUserRegistered);
         enqueueSnackbar("Bạn đã đăng ký dự án này rồi", { variant: "warning" });
       } else {
         addProjectsToUser(user.result.id, [projectId]).then(() => {
-          // Cập nhật lại danh sách các dự án trong getProject sau khi đăng ký thành công
           getFilterProject(projectFilter.name).then((data) => {
             if (data) {
               setGetProject(data.items);
@@ -54,7 +59,7 @@ const Project = () => {
     } else {
       enqueueSnackbar("Bạn cần đăng nhập để đăng ký dự án", { variant: "error" });
     }
-  };
+  }
 
   useEffect(() => {
     getFilterProject(projectFilter.name).then((data) => {
@@ -71,6 +76,7 @@ const Project = () => {
             user.result &&
             project.users.some((userThis) => userThis.id === user.result.id)
         );
+        console.log(hasUserRegistered);
         if (hasUserRegistered) {
           setIsRegistered((prevState) => {
             const newState = [...prevState];
@@ -78,7 +84,6 @@ const Project = () => {
             newState[index] = true;
             return newState;
           });
-          
         }
       } else {
         setGetProject([]);
@@ -88,7 +93,15 @@ const Project = () => {
     });
   }, [projectFilter, ps, p, id, user]);
 
- return (
+  useEffect(() => {
+    if (user && user.result) {
+      setUserProjects(user.result.projects);
+    } else {
+      setUserProjects([]);
+    }
+  }, [user]);
+
+  return (
     <div>
       <ProjectFilter />
       {isVisibleLoading ? (
@@ -121,7 +134,7 @@ const Project = () => {
                         onClick={() => handleRegister(item.id, index)}
                         disabled={isRegistered[index]}
                       >
-                        {isRegistered[index] ? "Đã đăng ký" : "Đăng ký"}
+                        {(isRegistered[index]) ? "Đã đăng ký" : "Đăng ký"}
                       </Button>
                     </td>
                   </tr>

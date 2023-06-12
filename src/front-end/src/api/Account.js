@@ -15,6 +15,7 @@ export const LoginUser = async (user, dispatch, navigate) => {
     const response = await axios.post("https://localhost:7284/api/account/login", user);
     
     const data = response.data;
+    // localStorage.setItem("token", data.token)
     if (data.isSuccess === false){
       alert("Xảy ra lỗi không thể đăng nhập");
       return;
