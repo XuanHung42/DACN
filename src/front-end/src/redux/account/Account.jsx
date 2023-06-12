@@ -23,7 +23,7 @@ const authSlice = createSlice({
       state.login.isFetching = false;
       state.login.currentUser = action.payload;
       state.login.error = false;
-      localStorage.setItem("token", action.payload.result);
+      localStorage.setItem("user", JSON.stringify(action.payload));
     },
     loginFail: (state) => {
       state.login.isFetching = false;
@@ -44,7 +44,7 @@ const authSlice = createSlice({
     },
     logout: (state)=>{
       state.login.currentUser=null;
-      localStorage.removeItem("token")
+      localStorage.clear()
     }}
 
 })
@@ -56,6 +56,8 @@ export const {
   registerStart,
   registerSuccess,
   registerFail,
+  logout,
+
 } = authSlice.actions;
 
 export default authSlice.reducer;

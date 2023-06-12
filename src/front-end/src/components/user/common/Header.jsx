@@ -5,13 +5,15 @@ import logo from "../image/logo_dlu.png";
 import { Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import store from "../../../redux/Store";
+import { logout } from "../../../redux/account/Account";
 
 const Header = () => {
+  const dispatch = useDispatch()
   let user = useSelector((state) => state.auth.login.currentUser);
   console.log()
   const handleLogout = () => {
-    user = null;
-    localStorage.removeItem("token");
+    dispatch(logout)
+    localStorage.clear();
 
     window.location.reload();
    

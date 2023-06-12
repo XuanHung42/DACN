@@ -319,6 +319,7 @@ namespace ManageProject.Services.Manage.Users
                 }
                 user.Projects.Add(project);
             }
+            await AddOrUpdateAsync(user);
 
             await _context.SaveChangesAsync(cancellationToken);
 
