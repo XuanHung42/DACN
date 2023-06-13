@@ -80,12 +80,12 @@ namespace ManageProject.Services.Manage.Users
         }
         public async Task<User> GetUserBySlugAsync(string slug, CancellationToken cancellationToken = default)
         {
-            return await _context.Set<User>().Include(u => u.Department)
+            return await _context.Set<User>().Include(u => u.Department).Include(u=> u.Projects)
                 .FirstOrDefaultAsync(a => a.UrlSlug == slug, cancellationToken);
         }
         public async Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _context.Set<User>().Include(u => u.Department).FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+            return await _context.Set<User>().Include(u => u.Department).Include(u=> u.Projects).FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
         }
 
         public async Task<User> GetUserByIdIsDetailAsync(int userId, bool isDetail = false, CancellationToken cancellationToken = default)

@@ -1,4 +1,5 @@
 
+import axios from "axios";
 import { delete_api, get_api, post_api, put_api } from "./Method";
 
 
@@ -59,6 +60,20 @@ export async function getUserFilterDepartment() {
   return get_api(`https://localhost:7284/api/users/filterDepartment`);
 }
 
-export async function addProjectsToUser(projectIds, userId) {
-  return post_api("https://localhost:7284/api/users/addProjects", {userId, projectIds})
+export async function addProjectsToUser(userId , projectId) {
+  try {
+    const response = await axios.post(`https://localhost:7284/api/users/addProjects?userId=${userId}`, projectId);
+
+
+    if (response.status === 201) {
+
+      console.log(response.data.message);
+    } else {
+  
+      console.log(response.data.message);
+    }
+  } catch (error) {
+    
+    console.error(error);
+  }
 }

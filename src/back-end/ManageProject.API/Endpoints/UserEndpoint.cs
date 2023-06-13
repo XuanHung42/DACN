@@ -31,16 +31,16 @@ namespace ManageProject.API.Endpoints
             var routeGroupBuilder = app.MapGroup("/api/users");
             routeGroupBuilder.MapGet("/getAll", GetUserList)
                 .WithName("GetAllUsers")
-                .Produces<ApiResponse<UserItem>>();
+                .Produces<ApiResponse<UserDetail>>();
             routeGroupBuilder.MapGet("/", GetUsers)
                 .WithName("GetUsers")
                 .Produces<ApiResponse<PaginationResult<UserItem>>>();
             routeGroupBuilder.MapGet("/{id:int}", GetUserDetail)
                .WithName("GetUserById")
-               .Produces<ApiResponse<UserItem>>();
+               .Produces<ApiResponse<UserDetail>>();
             routeGroupBuilder.MapGet("/slug", GetUserBySlug)
        .WithName("GetUserBySlug")
-       .Produces<ApiResponse<UserItem>>();
+       .Produces<ApiResponse<UserDetail>>();
             routeGroupBuilder.MapPut("/{id:int}", UpdateUser)
             .WithName("UpdateAnUser")
             .AddEndpointFilter<ValidatorFilter<UserEditModel>>()
@@ -63,7 +63,7 @@ namespace ManageProject.API.Endpoints
 
             routeGroupBuilder.MapGet("/slugDetail/{slug:regex(^[a-z0-9_-]+$)}", GetDetailUserBySlugAsync)
                 .WithName("GetDetailUserBySlugAsync")
-			.Produces<ApiResponse<UserItem>>();
+			.Produces<ApiResponse<UserDetail>>();
             routeGroupBuilder.MapDelete("/{id:int}", DeleteUser)
             .WithName("DeleteAnAuthor")
             .Produces(401)
@@ -109,7 +109,7 @@ namespace ManageProject.API.Endpoints
             var user = await userRepository.GetUserByIdAsync(id);
             return user == null
                ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy người dùng có mã số {id}"))
-               : Results.Ok(ApiResponse.Success(mapper.Map<UserItem>(user)));
+               : Results.Ok(ApiResponse.Success(mapper.Map<UserDetail>(user)));
         }
 
         private static async Task<IResult> UpdateUser(int id, UserEditModel model, IValidator<UserEditModel> validator,
@@ -238,7 +238,7 @@ namespace ManageProject.API.Endpoints
             var user = await userRepository.GetUserBySlugAsync(slug);
             return user==null
                 ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound))
-                :Results.Ok(ApiResponse.Success(mapper.Map<UserItem>(user)));
+                :Results.Ok(ApiResponse.Success(mapper.Map<UserDetail>(user)));
         }
         private static async Task<IResult> SetUserPicture(
           int id,

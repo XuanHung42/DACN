@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import Loading from "../Loading";
 import { getFilterProject } from "../../../api/ProjectApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ProjectFilter from "../filter/ProjectFilterModel";
-import { addProjectsToUser } from "../../../api/UserApi";
+import { addProjectsToUser, getUserDetailBySlug, getUserResearchertById } from "../../../api/UserApi";
 import { useSnackbar } from "notistack";
+import { loginSuccess } from "../../../redux/account/Account";
 
 const Project = () => {
   const [getProject, setGetProject] = useState([]);
@@ -16,33 +17,29 @@ const Project = () => {
  const { enqueueSnackbar } = useSnackbar();
   const [isRegistered, setIsRegistered] = useState([]);
   const { id } = useParams();
-  const [userProjects, setUserProjects] = useState([]);
-
+  const dispatch = useDispatch();
   let p = 1;
   let ps = 10;
-
   const handleRegister = (projectId, index) => {
-    
+    console.log('user:', user);
+  console.log('projectId:', projectId);
+  console.log('index:', index);
+    if (user && user.result) {
   
-    if (user != null && user.result != null) {
-      // Kiểm tra xem người dùng đã đăng ký cho dự án hiện tại hay chưa
-      const hasUserRegistered = getProject[index].users.some(
-        (userThis) => userThis.id === user.result.id
-      );
-      if (hasUserRegistered) {
-        setIsRegistered((prevState) => {
-          const newState = [...prevState];
-          newState[index] = true;
-          return newState;
-        });
-        console.log("user", user);
-        console.log("checj", hasUserRegistered);
-        enqueueSnackbar("Bạn đã đăng ký dự án này rồi", { variant: "warning" });
-      } else {
-        addProjectsToUser(user.result.id, [projectId]).then(() => {
-          getFilterProject(projectFilter.name).then((data) => {
-            if (data) {
-              setGetProject(data.items);
+      getUserResearchertById(user.result.id).then((data) => {
+        if (data && data.projects) {
+          console.log(data);
+          const hasUserRegistered = data.projects.some((project) => project.id === projectId);
+          console.log("hasUserRegister", hasUserRegistered);
+          if (hasUserRegistered) {
+            setIsRegistered((prevState) => {
+              const newState = [...prevState];
+              newState[index] = true;
+              return newState;
+            });
+            enqueueSnackbar("Bạn đã đăng ký dự án này rồi", { variant: "warning" });
+          } else {
+            addProjectsToUser( user.result.id, [projectId]).then(() => {
               setIsRegistered((prevState) => {
                 const newState = [...prevState];
                 newState[index] = true;
@@ -50,16 +47,14 @@ const Project = () => {
               });
               localStorage.setItem(`isRegistered_${projectId}`, true);
               enqueueSnackbar("Đăng ký thành công", { variant: "success" });
-            } else {
-              setGetProject([]);
-            }
-          });
-        });
-      }
+            });
+          }
+        }
+      });
     } else {
       enqueueSnackbar("Bạn cần đăng nhập để đăng ký dự án", { variant: "error" });
     }
-  }
+  };
 
   useEffect(() => {
     getFilterProject(projectFilter.name).then((data) => {
@@ -69,37 +64,28 @@ const Project = () => {
           const key = `isRegistered_${project.id}`;
           return localStorage.getItem(key) === "true";
         }));
-        const hasUserRegistered = data.items.some(
-          (project) =>
-            project.id === id &&
-            user &&
-            user.result &&
-            project.users.some((userThis) => userThis.id === user.result.id)
-        );
-        console.log(hasUserRegistered);
-        if (hasUserRegistered) {
-          setIsRegistered((prevState) => {
-            const newState = [...prevState];
-            const index = data.items.findIndex((project) => project.id === id);
-            newState[index] = true;
-            return newState;
+  
+        if (user && user.result) {
+          getUserResearchertById(user.result.id).then((userData) => {
+            if (userData && userData.projects) {
+              const registeredProjects = userData.projects.map(project => project.id);
+              setIsRegistered((prevState) => {
+                const newState = [...prevState];
+                data.items.forEach((project, index) => {
+                  if (registeredProjects.includes(project.id)) {
+                    newState[index] = true;
+                  }
+                });
+                return newState;
+              });
+            }
           });
         }
-      } else {
-        setGetProject([]);
-        setIsRegistered([]);
       }
       setIsVisibleLoading(false);
     });
-  }, [projectFilter, ps, p, id, user]);
-
-  useEffect(() => {
-    if (user && user.result) {
-      setUserProjects(user.result.projects);
-    } else {
-      setUserProjects([]);
-    }
-  }, [user]);
+  }, [projectFilter, ps, p, user]);
+  
 
   return (
     <div>
