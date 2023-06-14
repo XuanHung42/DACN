@@ -165,6 +165,27 @@ const EditProfile = () => {
           <div className="row justify-content-center">
             <div className="col-sm-6">
               <Form.Label className="col-sm-6 col-form-label">
+                Url Slug
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="urlSlug"
+                title="Url Slug"
+                required
+                value={userResearcher.urlSlug || ""}
+                onChange={(e) =>
+                  setUserResearcher({ ...userResearcher, urlSlug: e.target.value })
+                }
+              />
+              <Form.Control.Feedback type="invalid">
+                Không được bỏ trống.
+              </Form.Control.Feedback>
+            </div>
+          </div>
+
+          <div className="row justify-content-center">
+            <div className="col-sm-6">
+              <Form.Label className="col-sm-6 col-form-label">
                 Mật khẩu
               </Form.Label>
               <Form.Control
