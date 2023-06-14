@@ -27,7 +27,6 @@ const Login = (props) => {
     };
     LoginUser(newUser, dispatch, naviagate).then(
       ()=>{
-        // lưu đăng nhập vào Local Store
         localStorage.setItem("isLoggedIn", true)
         
       }
