@@ -69,7 +69,7 @@ const ResearcherDetail = () => {
                 <tr>
                   <td className="post-lable w-25">Hình ảnh</td>
                   <td className="post-value">
-                    <img src={getImage(reseacherDetail.imageUrl)} alt="" />
+                    <img src={getImage(reseacherDetail.imageUrl)} alt="" height={100}/>
                   </td>
                 </tr>
                 <tr>

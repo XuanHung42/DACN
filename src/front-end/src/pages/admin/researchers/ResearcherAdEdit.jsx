@@ -288,6 +288,7 @@ const ResearchEditAdmin = () => {
                     <img
                       src={`https://localhost:7284/${researcher.imageUrl}`}
                       alt={researcher.name}
+                      height={200}
                     />
                   </div>
                 </div>

@@ -28,7 +28,6 @@ const Login = (props) => {
     LoginUser(newUser, dispatch, naviagate).then(
       ()=>{
         localStorage.setItem("isLoggedIn", true)
-        
       }
     ).catch((error)=>{
       enqueueSnackbar("Đăng nhập không thành công: " + error.message, {

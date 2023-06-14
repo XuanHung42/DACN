@@ -101,7 +101,7 @@ const Project = () => {
                 <th>Mô tả ngắn</th>
                 <th>Kinh phí thực hiện</th>
                 <th>Số thành viên</th>
-                <th>Trạng thái</th>
+                {/* <th>Trạng thái</th> */}
                 <th>Đăng ký</th>
               </tr>
             </thead>
@@ -111,9 +111,9 @@ const Project = () => {
                   <tr key={index}>
                     <td>{item.name}</td>
                     <td>{item.shortDescription}</td>
-                    <td>{item.costProject}</td>
+                    <td>{item.costProject} VNĐ</td>
                     <td>{item.userNumber}</td>
-                    <td className="text-danger">{item.process?.name}</td>
+                    {/* <td className="text-danger">{item.process?.name}</td> */}
                     <td className="text-center">
                       <Button
                         className="btn-success"

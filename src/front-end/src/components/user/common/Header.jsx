@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MainMenu from "../menu/MainMenu";
 import logo from "../image/logo_dlu.png";
 import { Image } from "react-bootstrap";
@@ -14,10 +14,12 @@ const Header = () => {
   const handleLogout = () => {
     dispatch(logout)
     localStorage.clear();
-
+    navigate(`/`)
     window.location.reload();
    
   };
+  const navigate = useNavigate();
+
 
   return (
     <header className="bg-success sticky-top">
@@ -46,6 +48,7 @@ const Header = () => {
           <div className="button d-flex align-items-center">
             {user != null ? (
               <>
+                
                 <span className="text-white">
                   Xin chào
                   <Link
@@ -56,6 +59,13 @@ const Header = () => {
                   </Link>
                   {console.log("Check user: ", user.result)}
                 </span>
+
+                {/* check role navigae */}
+                {/* {user.result.role === 1 ? (
+                  navigate(`/admin`)
+                ) : (
+                  navigate(`/home`)
+                )} */}
                 <Link
                   className="btn btn-danger px-2 text-decoration-none"
                   to="/"
