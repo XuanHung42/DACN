@@ -6,6 +6,8 @@ import { Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import store from "../../../redux/Store";
 import { logout } from "../../../redux/account/Account";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignIn, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   const dispatch = useDispatch()
@@ -53,7 +55,7 @@ const Header = () => {
                   Xin chào
                   <Link
                     to={`/profile/${user.result.id}`}
-                    className="px-1 text-decoration-none text-white"
+                    className="px-1 text-white"
                   >
                     {user.result.name}
                   </Link>
@@ -72,12 +74,14 @@ const Header = () => {
                   onClick={handleLogout}
                 >
                   Đăng xuất
+                  <FontAwesomeIcon icon={faSignOut} className="px-2"/>
                 </Link>
               </>
             ) : (
               <div className="px-2">
                 <Link className="btn btn-primary" to={`/login`}>
                   Đăng nhập
+                  <FontAwesomeIcon icon={faSignIn} className="px-2"/>
                 </Link>
               </div>
             )}

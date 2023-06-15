@@ -7,6 +7,7 @@ import "./styles/style.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
+import CreatePost from "../../components/user/manage/profile/CreatePost";
 
 const Profile = () => {
   const initialState = {
@@ -144,7 +145,7 @@ const Profile = () => {
             </div>
           </Tab>
           <Tab eventKey="posts" title="Đăng bài báo">
-            
+            <CreatePost/>
           </Tab>
         </Tabs>
       </div>

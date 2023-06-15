@@ -13,7 +13,7 @@ import { Table } from "react-bootstrap";
 import { useSnackbar } from "notistack";
 import Pager from "../../../components/pager/Pager";
 import { format } from "date-fns";
-
+import { getAllDashboard } from "../../../api/DashboardApi";
 
 const ProjectAdmin = () => {
   const { querySearch, params } = "";
@@ -88,6 +88,20 @@ const ProjectAdmin = () => {
     setPageNumber((currentVal) => currentVal + inc);
   }
 
+  const [dashboardItem, setDashboardItem] = useState({});
+
+  useEffect(() => {
+    getDashboard();
+    async function getDashboard() {
+      const response = await getAllDashboard();
+      if (response) {
+        console.log("response check: ", response);
+        setDashboardItem(response);
+      } else {
+        setDashboardItem({});
+      }
+    }
+  }, []);
   return (
     <>
       <div className="row">
@@ -101,10 +115,27 @@ const ProjectAdmin = () => {
           </div>
           <div className="project-content">
             <ProjectFilter />
-            <Link className="btn btn-success mb-2" to={`/admin/project/edit`}>
-              Thêm mới <FontAwesomeIcon icon={faAdd} />
-            </Link>
-
+            <div className="d-flex align-items-center justify-content-between">
+              <Link className="btn btn-success mb-2" to={`/admin/project/edit`}>
+                Thêm mới <FontAwesomeIcon icon={faAdd} />
+              </Link>
+              <div className="">
+                <div className="px-2 text-danger">
+                  Dự án chưa đăng ký:
+                  <span className="px-1">
+                    {dashboardItem.countProjectNotRegister}
+                  </span>
+                  dự án
+                </div>
+                <div className="px-2 text-success">
+                  Dự án đã đăng ký:
+                  <span className="px-1">
+                    {dashboardItem.countProjectRegister}
+                  </span>
+                  dự án
+                </div>
+              </div>
+            </div>
             {isVisibleLoading ? (
               <Loading />
             ) : (
@@ -130,8 +161,12 @@ const ProjectAdmin = () => {
                           <td>{item.name}</td>
                           <td>{item.shortDescription}</td>
                           <td>{item.costProject} VNĐ</td>
-                          <td>{format(new Date(item.startDate), "dd/MM/yyyy")}</td>
-                          <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
+                          <td>
+                            {format(new Date(item.startDate), "dd/MM/yyyy")}
+                          </td>
+                          <td>
+                            {format(new Date(item.endDate), "dd/MM/yyyy")}
+                          </td>
                           <td>
                             {item.users.map((item, index) => (
                               <div className="text-danger" key={index}>

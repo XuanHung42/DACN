@@ -1,10 +1,13 @@
-import { faBook, faHome, faPen,faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBook,
+  faHome,
+  faPen,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { getAllDashboard } from "../../../api/DashboardApi";
 import LayoutAdmin from "../layout/LayoutAd";
-
-
 
 const DashboardAdmin = () => {
   const [dashboardItem, setDashboardItem] = useState({});
@@ -22,40 +25,68 @@ const DashboardAdmin = () => {
     }
   }, []);
 
-
   return (
     <LayoutAdmin>
       <div className="d-flex mt-5">
         <div className="card-body">
           <div className="text-success">
-            <h3>Người dùng</h3>
+            <h5>Người dùng</h5>
             <FontAwesomeIcon icon={faUser} fontSize={30} />
-            <span className="text-danger px-5 display-6">{dashboardItem.countUser}</span>
+            <span className="text-danger px-5 display-5">
+              {dashboardItem.countUser}
+            </span>
           </div>
         </div>
+
         <div className="card-body">
           <div className="text-success">
-            <h3>Dự án</h3>
-            <FontAwesomeIcon icon={faBook} fontSize={30} />
-            <span className="text-danger px-5 display-6">{dashboardItem.countProject}</span>
-          </div>
-        </div>
-        <div className="card-body">
-          <div className="text-success">
-            <h3>Đăng bài</h3>
+            <h5>Đăng bài</h5>
             <FontAwesomeIcon icon={faPen} fontSize={30} />
-            <span className="text-danger px-5 display-6">{dashboardItem.countPost}</span>
+            <span className="text-danger px-5 display-5">
+              {dashboardItem.countPost}
+            </span>
           </div>
         </div>
         <div className="card-body">
           <div className="text-success">
-            <h3>Phòng khoa</h3>
+            <h5>Phòng khoa</h5>
             <FontAwesomeIcon icon={faHome} fontSize={30} />
-            <span className="text-danger px-5 display-6">{dashboardItem.countDepartment}</span>
+            <span className="text-danger px-5 display-5">
+              {dashboardItem.countDepartment}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="d-flex mt-5">
+        <div className="card-body">
+          <div className="text-success">
+            <h5>Dự án</h5>
+            <FontAwesomeIcon icon={faBook} fontSize={30} />
+            <span className="text-danger px-5 display-5">
+              {dashboardItem.countProject}
+            </span>
+          </div>
+        </div>
+        <div className="card-body">
+          <div className="text-success">
+            <h5>Dự án chưa đăng ký</h5>
+            <FontAwesomeIcon icon={faBook} fontSize={30} />
+            <span className="text-danger px-5 display-5">
+              {dashboardItem.countProjectNotRegister}
+            </span>
+          </div>
+        </div>
+        <div className="card-body">
+          <div className="text-success">
+            <h5>Dự án đã đăng ký</h5>
+            <FontAwesomeIcon icon={faBook} fontSize={30} />
+            <span className="text-danger px-5 display-5">
+              {dashboardItem.countProjectRegister}
+            </span>
           </div>
         </div>
       </div>
     </LayoutAdmin>
-  )
-}
+  );
+};
 export default DashboardAdmin;
