@@ -57,6 +57,7 @@ const ResearchAdmin = () => {
       });
     }
   }, [researcherFilter, ps, p, reRender, pageNumber]);
+  
   function updatePageNumber(inc) {
     setPageNumber((currentVal) => currentVal + inc);
   }

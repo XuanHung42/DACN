@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import { getProjectById, getTopicListCombobox, updateAndAddProject } from "../../../api/ProjectApi";
+import {
+  getProjectById,
+  getTopicListCombobox,
+  updateAndAddProject,
+} from "../../../api/ProjectApi";
 import { Button, Form } from "react-bootstrap";
 import { decode, isInteger } from "../../../utils/Utils";
 import { useSnackbar } from "notistack";
@@ -23,7 +27,6 @@ const ProjectAdminEdit = () => {
     register: false,
     processId: 0,
     topicId: 0,
-
   };
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -66,9 +69,6 @@ const ProjectAdminEdit = () => {
         setFilterTopic({ topicList: [] });
       }
     });
-
-  
-      
   }, []);
 
   const handleSubmit = (e) => {
@@ -295,9 +295,7 @@ const ProjectAdminEdit = () => {
             </div>
 
             <div className="row mb-3">
-              <Form.Label className="col-sm-2 col-form-label">
-                Lưu ý
-              </Form.Label>
+              <Form.Label className="col-sm-2 col-form-label">Lưu ý</Form.Label>
               <div className="col-sm-10">
                 <Form.Control
                   as="textarea"
@@ -374,7 +372,7 @@ const ProjectAdminEdit = () => {
               </div>
             </div>
 
-            {/* <div className="row mb-3">
+            <div className="row mb-3">
               <div className="col-sm-10 offset-sm-2">
                 <div className="form-check">
                   <input
@@ -382,8 +380,9 @@ const ProjectAdminEdit = () => {
                     type="checkbox"
                     name="register"
                     checked={project.register}
-                    title="register"
-                    onChange={(e) =>setProject({ ...project, register: e.target.checked })
+                    title="Register"
+                    onChange={(e) =>
+                      setProject({ ...project, register: e.target.checked })
                     }
                   />
                   <Form.Label className="form-check-label">
@@ -391,7 +390,7 @@ const ProjectAdminEdit = () => {
                   </Form.Label>
                 </div>
               </div>
-            </div> */}
+            </div>
 
             <div className="text-center">
               <Button variant="success" type="submit">

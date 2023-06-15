@@ -46,7 +46,7 @@ const EditProfile = () => {
   };
 
   useEffect(() => {
-    document.title = "Thêm, cập nhật nhà khoa học";
+    document.title = "Sửa hồ sơ";
     getUserProfileById(id).then((data) => {
       if (data)
         setUser({

@@ -32,6 +32,7 @@ const ResearcherDetail = () => {
     return `https://localhost:7284/${path}`;
   };
 
+
   if (reseacherDetail) {
     return (
       <>
@@ -83,8 +84,8 @@ const ResearcherDetail = () => {
                   </td>
                 </tr>
                 <tr>
-                  {/* <td className="post-lable w-25">Thuộc khoa</td>
-                  <td className="post-value">{reseacherDetail.departmentName}</td> */}
+                  <td className="post-lable w-25">Thuộc khoa</td>
+                  <td className="post-value">{reseacherDetail.departmentName}</td>
                 </tr>
               </tbody>
             </Table>

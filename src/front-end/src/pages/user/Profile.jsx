@@ -6,6 +6,7 @@ import { Button, Form, Tab, Tabs } from "react-bootstrap";
 import "./styles/style.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faSignOut } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   const initialState = {
@@ -31,6 +32,7 @@ const Profile = () => {
 
     return `https://localhost:7284/${path}`;
   };
+  
 
   useEffect(() => {
     document.title = "Trang cá nhân";
@@ -45,6 +47,7 @@ const Profile = () => {
       }
     });
   }, []);
+
 
   return (
     <Layout>
@@ -62,7 +65,6 @@ const Profile = () => {
                 className="rounded-circle"
               />
             </div>
-
             <div className="row justify-content-center">
               <div className="col-sm-6">
                 <Form.Label className="col-sm-6 col-form-label">
@@ -141,11 +143,8 @@ const Profile = () => {
               </Link>
             </div>
           </Tab>
-          <Tab eventKey="posts" title="Bài đăng của bạn">
-            Trang đăng bài
-          </Tab>
-          <Tab eventKey="project" title="Dự án của bạn">
-            Trang đăng bài
+          <Tab eventKey="posts" title="Đăng bài báo">
+            
           </Tab>
         </Tabs>
       </div>
