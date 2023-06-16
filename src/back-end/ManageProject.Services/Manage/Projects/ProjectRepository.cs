@@ -101,15 +101,10 @@ namespace ManageProject.Services.Manage.Projects
                 projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.UrlSlug == query.UserSlug));
             }
 
-            //if (query.UserId > 0)
-            //{
-            //	projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.Id == query.UserId));
-            //}
-            //if (query.UserId > 0)
-            //{
-            //	projectQuery = projectQuery.Include(pr => pr.Users)
-            //		.Where(u => u.Users.Any(u => u.Id == query.UserId));
-            //}
+            if (query.UserId > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.UserId == query.UserId);
+            }
 
             return projectQuery;
 

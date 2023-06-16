@@ -90,7 +90,7 @@ const ResearcherDetail = () => {
                     </td>
                   </tr>
                   <tr>
-                    <td className="post-lable w-25">Thuộc khoa</td>
+                    <td className="post-lable w-25">Giảng viên khoa</td>
                     <td className="post-value">
                       {reseacherDetail.departmentName}
                     </td>
@@ -98,12 +98,12 @@ const ResearcherDetail = () => {
                 </tbody>
               </Table>
             </Tab>
-            <Tab eventKey="result" title="Kết quả nghiên cứu">
+            <Tab eventKey="result" title="Dự án tham gia">
               <ProjectResearch/>
             </Tab>
-            <Tab eventKey="post" title="Bài báo khoa học">
+            {/* <Tab eventKey="post" title="Bài báo khoa học">
               
-            </Tab>
+            </Tab> */}
           </Tabs>
         </Layout>
       </>

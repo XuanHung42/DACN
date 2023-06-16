@@ -242,7 +242,8 @@ namespace ManageProject.Services.Manage.Users
         {
             IQueryable<User> userQuery = _context.Set<User>()
                 //.Include(p => p.Projects)
-                .Include(p => p.Posts);
+                .Include(p => p.Posts)
+                .Include(p => p.Department);
             {
                 if (!string.IsNullOrEmpty(slug))
                 {
