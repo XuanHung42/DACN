@@ -7,7 +7,8 @@ import { Table } from "react-bootstrap";
 import "./styles/style.scss"
 import { format } from 'date-fns'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faFileDownload } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faFileWord } from "@fortawesome/free-regular-svg-icons";
 
 
 const PostDetail = () => {
@@ -65,7 +66,7 @@ const PostDetail = () => {
                       >
                         Tải file xuống
                         <FontAwesomeIcon
-                          icon={faFileDownload}
+                          icon={faFileWord}
                           fontSize={50}
                           className="text-danger px-2"
                         />

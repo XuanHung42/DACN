@@ -7,6 +7,7 @@ import { Tab, Table, Tabs } from "react-bootstrap";
 import { format } from "date-fns";
 import Layout from "../../components/user/common/Layout";
 import ProjectResearch from "../../components/user/manage/projects/ProjectResearch";
+import PostResearcher from "../../components/user/manage/projects/PostResearcher";
 const ResearcherDetail = () => {
   const params = useParams();
   const [reseacherDetail, setResearchDetail] = useState(null);
@@ -101,9 +102,9 @@ const ResearcherDetail = () => {
             <Tab eventKey="result" title="Dự án tham gia">
               <ProjectResearch/>
             </Tab>
-            {/* <Tab eventKey="post" title="Bài báo khoa học">
-              
-            </Tab> */}
+            <Tab eventKey="post" title="Bài báo khoa học">
+              <PostResearcher/>
+            </Tab>
           </Tabs>
         </Layout>
       </>

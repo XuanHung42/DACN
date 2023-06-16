@@ -114,7 +114,7 @@ const DepartmentManage = () => {
                                   </span>
                                   <Link
                                     className="text-decoration-none px-2"
-                                    to={`researcher/${posts.user.name}`}
+                                    to={`researcher/${posts.user.urlSlug}`}
                                   >
                                     <span className="card-author-name">
                                       {posts.user.name}

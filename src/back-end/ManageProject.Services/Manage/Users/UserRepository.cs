@@ -212,8 +212,18 @@ namespace ManageProject.Services.Manage.Users
 
         }
 
+        private IQueryable<Post> FilterPost(PostQuery query)
+        {
+            IQueryable<Post> postQuery = _context.Set<Post>();
+            if (!string.IsNullOrWhiteSpace(query.UserSlug))
+            {
+                postQuery = postQuery.Where(p => p.User.UrlSlug.Contains(query.UserSlug));
+            }
+            return postQuery;
+        }
 
 
+        
         public async Task<IPagedList<T>> GetPagedProjectsAsync<T>(ProjectQuery query,
         IPagingParams pagingParams,
         Func<IQueryable<Project>,
@@ -225,7 +235,16 @@ namespace ManageProject.Services.Manage.Users
             return await tQueryResult.ToPagedListAsync(pagingParams, cancellationToken);
         }
 
-        public async Task<IPagedList<T>> GetPageRolesAsync<T>(
+		public async Task<IPagedList<T>> GetPagedPostAsync<T>(PostQuery query, IPagingParams pagingParams, Func<IQueryable<Post>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+		{
+            IQueryable<Post> possFindQuery = FilterPost(query);
+            IQueryable<T> quertResult = mapper(possFindQuery);
+            return await quertResult.ToPagedListAsync(pagingParams, cancellationToken);
+        }
+
+
+
+		public async Task<IPagedList<T>> GetPageRolesAsync<T>(
             RoleQuery query,
             IPagingParams pagingParams,
             Func<IQueryable<Role>,
@@ -329,5 +348,7 @@ namespace ManageProject.Services.Manage.Users
 
             return true;
         }
+
+		
 	}
 }
