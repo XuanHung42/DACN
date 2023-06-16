@@ -1,4 +1,3 @@
-import { de } from "date-fns/locale";
 import { delete_api, get_api, post_api, put_api } from "./Method";
 
 
@@ -10,7 +9,7 @@ export async function getAllProject(){
 // 
 export function getFilterProject(
   name = '',
-  pageSize = 3,
+  pageSize = 5,
   pageNumber = 1,
   sortColumn = '',
   sortOrder = ''
