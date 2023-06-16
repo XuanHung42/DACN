@@ -13,9 +13,8 @@ const Header = () => {
   const dispatch = useDispatch()
   let user = useSelector((state) => state.auth.login.currentUser);
   console.log()
-  const handleLogout = () => {
-    dispatch(logout)
-    localStorage.clear();
+  const handleLogout = async() => {
+    await dispatch(logout());
     navigate(`/`)
     window.location.reload();
    
@@ -63,11 +62,11 @@ const Header = () => {
                 </span>
 
                 {/* check role navigae */}
-                {/* {user.result.role === 1 ? (
+                {user.result.role === 1 ? (
                   navigate(`/admin`)
                 ) : (
                   navigate(`/home`)
-                )} */}
+                )}
                 <Link
                   className="btn btn-danger px-2 text-decoration-none"
                   to="/"
