@@ -62,3 +62,11 @@ export function getProjectByResearchSlug(slug) {
     `https://localhost:7284/api/projects?UserSlug=${slug}&PageSize=10&PageNumber=1`
   );
 }
+
+
+
+export function getProjectByResearchId(id) {
+  return get_api(
+    `https://localhost:7284/api/projects?UserId=${id}&PageSize=10&PageNumber=1`
+  );
+}

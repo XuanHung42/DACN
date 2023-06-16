@@ -103,7 +103,7 @@ namespace ManageProject.Services.Manage.Projects
 
             if (query.UserId > 0)
             {
-                projectQuery = projectQuery.Where(pr => pr.UserId == query.UserId);
+                projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.Id == query.UserId));
             }
 
             return projectQuery;

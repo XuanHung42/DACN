@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import CreatePost from "../../components/user/manage/profile/CreatePost";
+import ProjectRegister from "../../components/user/manage/profile/ProjectRegister";
 
 const Profile = () => {
   const initialState = {
@@ -66,6 +67,23 @@ const Profile = () => {
                 className="rounded-circle"
               />
             </div>
+
+            <div className="row justify-content-center">
+              <div className="col-sm-6">
+                <Form.Label className="col-sm-6 col-form-label">
+                  Mã số ID của bạn
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  disabled
+                  name="id"
+                  title="Mã số"
+                  required
+                  value={userResearcher.id}
+                />
+              </div>
+            </div>
+
             <div className="row justify-content-center">
               <div className="col-sm-6">
                 <Form.Label className="col-sm-6 col-form-label">
@@ -146,6 +164,9 @@ const Profile = () => {
           </Tab>
           <Tab eventKey="posts" title="Đăng bài báo">
             <CreatePost/>
+          </Tab>
+          <Tab eventKey="project" title="Dự án của bạn">
+            <ProjectRegister/>
           </Tab>
         </Tabs>
       </div>
