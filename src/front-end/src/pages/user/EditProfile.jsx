@@ -1,18 +1,15 @@
+import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import Layout from "../../components/user/common/Layout";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   getUserFilterDepartment,
   getUserFilterRole,
-  getUserResearchertById,
-  updateUserResearcher,
+  getUserProfileById,
+  updateProfileUser,
 } from "../../api/UserApi";
+import Layout from "../../components/user/common/Layout";
 import { Button, Form } from "react-bootstrap";
-import "./styles/style.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSave, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { isEmptyOrSpaces } from "../../utils/Utils";
-import { useSnackbar } from "notistack";
 
 const EditProfile = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -34,7 +31,7 @@ const EditProfile = () => {
 
   const navigate = useNavigate();
 
-  const [userResearcher, setUserResearcher] = useState(initialState);
+  const [user, setUser] = useState(initialState);
   let { id } = useParams();
   id = id ?? 0;
 
@@ -49,30 +46,15 @@ const EditProfile = () => {
   };
 
   useEffect(() => {
-    document.title = "Trang cá nhân";
-
-    getUserResearchertById(id).then((data) => {
-      if (data) {
-        setUserResearcher({
+    document.title = "Sửa hồ sơ";
+    getUserProfileById(id).then((data) => {
+      if (data)
+        setUser({
           ...data,
         });
-      } else {
-        setUserResearcher(initialState);
-      }
+      else setUser(initialState);
     });
 
-    // get filter department
-    getUserFilterDepartment().then((data) => {
-      if (data) {
-        setFilterDepartment({
-          departmentList: data.departmentList,
-        });
-      } else {
-        setFilterDepartment({ departmentList: [] });
-      }
-    });
-
-    // get filter role
     getUserFilterRole().then((data) => {
       if (data) {
         setFilterRole({
@@ -83,6 +65,15 @@ const EditProfile = () => {
       }
     });
 
+    getUserFilterDepartment().then((data) => {
+      if (data) {
+        setFilterDepartment({
+          departmentList: data.departmentList,
+        });
+      } else {
+        setFilterDepartment({ departmentList: [] });
+      }
+    });
   }, []);
 
   // handle submit form
@@ -93,24 +84,23 @@ const EditProfile = () => {
       setValidated(true);
     } else {
       let form = new FormData(e.target);
-      console.log("form", form)
+      console.log("form", form);
 
-      updateUserResearcher(form).then((data) => {
+      updateProfileUser(form).then((data) => {
         if (data) {
-          console.log("data", data)
-          enqueueSnackbar("Đã thêm thành công", {
+          console.log("data", data);
+          enqueueSnackbar("Đã sửa hồ sơ thành công", {
             variant: "success",
           });
-          navigate(`/profile/${userResearcher.id}`);
+          navigate(`/profile/${user.id}`);
         } else {
-          enqueueSnackbar("Đã xảy ra lỗi", {
+          enqueueSnackbar("Đã xảy ra lỗi sửa hồ sơ", {
             variant: "error",
           });
         }
       });
     }
   };
-
 
   return (
     <Layout>
@@ -126,39 +116,54 @@ const EditProfile = () => {
           noValidate
           validated={validated}
         >
-          {!isEmptyOrSpaces(userResearcher.imageUrl) && (
-            <div className="row justify-content-center">
-              <Form.Label className="col-sm-6 col-form-label">
-                Hình hiện tại
-              </Form.Label>
-              <div className="text-center avata">
-                <img
-                  src={getImage(userResearcher.imageUrl)}
-                  alt=""
-                  className="rounded-circle"
-                />
-              </div>
-            </div>
-          )}
+          <Form.Control type="hidden" name="id" value={user.id} />
 
+          <div className="text-center avata">
+            <img
+              src={getImage(user.imageUrl)}
+              alt=""
+              className="rounded-circle"
+            />
+            <p>Hình đại diện</p>
+          </div>
           <div className="row justify-content-center">
             <div className="col-sm-6">
               <Form.Label className="col-sm-6 col-form-label">
-                Họ tên của bạn
+                Tên nhà khoa học
               </Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                title="Name"
-                required
-                value={userResearcher.name || ""}
-                onChange={(e) =>
-                  setUserResearcher({ ...userResearcher, name: e.target.value })
-                }
-              />
-              <Form.Control.Feedback type="invalid">
-                Không được bỏ trống.
-              </Form.Control.Feedback>
+              <div className="col-sm-12">
+                <Form.Control
+                  type="text"
+                  name="name"
+                  title="Name"
+                  required
+                  value={user.name || ""}
+                  onChange={(e) => setUser({ ...user, name: e.target.value })}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống.
+                </Form.Control.Feedback>
+              </div>
+            </div>
+          </div>
+
+          <div className="row justify-content-center">
+            <div className="col-sm-6">
+              <Form.Label className="col-sm-6 col-form-label">Email</Form.Label>
+
+              <div className="col-sm-12">
+                <Form.Control
+                  type="email"
+                  name="email"
+                  title="Email"
+                  required
+                  value={user.email || ""}
+                  onChange={(e) => setUser({ ...user, email: e.target.value })}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống.
+                </Form.Control.Feedback>
+              </div>
             </div>
           </div>
 
@@ -167,103 +172,22 @@ const EditProfile = () => {
               <Form.Label className="col-sm-6 col-form-label">
                 Mật khẩu
               </Form.Label>
-              <Form.Control
-                type="text"
-                name="password"
-                title="Password"
-                required
-                value={userResearcher.password || ""}
-                onChange={(e) =>
-                  setUserResearcher({
-                    ...userResearcher,
-                    password: e.target.value,
-                  })
-                }
-              />
-              <Form.Control.Feedback type="invalid">
-                Không được bỏ trống.
-              </Form.Control.Feedback>
-            </div>
-          </div>
 
-          <div className="row justify-content-center">
-            <div className="col-sm-6">
-              <Form.Label className="col-sm-6 col-form-label">
-                Email của bạn
-              </Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                title="Email"
-                required
-                value={userResearcher.email || ""}
-                onChange={(e) =>
-                  setUserResearcher({
-                    ...userResearcher,
-                    email: e.target.value,
-                  })
-                }
-              />
-              <Form.Control.Feedback type="invalid">
-                Không được bỏ trống.
-              </Form.Control.Feedback>
-            </div>
-          </div>
-
-          <div className="row justify-content-center">
-            <div className="col-sm-6">
-              <Form.Label className="col-sm-6 col-form-label">
-                Ngày sinh
-              </Form.Label>
-              <Form.Control
-                type="datetime-local"
-                name="birthDate"
-                title="Birth Date"
-                required
-                value={userResearcher.birthDate || ""}
-                onChange={(e) =>
-                  setUserResearcher({
-                    ...userResearcher,
-                    birthDate: e.target.value,
-                  })
-                }
-              />
-              <Form.Control.Feedback type="invalid">
-                Không được bỏ trống.
-              </Form.Control.Feedback>
-            </div>
-          </div>
-
-          <div className="row justify-content-center">
-            <div className="col-sm-6">
-              <Form.Label className="col-sm-6 col-form-label">
-                Thuộc khoa
-              </Form.Label>
-              <Form.Select
-                name="departmentId"
-                title="department Id"
-                value={userResearcher.departmentId}
-                required
-                onChange={(e) =>
-                  setUserResearcher({
-                    ...userResearcher,
-                    departmentId: e.target.value,
-                  })
-                }
-              >
-                {filterDepartment.departmentList.length > 0 &&
-                  filterDepartment.departmentList.map((item, index) => (
-                    <option key={index} value={item.value}>
-                      {item.text}
-                    </option>
-                  ))}
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">
-                Không được bỏ trống.
-              </Form.Control.Feedback>
-              <Form.Control.Feedback type="invalid">
-                Không được bỏ trống.
-              </Form.Control.Feedback>
+              <div className="col-sm-12">
+                <Form.Control
+                  type="text"
+                  name="password"
+                  title="Password"
+                  required
+                  value={user.password || ""}
+                  onChange={(e) =>
+                    setUser({ ...user, password: e.target.value })
+                  }
+                />
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống
+                </Form.Control.Feedback>
+              </div>
             </div>
           </div>
 
@@ -272,67 +196,163 @@ const EditProfile = () => {
               <Form.Label className="col-sm-6 col-form-label">
                 Vai trò
               </Form.Label>
-              <Form.Select
-                    name="roleId"
-                    title="role Id"
-                    disabled
-                    value={userResearcher.roleId}
-                    required
-                    onChange={(e) =>
-                      setUserResearcher({
-                        ...userResearcher,
-                        roleId: e.target.value,
-                      })
-                    }
-                  >
-                    {filterRole.roleList.length > 0 &&
-                      filterRole.roleList.map((item, index) => (
-                        <option key={index} value={item.value}>
-                          {item.text}
-                        </option>
-                      ))}
-                  </Form.Select>
-              <Form.Control.Feedback type="invalid">
-                Không được bỏ trống.
-              </Form.Control.Feedback>
+
+              <div className="col-sm-12">
+                <Form.Select
+                  name="roleId"
+                  title="role Id"
+                  value={user.roleId}
+                  required
+                  onChange={(e) =>
+                    setUser({
+                      ...user,
+                      roleId: e.target.value,
+                    })
+                  }
+                >
+                  {filterRole.roleList.length > 0 &&
+                    filterRole.roleList.map((item, index) => (
+                      <option key={index} value={item.value}>
+                        {item.text}
+                      </option>
+                    ))}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống.
+                </Form.Control.Feedback>
+              </div>
             </div>
           </div>
 
+          <div className="row justify-content-center">
+            <div className="col-sm-6">
+              <Form.Label className="col-sm-6 col-form-label">
+                Ngày sinh
+              </Form.Label>
+
+              <div className="col-sm-12">
+                <Form.Control
+                  type="datetime-local"
+                  name="birthDate"
+                  title="BirthDate"
+                  required
+                  value={user.birthDate || ""}
+                  onChange={(e) =>
+                    setUser({
+                      ...user,
+                      birthDate: e.target.value,
+                    })
+                  }
+                />
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống
+                </Form.Control.Feedback>
+              </div>
+            </div>
+          </div>
+
+          <div className="row justify-content-center">
+            <div className="col-sm-6">
+              <Form.Label className="col-sm-6 col-form-label">
+                Phòng khoa
+              </Form.Label>
+
+              <div className="col-sm-12">
+                <Form.Select
+                  name="departmentId"
+                  title="department Id"
+                  value={user.departmentId}
+                  required
+                  onChange={(e) =>
+                    setUser({
+                      ...user,
+                      departmentId: e.target.value,
+                    })
+                  }
+                >
+                  {filterDepartment.departmentList.length > 0 &&
+                    filterDepartment.departmentList.map((item, index) => (
+                      <option key={index} value={item.value}>
+                        {item.text}
+                      </option>
+                    ))}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống.
+                </Form.Control.Feedback>
+              </div>
+            </div>
+          </div>
 
           <div className="row justify-content-center">
             <div className="col-sm-6">
               <Form.Label className="col-sm-6 col-form-label">
                 Chọn hình ảnh
               </Form.Label>
+
+              <div className="col-sm-12">
+                <Form.Control
+                  type="file"
+                  name="imageFile"
+                  accept="image/*"
+                  title="Image file"
+                  onChange={(e) =>
+                    setUser({
+                      ...user,
+                      imageFile: e.target.files[0],
+                    })
+                  }
+                />
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống.
+                </Form.Control.Feedback>
+              </div>
+            </div>
+          </div>
+
+          {/* <div className="row justify-content-center">
+            <div className="col-sm-6">
+            {!isEmptyOrSpaces(user.imageUrl) && (
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Hình hiện tại
+              </Form.Label>
+              <div className="col-sm-12">
+                <img
+                  src={`https://localhost:7284/${user.imageUrl}`}
+                  alt={user.name}
+                />
+              </div>
+            </div>
+          )}
+            </div>
+          </div> */}
+
+          {/* <div className="row mb-3">
+            <Form.Label className="col-sm-2 col-form-label">UrlSlug</Form.Label>
+            <div className="col-sm-12">
               <Form.Control
-                type="file"
-                name="imageFile"
-                accept="image/*"
-                title="Image file"
+                type="text"
+                name="urlSlug"
+                title="Url Slug"
+                required
+                value={researcher.urlSlug || ""}
                 onChange={(e) =>
-                  setUserResearcher({
-                    ...userResearcher,
-                    imageFile: e.target.files[0],
-                  })
+                  setResearcher({ ...researcher, urlSlug: e.target.value })
                 }
               />
               <Form.Control.Feedback type="invalid">
                 Không được bỏ trống.
               </Form.Control.Feedback>
             </div>
-          </div>
+          </div> */}
 
-          <div className="text-center mt-5">
+          <div className="text-center mt-3">
             <Button variant="success" type="submit">
-              Lưu lại
-              <FontAwesomeIcon icon={faSave} className="px-2" />
+              Lưu các thay đổi
             </Button>
-            <Link
-              to={`/profile/${userResearcher.id}`}
-              className="btn btn-danger ms-2"
-            >
-              Thoát
-              <FontAwesomeIcon icon={faSignOut} className="px-2" />
+            <Link to={`/profile/${user.id}`} className="btn btn-danger ms-2">
+              Hủy và quay lại
             </Link>
           </div>
         </Form>

@@ -54,5 +54,22 @@ namespace ManageProject.Services.Manage.Topics
 			}
 			return await _context.SaveChangesAsync(cancellationToken) > 0;
 		}
+
+		public async Task<bool> DeleteTopicAsync(int topicId, CancellationToken cancellationToken = default)
+		{
+			return await _context.Topics.Where(t => t.Id == topicId)
+				.ExecuteDeleteAsync(cancellationToken) > 0;
+		}
+
+		public async Task<IList<TopicItem>> GetTopicListCombobox(CancellationToken cancellationToken = default)
+		{
+			IQueryable<Topic> topics = _context.Set<Topic>();
+			return await topics.OrderBy(t => t.Id)
+				.Select(t => new TopicItem()
+				{
+					Id = t.Id,
+					Name = t.Name,
+				}).ToListAsync(cancellationToken);
+		}
 	}
 }

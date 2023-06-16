@@ -48,3 +48,8 @@ export async function getProcessListCombobox() {
   return get_api(`https://localhost:7284/api/processes/combobox`);
 }
 
+
+
+export async function getTopicListCombobox() {
+  return get_api(`https://localhost:7284/api/topics/combobox`);
+}

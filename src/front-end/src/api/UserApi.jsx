@@ -41,10 +41,22 @@ export async function getUserResearchertById(id = 0) {
   }
 }
 
+export async function getUserProfileById(id = 0) {
+  if (id > 0) {
+    return get_api(`https://localhost:7284/api/users/${id}`);
+  }
+}
+
+
 
 export async function updateUserResearcher( formData) {
   return post_api(`https://localhost:7284/api/users`, formData);
 }
+
+export async function updateProfileUser( formData) {
+  return post_api(`https://localhost:7284/api/users`, formData);
+}
+
 
 export async function deleteUserResearcher(id = 0) {
   return delete_api(`https://localhost:7284/api/users/${id}`);

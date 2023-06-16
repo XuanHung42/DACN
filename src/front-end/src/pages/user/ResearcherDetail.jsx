@@ -32,6 +32,7 @@ const ResearcherDetail = () => {
     return `https://localhost:7284/${path}`;
   };
 
+
   if (reseacherDetail) {
     return (
       <>
@@ -69,7 +70,7 @@ const ResearcherDetail = () => {
                 <tr>
                   <td className="post-lable w-25">Hình ảnh</td>
                   <td className="post-value">
-                    <img src={getImage(reseacherDetail.imageUrl)} alt="" />
+                    <img src={getImage(reseacherDetail.imageUrl)} alt="" height={100}/>
                   </td>
                 </tr>
                 <tr>
@@ -83,8 +84,8 @@ const ResearcherDetail = () => {
                   </td>
                 </tr>
                 <tr>
-                  {/* <td className="post-lable w-25">Thuộc khoa</td>
-                  <td className="post-value">{reseacherDetail.departmentName}</td> */}
+                  <td className="post-lable w-25">Thuộc khoa</td>
+                  <td className="post-value">{reseacherDetail.departmentName}</td>
                 </tr>
               </tbody>
             </Table>

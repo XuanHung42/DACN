@@ -4,6 +4,7 @@ using ManageProject.API.Models.Post;
 using ManageProject.API.Models.Process;
 using ManageProject.API.Models.Project;
 using ManageProject.API.Models.Role;
+using ManageProject.API.Models.Topic;
 using ManageProject.API.Models.Users;
 using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
@@ -55,6 +56,7 @@ namespace ManageProject.API.Mapsters
 
             config.NewConfig<Topic, TopicItem>()
                 .Map(dest => dest.Id, src => src.Id);
+            config.NewConfig<TopicEditModel, Topic>();
 
 
         }

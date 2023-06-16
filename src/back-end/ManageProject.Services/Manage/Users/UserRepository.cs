@@ -85,7 +85,10 @@ namespace ManageProject.Services.Manage.Users
         }
         public async Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _context.Set<User>().Include(u => u.Department).Include(u=> u.Projects).FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+            return await _context.Set<User>().Include(u => u.Department)
+                .Include(u=> u.Projects)
+                .Include(u => u.Posts)
+                .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
         }
 
         public async Task<User> GetUserByIdIsDetailAsync(int userId, bool isDetail = false, CancellationToken cancellationToken = default)
@@ -288,8 +291,8 @@ namespace ManageProject.Services.Manage.Users
                 return null;
 
             }
-            //var decodePassword = user.Password.DecodeFrom64();
-            var decodePassword = user.Password;
+            var decodePassword = user.Password.DecodeFrom64();
+            //var decodePassword = user.Password;
 
             if (password != decodePassword)
             {

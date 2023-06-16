@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import Navbar from "../../../components/admin/navbar/Navbar";
 import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import { getProjectById, updateAndAddProject } from "../../../api/ProjectApi";
+import {
+  getProjectById,
+  getTopicListCombobox,
+  updateAndAddProject,
+} from "../../../api/ProjectApi";
 import { Button, Form } from "react-bootstrap";
 import { decode, isInteger } from "../../../utils/Utils";
 import { useSnackbar } from "notistack";
@@ -23,13 +27,13 @@ const ProjectAdminEdit = () => {
     register: false,
     processId: 0,
     topicId: 0,
-
   };
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
 
   const [filterProcess, setFilterProcess] = useState({ processList: [] });
+  const [filterTopic, setFilterTopic] = useState({ topicList: [] });
   const [project, setProject] = useState(initialState);
   let { id } = useParams();
   id = id ?? 0;
@@ -53,6 +57,16 @@ const ProjectAdminEdit = () => {
         });
       } else {
         setFilterProcess({ processList: [] });
+      }
+    });
+
+    getTopicListCombobox().then((data) => {
+      if (data) {
+        setFilterTopic({
+          topicList: data.topicList,
+        });
+      } else {
+        setFilterTopic({ topicList: [] });
       }
     });
   }, []);
@@ -281,9 +295,7 @@ const ProjectAdminEdit = () => {
             </div>
 
             <div className="row mb-3">
-              <Form.Label className="col-sm-2 col-form-label">
-                Lưu ý
-              </Form.Label>
+              <Form.Label className="col-sm-2 col-form-label">Lưu ý</Form.Label>
               <div className="col-sm-10">
                 <Form.Control
                   as="textarea"
@@ -301,25 +313,34 @@ const ProjectAdminEdit = () => {
               </div>
             </div>
             <div className="row mb-3">
-                <Form.Label className="col-sm-2 col-form-label">
-                  Lĩnh vực
-                </Form.Label>
-                <div className="col-sm-10">
-                  <Form.Control
-                    type="text"
-                    name="topicId"
-                    title="Topic Id"
-                    required
-                    value={project.topicId || ""}
-                    onChange={(e) =>
-                      setProject({ ...project, topicId: e.target.value })
-                    }
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Không được bỏ trống.
-                  </Form.Control.Feedback>
-                </div>
+              <Form.Label className="col-sm-2 col-form-label">
+                Lĩnh vực
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Select
+                  name="topicId"
+                  title="Topic Id"
+                  value={project.topicId}
+                  required
+                  onChange={(e) =>
+                    setProject({
+                      ...project,
+                      topicId: e.target.value,
+                    })
+                  }
+                >
+                  {filterTopic.topicList.length > 0 &&
+                    filterTopic.topicList.map((item, index) => (
+                      <option key={index} value={item.value}>
+                        {item.text}
+                      </option>
+                    ))}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống.
+                </Form.Control.Feedback>
               </div>
+            </div>
 
             <div className="row mb-3">
               <Form.Label className="col-sm-2 col-form-label">
@@ -351,7 +372,7 @@ const ProjectAdminEdit = () => {
               </div>
             </div>
 
-            {/* <div className="row mb-3">
+            <div className="row mb-3">
               <div className="col-sm-10 offset-sm-2">
                 <div className="form-check">
                   <input
@@ -359,8 +380,9 @@ const ProjectAdminEdit = () => {
                     type="checkbox"
                     name="register"
                     checked={project.register}
-                    title="register"
-                    onChange={(e) =>setProject({ ...project, register: e.target.checked })
+                    title="Register"
+                    onChange={(e) =>
+                      setProject({ ...project, register: e.target.checked })
                     }
                   />
                   <Form.Label className="form-check-label">
@@ -368,7 +390,7 @@ const ProjectAdminEdit = () => {
                   </Form.Label>
                 </div>
               </div>
-            </div> */}
+            </div>
 
             <div className="text-center">
               <Button variant="success" type="submit">

@@ -57,7 +57,7 @@ const ProcessEditAdmin = () => {
   return (
     <>
       <LayoutAdmin>
-        <h3 className="text-success py-3">Thêm/cập nhật tiến trình</h3>
+        <h3 className="text-success py-3">Thêm/cập nhật trạng thái tiến độ thực hiện dự án</h3>
 
         <Form
           method="post"

@@ -8,29 +8,47 @@ import PostFilter from "../../filter/PostFilterModel";
 import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
+import Pager from "../../../pager/Pager";
 
 const ResearchResult = () => {
   const [getPost, setGetPost] = useState([]);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     postFilter = useSelector((state) => state.postFilter);
 
+  const [metadata, setMetadata] = useState({});
+  const [pageNumber, setPageNumber] = useState(1);
+
   let { id } = useParams,
     p = 1,
-    ps = 10;
+    ps = 2;
 
   useEffect(() => {
-    getFilterPost(postFilter.title, postFilter.shortDescription).then(
-      (data) => {
+    document.title = "Kết quả nghiên cứu";
+    loadResearch();
+    async function loadResearch() {
+      function setData(props) {
+        setGetPost(props.items);
+        setMetadata(props.metadata);
+      }
+      getFilterPost(
+        postFilter.title,
+        postFilter.shortDescription,
+        ps,
+        pageNumber
+      ).then((data) => {
         if (data) {
-          setGetPost(data.items);
+          setData(data);
         } else {
-          setGetPost([]);
+          setData([]);
         }
         setIsVisibleLoading(false);
-      }
-    );
-  }, [postFilter, ps, p]);
+      });
+    }
+  }, [postFilter, ps, p, pageNumber]);
 
+  function updatePageNumber(inc) {
+    setPageNumber((currentVal) => currentVal + inc);
+  }
   return (
     <div className="research">
       <div className="research-title py-3">
@@ -40,44 +58,49 @@ const ResearchResult = () => {
       {isVisibleLoading ? (
         <Loading />
       ) : (
-        <div className="row">
-          {getPost.length > 0 ? (
-            getPost.map((item, index) => (
-              <div className="col-6" key={index}>
-                <div className="card-content mt-1">
-                  <Link className="text-decoration-none" to={item.urlSlug}>
-                    <h3>{item.title}</h3>
-                  </Link>
-                  <p className="card-shortdesc">{item.shortDescription}</p>
-                  <div className="card-author">
-                    <span className="card-author-title">Đăng bởi: </span>
-                    <Link className="text-decoration-none">
-                      <span className="card-author-name">{item.user.name}</span>
+        <>
+          <div className="row">
+            {getPost.length > 0 ? (
+              getPost.map((item, index) => (
+                <div className="col-6" key={index}>
+                  <div className="card-content mt-1">
+                    <Link className="text-decoration-none" to={item.urlSlug}>
+                      <h3>{item.title}</h3>
                     </Link>
-                    <span className="px-5">
-                      Đăng ngày:{" "}
-                      {format(new Date(item.created), "dd/MM/yyyy hh:mm")}
-                    </span>
-                    <span>
-                      Lượt xem:
-                      {item.viewCount}
-                      <FontAwesomeIcon
-                        icon={faEye}
-                        className="text-danger px-1"
-                      />
-                    </span>
+                    <p className="card-shortdesc">{item.shortDescription}</p>
+                    <div className="card-author">
+                      <span className="card-author-title">Đăng bởi: </span>
+                      <Link className="text-decoration-none">
+                        <span className="card-author-name">
+                          {item.user.name}
+                        </span>
+                      </Link>
+                      <span className="px-5">
+                        Đăng ngày:{" "}
+                        {format(new Date(item.created), "dd/MM/yyyy hh:mm")}
+                      </span>
+                      <span>
+                        Lượt xem:
+                        {item.viewCount}
+                        <FontAwesomeIcon
+                          icon={faEye}
+                          className="text-danger px-1"
+                        />
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <>
-              <h2 className="text-warning text-center py-3">
-                Không tìm thấy bài viết nào
-              </h2>
-            </>
-          )}
-        </div>
+              ))
+            ) : (
+              <>
+                <h2 className="text-warning text-center py-3">
+                  Không tìm thấy bài viết nào
+                </h2>
+              </>
+            )}
+          </div>
+          <Pager metadata={metadata} onPageChange={updatePageNumber} />
+        </>
       )}
     </div>
   );

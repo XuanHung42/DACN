@@ -12,13 +12,15 @@ import Loading from "../../../components/user/Loading";
 import { Table } from "react-bootstrap";
 import { useSnackbar } from "notistack";
 import Pager from "../../../components/pager/Pager";
+import { format } from "date-fns";
+import { getAllDashboard } from "../../../api/DashboardApi";
 
 const ProjectAdmin = () => {
-  const {querySearch, params}= "";
+  const { querySearch, params } = "";
   const [getProject, setGetProject] = useState([]);
   const [reRender, setRender] = useState(false);
-  const [pageNumber, setPageNumber]= useState(1);
-  const [metadata, setMetadata]= useState({})
+  const [pageNumber, setPageNumber] = useState(1);
+  const [metadata, setMetadata] = useState({});
 
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
     projectFilter = useSelector((state) => state.projectFilter);
@@ -31,31 +33,35 @@ const ProjectAdmin = () => {
   useEffect(() => {
     loadProject();
     async function loadProject() {
-      const parameters= new URLSearchParams({
-        pageNumber: Object.fromEntries(querySearch|| '').length> 0 ? 1: pageNumber||1,
-      
+      const parameters = new URLSearchParams({
+        pageNumber:
+          Object.fromEntries(querySearch || "").length > 0
+            ? 1
+            : pageNumber || 1,
+
         pageSize: 2,
-        ...Object.fromEntries(querySearch||""),
-        ...params
-        
-      })
+        ...Object.fromEntries(querySearch || ""),
+        ...params,
+      });
       function setData(props) {
-          setGetProject(props.items);
-          setMetadata(props.metadata);
-        
+        setGetProject(props.items);
+        setMetadata(props.metadata);
       }
 
-      getFilterProject(projectFilter.name, parameters.pageSize, pageNumber).then((data) => {
+      getFilterProject(
+        projectFilter.name,
+        parameters.pageSize,
+        pageNumber
+      ).then((data) => {
         if (data) {
-          setData(data)
+          setData(data);
         } else {
           setData([]);
         }
         setIsVisibleLoading(false);
       });
-      
     }
-  }, [projectFilter, ps, p, reRender,pageNumber]);
+  }, [projectFilter, ps, p, reRender, pageNumber]);
 
   // delete project
   const handleDeleteProject = (e, id) => {
@@ -78,11 +84,24 @@ const ProjectAdmin = () => {
     }
   };
 
-  
   function updatePageNumber(inc) {
     setPageNumber((currentVal) => currentVal + inc);
   }
 
+  const [dashboardItem, setDashboardItem] = useState({});
+
+  useEffect(() => {
+    getDashboard();
+    async function getDashboard() {
+      const response = await getAllDashboard();
+      if (response) {
+        console.log("response check: ", response);
+        setDashboardItem(response);
+      } else {
+        setDashboardItem({});
+      }
+    }
+  }, []);
   return (
     <>
       <div className="row">
@@ -96,10 +115,27 @@ const ProjectAdmin = () => {
           </div>
           <div className="project-content">
             <ProjectFilter />
-            <Link className="btn btn-success mb-2" to={`/admin/project/edit`}>
-              Thêm mới <FontAwesomeIcon icon={faAdd} />
-            </Link>
-
+            <div className="d-flex align-items-center justify-content-between">
+              <Link className="btn btn-success mb-2" to={`/admin/project/edit`}>
+                Thêm mới <FontAwesomeIcon icon={faAdd} />
+              </Link>
+              <div className="">
+                <div className="px-2 text-danger">
+                  Dự án chưa đăng ký:
+                  <span className="px-1">
+                    {dashboardItem.countProjectNotRegister}
+                  </span>
+                  dự án
+                </div>
+                <div className="px-2 text-success">
+                  Dự án đã đăng ký:
+                  <span className="px-1">
+                    {dashboardItem.countProjectRegister}
+                  </span>
+                  dự án
+                </div>
+              </div>
+            </div>
             {isVisibleLoading ? (
               <Loading />
             ) : (
@@ -110,8 +146,10 @@ const ProjectAdmin = () => {
                       <th>Tên dự án</th>
                       <th>Mô tả ngắn</th>
                       <th>Kinh phí thực hiện</th>
-                      <th>Số thành viên</th>
-                      {/* <th>Đăng ký</th> */}
+                      <th>Ngày bắt đầu</th>
+                      <th>Ngày kết thúc</th>
+                      <th>Người thực hiện</th>
+                      <th>Trạng thái</th>
                       <th>Sửa</th>
                       <th>Xoá</th>
                     </tr>
@@ -123,8 +161,26 @@ const ProjectAdmin = () => {
                           <td>{item.name}</td>
                           <td>{item.shortDescription}</td>
                           <td>{item.costProject} VNĐ</td>
-                          <td>{item.userNumber}</td>
-                          {/* <td>{item.register}</td> */}
+                          <td>
+                            {format(new Date(item.startDate), "dd/MM/yyyy")}
+                          </td>
+                          <td>
+                            {format(new Date(item.endDate), "dd/MM/yyyy")}
+                          </td>
+                          <td>
+                            {item.users.map((item, index) => (
+                              <div className="text-danger" key={index}>
+                                {item.name}
+                              </div>
+                            ))}
+                          </td>
+                          <td>
+                            {item.register ? (
+                              <div className="text-success">Đã đăng ký</div>
+                            ) : (
+                              <div className="text-danger">Chưa đăng ký</div>
+                            )}
+                          </td>
                           <td className="text-center">
                             <Link to={`/admin/project/edit/${item.id}`}>
                               <FontAwesomeIcon icon={faEdit} />
@@ -150,14 +206,9 @@ const ProjectAdmin = () => {
                     )}
                   </tbody>
                 </Table>
-               
               </>
             )}
-             <Pager 
-                  metadata={metadata}
-                  
-                  onPageChange={updatePageNumber}
-                />
+            <Pager metadata={metadata} onPageChange={updatePageNumber} />
           </div>
         </div>
       </div>

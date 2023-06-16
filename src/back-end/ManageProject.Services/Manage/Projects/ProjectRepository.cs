@@ -225,5 +225,15 @@ namespace ManageProject.Services.Manage.Projects
 
             return true;
         }
-    }
+
+		public async Task<int> CountTotalProjectNotRegisterAsync(CancellationToken cancellationToken = default)
+		{
+            return await _context.Set<Project>().CountAsync(p => !p.Register, cancellationToken);
+		}
+
+		public async Task<int> CountTotalProjectRegister(CancellationToken cancellationToken = default)
+		{
+            return await _context.Set<Project>().CountAsync(p => p.Register, cancellationToken);
+		}
+	}
 }

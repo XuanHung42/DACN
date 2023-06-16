@@ -32,6 +32,8 @@ namespace ManageProject.API.Endpoints
 				CountDepartment = await departmentRepository.CountTotalDepartmentAsync(),
 				CountPost = await postRepository.CountTotalPostAsync(),
 				CountProject = await projectRepository.CountTotalProjectAsync(),
+				CountProjectNotRegister = await projectRepository.CountTotalProjectNotRegisterAsync(),
+				CountProjectRegister = await projectRepository.CountTotalProjectRegister(),
 				CountUser = await userRepository.CountTotalUserAsync(),
 
 			};
