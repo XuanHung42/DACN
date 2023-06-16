@@ -10,6 +10,8 @@ namespace ManageProject.Core.DTO
 	{
 		public string Keyword { get; set; } = "";
 		public string DepartmentSlug { get; set; } = "";
+		public string UserSlug { get; set; } = "";
+
 
 	}
 }

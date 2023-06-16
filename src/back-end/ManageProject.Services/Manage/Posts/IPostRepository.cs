@@ -14,12 +14,14 @@ namespace ManageProject.Services.Manage.Posts
 	{
 		Task<IList<T>> GetAllPostAsync<T>(
 			Func<IQueryable<Post>, IQueryable<T>> mapper, CancellationToken cancellationToken = default);
-		
+
 		// get post filter
 		Task<IPagedList<PostItem>> GetPostPagedFilterAsync(
 			IPagingParams pagingParams,
-			string title = null, CancellationToken cancellationToken = default);
-	
+			string title = null,
+			string shortDescription = null,
+			CancellationToken cancellationToken = default);
+
 		// get details by slug
 		Task<Post> GetPostDetailBySlug(string slug, CancellationToken cancellationToken = default);
 		Task IncreaseViewCountAsync(int postId, CancellationToken cancellationToken);
@@ -40,6 +42,7 @@ namespace ManageProject.Services.Manage.Posts
 		Task<Post> GetPostByIdAsync(int id, CancellationToken cancellationToken = default);
 
 		Task<Post> GetPostById(int postId, CancellationToken cancellationToken = default);
-   
+
+		
 	}
 }

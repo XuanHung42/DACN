@@ -96,10 +96,10 @@ namespace ManageProject.Services.Manage.Projects
                 );
             }
 
-            //if (!string.IsNullOrWhiteSpace(query.UserSlug))
-            //{
-            //	projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.UrlSlug == query.UserSlug));
-            //}
+            if (!string.IsNullOrWhiteSpace(query.UserSlug))
+            {
+                projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.UrlSlug == query.UserSlug));
+            }
 
             //if (query.UserId > 0)
             //{

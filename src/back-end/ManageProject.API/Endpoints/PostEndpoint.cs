@@ -83,7 +83,7 @@ namespace ManageProject.API.Endpoints
 			[AsParameters] PostFilterModel model, 
 			IPostRepository postRepository)
 		{
-			var postList = await postRepository.GetPostPagedFilterAsync(model, model.Title);
+			var postList = await postRepository.GetPostPagedFilterAsync(model, model.Title, model.ShortDescription);
 
 			var pagingnationResult = new PaginationResult<PostItem>(postList);
 			return Results.Ok(ApiResponse.Success(pagingnationResult));

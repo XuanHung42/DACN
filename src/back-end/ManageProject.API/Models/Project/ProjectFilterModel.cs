@@ -6,7 +6,7 @@ namespace ManageProject.API.Models.Project
 	{
 		public string Name { get; set; }
 		//public int? UserId { get; set; }
-		//public string UserSlug { get; set; }
+		public string UserSlug { get; set; }
 
 	}
 }

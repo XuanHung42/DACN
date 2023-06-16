@@ -21,6 +21,7 @@ using ManageProject.Services.Media;
 using ManageProject.Services.Manage.Roles;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ManageProject.API.Models.Departments;
+using ManageProject.Services.Manage.Posts;
 
 namespace ManageProject.API.Endpoints
 {
@@ -305,6 +306,7 @@ namespace ManageProject.API.Endpoints
 
         }
        
+        
     }
 }
 
