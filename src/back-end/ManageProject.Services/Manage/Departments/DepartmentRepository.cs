@@ -57,7 +57,8 @@ namespace ManageProject.Services.Manage.Departments
 				{
 					Id = d.Id,
 					Name = d.Name,
-					UrlSlug = d.UrlSlug
+					UrlSlug = d.UrlSlug,
+					CountUser = d.Users.Count(),
 				}).ToPagedListAsync(pagingParams, cancellationToken);
 		}
 

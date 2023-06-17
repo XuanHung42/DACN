@@ -57,7 +57,7 @@ const ResearcherManage = () => {
   }
 
   useEffect(() => {
-    document.title = "Đăng ký tài khoản";
+    document.title = "Hồ sơ khoa học";
     loadResearch();
     async function loadResearch() {
       function setData(props) {
@@ -94,9 +94,9 @@ const ResearcherManage = () => {
                 <div className="row">
                   {userManage.length > 0 ? (
                     userManage.map((item, index) => (
-                      <div className="col-6" key={index}>
-                        <div className="card mt-3">
-                          <div className="d-flex card-content">
+                      <div className="col-6 " key={index}>
+                        <div className="card mt-3 card-content d-flex flex-row justify-content-between">
+                          <div className="d-flex">
                             <FontAwesomeIcon
                               icon={faUser}
                               fontSize={50}
@@ -126,6 +126,12 @@ const ResearcherManage = () => {
                               )}
                             </div>
                           </div>
+                          <div className="text-danger d-flex align-items-center">
+                            Số bài đăng
+                            <div className="cicler text-white">
+                              {item.countPost}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     ))
@@ -149,19 +155,25 @@ const ResearcherManage = () => {
                   {departmentManage.length > 0 ? (
                     departmentManage.map((item, index) => (
                       <div className="col-6" key={index}>
-                        <div className="card mt-3">
-                          <div className="d-flex card-content">
+                        <div className="card mt-3 card-content d-flex flex-row justify-content-between">
+                          <div className="d-flex">
                             <FontAwesomeIcon
                               icon={faHome}
                               fontSize={50}
                               className="px-3 text-success"
                             />
                             <Link
-                              className="text-success text-decoration-none"
+                              className="text-success text-decoration-none d-flex align-items-center"
                               to={`/department`}
                             >
                               <div className="text-name">{item.name}</div>
                             </Link>
+                          </div>
+                          <div className="text-danger d-flex align-items-center">
+                            Số giảng viên
+                            <div className="cicler text-white">
+                              {item.countUser}
+                            </div>
                           </div>
                         </div>
                       </div>

@@ -65,6 +65,7 @@ const ProcessAdmin = () => {
             <thead>
               <tr>
                 <th>Tên tiến độ</th>
+                <th>Số dự án</th>
                 <th>Sửa</th>
                 <th>Xoá</th>
               </tr>
@@ -74,6 +75,7 @@ const ProcessAdmin = () => {
                 getProcess.map((item, index) => (
                   <tr key={index}>
                     <td>{item.name}</td>
+                    <td>{item.countProject} {item.name}</td>
                     <td className="text-center">
                       <Link to={`/admin/process/edit/${item.id}`}>
                         <FontAwesomeIcon icon={faEdit} />

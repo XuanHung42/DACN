@@ -30,7 +30,7 @@ const DepartmentAdmin = () => {
 
   let { id } = useParams,
     p = 1,
-    ps = 10;
+    ps = 3;
     function updatePageNumber(inc) {
       setPageNumber((currentVal) => currentVal + inc);
     }
@@ -41,7 +41,7 @@ const DepartmentAdmin = () => {
         setGetDepartment(props.items);
         setMetadata(props.metadata);
       }
-      getFilterDepartment(departmentFilter.name, 2,pageNumber).then((data) => {
+      getFilterDepartment(departmentFilter.name, 3,pageNumber).then((data) => {
         if (data) {
           setData(data);
         } else {
@@ -99,6 +99,7 @@ const DepartmentAdmin = () => {
                 <thead>
                   <tr>
                     <th>Tên khoa</th>
+                    <td>Số thành viên</td>
                     <th>Sửa</th>
                     <th>Xoá</th>
                   </tr>
@@ -108,6 +109,7 @@ const DepartmentAdmin = () => {
                     getDepartment.map((item, index) => (
                       <tr key={index}>
                         <td>{item.name}</td>
+                        <td>{item.countUser}</td>
                         <td className="text-center">
                           <Link to={`/admin/department/edit/${item.id}`}>
                             <FontAwesomeIcon icon={faEdit} />

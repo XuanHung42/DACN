@@ -30,7 +30,8 @@ namespace ManageProject.Services.Manage.Processes
 				{
 					Id = p.Id,
 					Name = p.Name,
-					UrlSlug = p.UrlSlug
+					UrlSlug = p.UrlSlug,
+					CountProject = p.Projects.Count(),
 					
 				}).ToListAsync(cancellationToken);
 		}

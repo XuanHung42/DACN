@@ -21,6 +21,7 @@ namespace ManageProject.Core.DTO
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; }
         public int RoleId { get; set; }
+        public int CountPost { get; set; }
         //public IList<Project> Projects { get; set; } 
     }
 }

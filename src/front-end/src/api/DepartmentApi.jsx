@@ -15,7 +15,7 @@ export async function getDepartmentBySlug(urlSlug = ''){
 
 export function getFilterDepartment(
   name = '',
-  pageSize = 10,
+  pageSize = 3,
   pageNumber = 1,
   sortColumn = '',
   sortOrder = ''

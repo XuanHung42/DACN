@@ -72,7 +72,9 @@ namespace ManageProject.Services.Manage.Users
                         UrlSlug = u.UrlSlug,
                         DepartmentId = u.Department.Id,
                         BirthDate= u.BirthDate,
-                        DepartmentName = u.Department.Name
+                        DepartmentName = u.Department.Name,
+                        CountPost = u.Posts.Count()
+
                     })
                     .ToPagedListAsync(pagingParams, cancellationToken);
 
