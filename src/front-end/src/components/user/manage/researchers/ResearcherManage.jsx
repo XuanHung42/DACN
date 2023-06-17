@@ -57,7 +57,7 @@ const ResearcherManage = () => {
   }
 
   useEffect(() => {
-    document.title = "Hồ sơ - Tất cả phòng khoa";
+    document.title = "Đăng ký tài khoản";
     loadResearch();
     async function loadResearch() {
       function setData(props) {

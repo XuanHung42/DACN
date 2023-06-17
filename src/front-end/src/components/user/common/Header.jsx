@@ -13,9 +13,8 @@ const Header = () => {
   const dispatch = useDispatch()
   let user = useSelector((state) => state.auth.login.currentUser);
   console.log()
-  const handleLogout = () => {
-    dispatch(logout)
-    localStorage.clear();
+  const handleLogout = async() => {
+    await dispatch(logout());
     navigate(`/`)
     window.location.reload();
    

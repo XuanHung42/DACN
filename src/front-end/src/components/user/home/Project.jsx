@@ -72,37 +72,46 @@ const Project = () => {
 
   useEffect(() => {
 
-    getFilterProject(projectFilter.name, ps, pageNumber).then((data) => {
-      if (data) {
-        setGetProject(data.items);
-        setIsRegistered(
-          data.items.map((project) => {
-            const key = `isRegistered_${project.id}`;
-            return localStorage.getItem(key) === "true";
-          })
-        );
+    loadProject();
+    async function loadProject(){
+      function setData(props) {
+        setGetProject(props.items);
+        setMetadata(props.metadata);
 
-        if (user && user.result) {
-          getUserResearchertById(user.result.id).then((userData) => {
-            if (userData && userData.projects) {
-              const registeredProjects = userData.projects.map(
-                (project) => project.id
-              );
-              setIsRegistered((prevState) => {
-                const newState = [...prevState];
-                data.items.forEach((project, index) => {
-                  if (registeredProjects.includes(project.id)) {
-                    newState[index] = true;
-                  }
-                });
-                return newState;
-              });
-            }
-          });
-        }
+        
       }
-      setIsVisibleLoading(false);
-    });
+      getFilterProject(projectFilter.name, ps, pageNumber).then((data) => {
+        if (data) {
+          setData(data);
+          setIsRegistered(
+            data.items.map((project) => {
+              const key = `isRegistered_${project.id}`;
+              return localStorage.getItem(key) === "true";
+            })
+          );
+  
+          if (user && user.result) {
+            getUserResearchertById(user.result.id).then((userData) => {
+              if (userData && userData.projects) {
+                const registeredProjects = userData.projects.map(
+                  (project) => project.id
+                );
+                setIsRegistered((prevState) => {
+                  const newState = [...prevState];
+                  data.items.forEach((project, index) => {
+                    if (registeredProjects.includes(project.id)) {
+                      newState[index] = true;
+                    }
+                  });
+                  return newState;
+                });
+              }
+            });
+          }
+        }
+        setIsVisibleLoading(false);
+      });
+    }
   }, [projectFilter, ps, p, user, pageNumber]);
 
   

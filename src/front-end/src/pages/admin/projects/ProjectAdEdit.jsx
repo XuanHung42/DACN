@@ -47,7 +47,7 @@ const ProjectAdminEdit = () => {
       } else {
         setProject(initialState);
       }
-    });
+    },[]);
 
     // get filter combobox
     getProcessListCombobox().then((data) => {
