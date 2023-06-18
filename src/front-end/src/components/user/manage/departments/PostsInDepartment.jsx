@@ -7,6 +7,7 @@ import Loading from "../../Loading";
 import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
+import "../Manage.scss";
 
 const PostInDepartment = () => {
   const params = useParams();
@@ -42,12 +43,12 @@ const PostInDepartment = () => {
                 <div className="col-6" key={index}>
                   <div className="card-content mt-1">
                     <Link
-                      className="text-decoration-none text-none"
-                      to={item.urlSlug}
+                      className="text-decoration-none text-none textline"
+                      to={`/research/${item.urlSlug}`}
                     >
                       <h5>{item.title}</h5>
                     </Link>
-                    <p className="card-shortdesc">{item.shortDescription}</p>
+                    <p className="card-shortdesc mt-3">{item.shortDescription}</p>
                     <div className="card-author">
                       <span className="card-author-title">Đăng bởi: </span>
                       <Link className="text-decoration-none">

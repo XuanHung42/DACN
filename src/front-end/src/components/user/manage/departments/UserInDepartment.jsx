@@ -6,7 +6,6 @@ import { getUserByDepartmentSlug } from "../../../../api/DepartmentApi";
 import Loading from "../../Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import ResearchFilter from "../../filter/ResearcherFilterModel";
 
 const UserInDepartment = () => {
   const [useDepartment, setUserDepartment] = useState([]);
@@ -50,7 +49,7 @@ const UserInDepartment = () => {
                       <div className="d-flex flex-column">
                         <Link
                           className="text-success text-decoration-none"
-                          to={`/records/researcher/${item.urlSlug}`}
+                          to={`/records/${item.urlSlug}`}
                         >
                           <div className="text-name">Họ tên: {item.name}</div>
                         </Link>

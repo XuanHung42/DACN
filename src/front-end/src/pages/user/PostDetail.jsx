@@ -82,7 +82,7 @@ const PostDetail = () => {
                   <td className="post-lable w-25">Đăng bởi tác giả: </td>
                   <td className="post-value">
                     <p>
-                      <Link to={`/department/${postDetail.user.urlSlug}`} className="text-decoration-none text-danger">
+                      <Link to={`/records/${postDetail.user.urlSlug}`} className="text-decoration-none text-danger">
                         {postDetail.user.name}
                       </Link>
                     
