@@ -4,7 +4,7 @@ import { getPostByResearchSlug } from "../../../../api/PostApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { format } from "date-fns";
-
+import "../Manage.scss"
 
 const PostResearcher = () => {
   const [post, setPost] = useState([]);
@@ -33,11 +33,11 @@ const PostResearcher = () => {
             {post.length > 0 ? (
               post.map((item, index) => (
                 <div className="col-6" key={index}>
-                  <div className="card-content mt-1">
-                    <Link className="text-decoration-none" to={`/research/${item.urlSlug}`}>
-                      <h3>{item.title}</h3>
+                  <div className="card-content mt-3">
+                    <Link className="text-decoration-none textline" to={`/research/${item.urlSlug}`}>
+                      <h5>{item.title}</h5>
                     </Link>
-                    <p className="card-shortdesc">{item.shortDescription}</p>
+                    <p className="card-shortdesc mt-3">{item.shortDescription}</p>
                     <div className="card-author">
                       <span className="card-author-title">Đăng bởi: </span>
                       <Link className="text-decoration-none">

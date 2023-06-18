@@ -28,7 +28,7 @@ const ProjectAdmin = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   let { id } = useParams,
     p = 1,
-    ps = 10;
+    ps = 4;
 
   useEffect(() => {
     loadProject();

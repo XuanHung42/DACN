@@ -32,12 +32,12 @@ const Researchers = () => {
         <h5 className="text-success text-center">Bài viết mới nhất</h5>
         <div className="card-body">
           {getPost.map((item, index) => (
-            <div className="card-content mt-1" key={index}>
-              <Link className="text-decoration-none" to={`/${item.urlSlug}`}>
+            <div className="card-content mt-3" key={index}>
+              <Link className="text-decoration-none textline" to={`/${item.urlSlug}`}>
                 <h5>{item.title}</h5>
               </Link>
-              <div className="card-shortdesc">{item.shortDescription}</div>
-              <div className="card-author row">
+              <div className="card-shortdesc mt-3">{item.shortDescription}</div>
+              <div className="card-author row mt-2">
                 <div className="card-author-title col">
                   Đăng bởi:
                   <Link

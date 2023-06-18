@@ -13,3 +13,18 @@
   text-align: center;
   margin-left: 5px;
 }
+
+.textline{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+.image_slide{
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  object-fit: cover;
+  cursor: grab;
+}

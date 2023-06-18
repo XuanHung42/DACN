@@ -81,7 +81,12 @@ const PostDetail = () => {
                 <tr>
                   <td className="post-lable w-25">Đăng bởi tác giả: </td>
                   <td className="post-value">
-                    <p>{postDetail.user.name}</p>
+                    <p>
+                      <Link to={`/department/${postDetail.user.urlSlug}`} className="text-decoration-none text-danger">
+                        {postDetail.user.name}
+                      </Link>
+                    
+                    </p>
                     <p className="post-link">
                       <Link to={`mailto:${postDetail.user.email}`} >
                         <div>{postDetail.user.email}</div>
@@ -91,7 +96,11 @@ const PostDetail = () => {
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Thuộc khoa</td>
-                  <td className="post-value">{postDetail.department.name}</td>
+                  <td className="post-value">
+                    <Link to={`/department/${postDetail.department.urlSlug}`} className="text-decoration-none text-danger">
+                      {postDetail.department.name}
+                    </Link>
+                  </td>
                 </tr>
               </tbody>
             </Table>
