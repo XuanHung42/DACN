@@ -26,6 +26,7 @@ import ProcessAdmin from "../pages/admin/process/ProcessAd";
 import ProcessEditAdmin from "../pages/admin/process/ProcessAdEdit";
 import TopicAdmin from "../pages/admin/topics/TopicAd";
 import TopicAdminEdit from "../pages/admin/topics/TopicAdEdit";
+import DepartmentDetail from "../components/user/manage/departments/DepartmentDetail";
 
 
 const Routers = () => {
@@ -43,6 +44,8 @@ const Routers = () => {
 
 
         <Route path="/department" element={<Department />} />
+        <Route path="/department/detail/:slug" element={<DepartmentDetail />} />
+
         <Route
           path="/department/researcher/:slug"
           element={<ResearcherDetail />}

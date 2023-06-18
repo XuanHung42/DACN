@@ -46,3 +46,11 @@ export async function deleteDepartment(id = 0) {
 }
 
 
+// lấy ra giảng viên thuộc khoa qua slug của khoa
+export function getUserByDepartmentSlug(slug) {
+  return get_api(
+    `https://localhost:7284/api/departments/user/${slug}?PageSize=10&PageNumber=1`
+  );
+}
+
+

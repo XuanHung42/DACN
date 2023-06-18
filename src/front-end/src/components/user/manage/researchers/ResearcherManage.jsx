@@ -164,7 +164,7 @@ const ResearcherManage = () => {
                             />
                             <Link
                               className="text-success text-decoration-none d-flex align-items-center"
-                              to={`/department`}
+                              to={`/department/detail/${item.urlSlug}`}
                             >
                               <div className="text-name">{item.name}</div>
                             </Link>
