@@ -11,6 +11,8 @@ import { faSignIn, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate();
+
   let user = useSelector((state) => state.auth.login.currentUser);
   console.log()
   const handleLogout = async() => {
@@ -19,8 +21,10 @@ const Header = () => {
     window.location.reload();
    
   };
-  const navigate = useNavigate();
-
+  if (!user) {
+    navigate("/login"); 
+  }
+  
 
   return (
     <header className="bg-success sticky-top">
@@ -62,11 +66,11 @@ const Header = () => {
                 </span>
 
                 {/* check role navigae */}
-                {user.result.role === 1 ? (
+                {/* {user.result.role === 1 ? (
                   navigate(`/admin`)
                 ) : (
                   navigate(`/home`)
-                )}
+                )} */}
                 <Link
                   className="btn btn-danger px-2 text-decoration-none"
                   to="/"
