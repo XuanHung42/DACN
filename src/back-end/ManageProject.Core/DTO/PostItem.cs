@@ -17,9 +17,9 @@ namespace ManageProject.Core.DTO
 		public DateTime Created { get; set; }
 		public int UserId { get; set; }
 		public int DepartmentId { get; set; }
+		public int TopicId { get; set; }
 		public bool Status { get; set; }
 		public User User { get; set; }
-
 		public Department Department { get; set; }
         public int ViewCount { get; set; }
 

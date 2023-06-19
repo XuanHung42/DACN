@@ -142,6 +142,7 @@ namespace ManageProject.API.Endpoints
 			post.ShortDescription = model.ShortDescription;
 			post.Status= model.Status;
 			post.Created= DateTime.Now;
+			post.TopicId = model.TopicId;
 			if (model.File?.Length > 0)
 			{
                 string hostname = $"{context.Request.Scheme}://{context.Request.Host}{context.Request.PathBase}/",

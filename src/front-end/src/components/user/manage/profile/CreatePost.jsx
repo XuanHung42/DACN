@@ -6,9 +6,10 @@ import { getUserFilterDepartment } from "../../../../api/UserApi";
 import { Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { isEmptyOrSpaces } from "../../../../utils/Utils";
-
-import Layout from "../../common/Layout";
 import { faFileWord } from "@fortawesome/free-regular-svg-icons";
+import { getTopicListCombobox } from "../../../../api/ProjectApi";
+
+
 
 const CreatePost = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -24,11 +25,15 @@ const CreatePost = () => {
       file: "",
       userId: 0,
       departmentId: 0,
+      topicId: 0,
+
     },
     [filterDepartment, setFilterDepartment] = useState({ departmentList: [] });
   const [post, setPost] = useState(initialState);
   let { id } = useParams();
   id = id ?? 0;
+  
+  const [filterTopic, setFilterTopic] = useState({ topicList: [] });
 
   useEffect(() => {
     document.title = "Nhà khoa học đăng bài";
@@ -50,6 +55,16 @@ const CreatePost = () => {
         });
       } else {
         setFilterDepartment({ departmentList: [] });
+      }
+    });
+
+    getTopicListCombobox().then((data) => {
+      if (data) {
+        setFilterTopic({
+          topicList: data.topicList,
+        });
+      } else {
+        setFilterTopic({ topicList: [] });
       }
     });
   }, []);
@@ -244,6 +259,36 @@ const CreatePost = () => {
                   </Form.Control.Feedback>
                 </div>
               </div>
+
+              <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Lĩnh vực
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Select
+                  name="topicId"
+                  title="Topic Id"
+                  value={post.topicId}
+                  required
+                  onChange={(e) =>
+                    setPost({
+                      ...post,
+                      topicId: e.target.value,
+                    })
+                  }
+                >
+                  {filterTopic.topicList.length > 0 &&
+                    filterTopic.topicList.map((item, index) => (
+                      <option key={index} value={item.value}>
+                        {item.text}
+                      </option>
+                    ))}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống.
+                </Form.Control.Feedback>
+              </div>
+            </div>
 
               <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">

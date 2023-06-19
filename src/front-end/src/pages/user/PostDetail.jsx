@@ -85,7 +85,6 @@ const PostDetail = () => {
                       <Link to={`/records/${postDetail.user.urlSlug}`} className="text-decoration-none text-danger">
                         {postDetail.user.name}
                       </Link>
-                    
                     </p>
                     <p className="post-link">
                       <Link to={`mailto:${postDetail.user.email}`} >
@@ -99,6 +98,14 @@ const PostDetail = () => {
                   <td className="post-value">
                     <Link to={`/department/${postDetail.department.urlSlug}`} className="text-decoration-none text-danger">
                       {postDetail.department.name}
+                    </Link>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="post-lable w-25">Chủ đề</td>
+                  <td className="post-value">
+                    <Link to={`/topic/${postDetail.topic.urlSlug}`} className="text-decoration-none text-danger">
+                      {postDetail.topic.name}
                     </Link>
                   </td>
                 </tr>

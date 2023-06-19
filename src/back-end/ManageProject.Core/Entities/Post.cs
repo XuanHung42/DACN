@@ -24,6 +24,8 @@ namespace ManageProject.Core.Entities
         public User User { get; set; }
         public int ViewCount { get; set; }
 
-        // test code new branch
-    }
+		public int TopicId { get; set; }
+		public Topic Topic { get; set; }    // chủ đề lĩnh vực của dự án thuộc về lĩnh vực nào: kinh tế, giáo dục
+
+	}
 }

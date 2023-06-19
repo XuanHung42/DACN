@@ -9,6 +9,7 @@ import { isEmptyOrSpaces } from "../../../utils/Utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getUserFilterDepartment } from "../../../api/UserApi";
 import { faFileWord } from "@fortawesome/free-regular-svg-icons";
+import { getTopicListCombobox } from "../../../api/ProjectApi";
 
 const PostAdminEdit = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -24,7 +25,10 @@ const PostAdminEdit = () => {
     file: "",
     userId: 0,
     departmentId: 0,
+    topicId: 0,
+
   },  [filterDepartment, setFilterDepartment] = useState({ departmentList: [] });
+  const [filterTopic, setFilterTopic] = useState({ topicList: [] });
   const [post, setPost] = useState(initialState);
   let { id } = useParams();
   id = id ?? 0;
@@ -52,6 +56,16 @@ const PostAdminEdit = () => {
         setFilterDepartment({ departmentList: [] });
       }
     })
+
+    getTopicListCombobox().then((data) => {
+      if (data) {
+        setFilterTopic({
+          topicList: data.topicList,
+        });
+      } else {
+        setFilterTopic({ topicList: [] });
+      }
+    });
   }, []);
 
   const [validated, setValidated] = useState(false);
@@ -268,6 +282,36 @@ const PostAdminEdit = () => {
                   </Form.Control.Feedback>
                 </div>
               </div>
+
+              <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Lĩnh vực
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Select
+                  name="topicId"
+                  title="Topic Id"
+                  value={post.topicId}
+                  required
+                  onChange={(e) =>
+                    setPost({
+                      ...post,
+                      topicId: e.target.value,
+                    })
+                  }
+                >
+                  {filterTopic.topicList.length > 0 &&
+                    filterTopic.topicList.map((item, index) => (
+                      <option key={index} value={item.value}>
+                        {item.text}
+                      </option>
+                    ))}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Không được bỏ trống.
+                </Form.Control.Feedback>
+              </div>
+            </div>
 
               <div className="row mb-3">
                 <Form.Label className="col-sm-2 col-form-label">

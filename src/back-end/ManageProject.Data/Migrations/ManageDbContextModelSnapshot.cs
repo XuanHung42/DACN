@@ -65,8 +65,8 @@ namespace ManageProject.Data.Migrations
 
                     b.Property<string>("ShortDescription")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("Status")
                         .ValueGeneratedOnAdd()
@@ -75,13 +75,16 @@ namespace ManageProject.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UrlSlug")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -94,6 +97,8 @@ namespace ManageProject.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("TopicId");
 
                     b.HasIndex("UserId");
 
@@ -139,19 +144,18 @@ namespace ManageProject.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Note")
-                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
@@ -169,13 +173,13 @@ namespace ManageProject.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("TopicId")
+                    b.Property<int>("TopicId")
                         .HasColumnType("int");
 
                     b.Property<string>("UrlSlug")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -366,6 +370,12 @@ namespace ManageProject.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Post_Department");
 
+                    b.HasOne("ManageProject.Core.Entities.Topic", "Topic")
+                        .WithMany("Posts")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ManageProject.Core.Entities.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
@@ -374,6 +384,8 @@ namespace ManageProject.Data.Migrations
                         .HasConstraintName("FK_Posts_Users");
 
                     b.Navigation("Department");
+
+                    b.Navigation("Topic");
 
                     b.Navigation("User");
                 });
@@ -389,7 +401,9 @@ namespace ManageProject.Data.Migrations
 
                     b.HasOne("ManageProject.Core.Entities.Topic", "Topic")
                         .WithMany("Projects")
-                        .HasForeignKey("TopicId");
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Process");
 
@@ -477,6 +491,8 @@ namespace ManageProject.Data.Migrations
 
             modelBuilder.Entity("ManageProject.Core.Entities.Topic", b =>
                 {
+                    b.Navigation("Posts");
+
                     b.Navigation("Projects");
                 });
 

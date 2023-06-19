@@ -76,7 +76,8 @@ namespace ManageProject.Services.Manage.Posts
 		{
 			IQueryable<Post> postQuery = _context.Set<Post>()
 				.Include(p => p.User)
-				.Include(p => p.Department);
+				.Include(p => p.Department)
+				.Include(p => p.Topic);
 			{
 				if (!string.IsNullOrEmpty(slug))
 				{

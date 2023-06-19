@@ -106,19 +106,19 @@ namespace ManageProject.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
                     ShortDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UrlSlug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    UrlSlug = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     CostProject = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     UserNumber = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     StartDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
                     Register = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ProcessId = table.Column<int>(type: "int", nullable: false),
-                    TopicId = table.Column<int>(type: "int", nullable: true)
+                    TopicId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -133,7 +133,8 @@ namespace ManageProject.Data.Migrations
                         name: "FK_Project_Topics_TopicId",
                         column: x => x.TopicId,
                         principalTable: "Topics",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -142,15 +143,16 @@ namespace ManageProject.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ShortDescription = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    UrlSlug = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    ShortDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    UrlSlug = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     File = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Created = table.Column<DateTime>(type: "datetime", nullable: false),
-                    ViewCount = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                    ViewCount = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    TopicId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -159,6 +161,12 @@ namespace ManageProject.Data.Migrations
                         name: "FK_Post_Department",
                         column: x => x.DepartmentId,
                         principalTable: "Department",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Posts_Topics_TopicId",
+                        column: x => x.TopicId,
+                        principalTable: "Topics",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -247,6 +255,11 @@ namespace ManageProject.Data.Migrations
                 name: "IX_Posts_DepartmentId",
                 table: "Posts",
                 column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_TopicId",
+                table: "Posts",
+                column: "TopicId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_UserId",

@@ -48,7 +48,7 @@ namespace ManageProject.API.Models.Project
                 ShortDescription = form["ShortDescription"],
                 CostProject = (form["CostProject"]),
                 UserNumber = int.Parse(form["UserNumber"]),
-                Register = form["Register"] != "false",
+                Register = form["Register"] != "true",
 				StartDate = DateTime.Parse(form["StartDate"]),
 				EndDate = DateTime.Parse(form["EndDate"]),
 				ProcessId = int.Parse(form["ProcessId"]),

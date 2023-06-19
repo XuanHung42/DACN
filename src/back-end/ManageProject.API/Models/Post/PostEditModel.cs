@@ -12,6 +12,7 @@
 		public IFormFile File { get; set; }
 		public int UserId { get; set; }
 		public int DepartmentId { get; set; }
+		public int TopicId { get; set; }
 
 		public static async ValueTask<PostEditModel> BindAsync(HttpContext context)
 		{
@@ -25,8 +26,9 @@
 				Status= (form["Status"]) != "false",
 				ShortDescription = (form["ShortDescription"]),
 				UserId = int.Parse(form["UserId"]),
+				DepartmentId = int.Parse(form["DepartmentId"]),
+				TopicId = int.Parse(form["TopicId"]),
 
-				DepartmentId = int.Parse(form["DepartmentId"])
 
 
 			};

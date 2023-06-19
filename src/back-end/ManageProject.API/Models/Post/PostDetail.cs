@@ -1,4 +1,5 @@
 ﻿using ManageProject.API.Models.Departments;
+using ManageProject.API.Models.Topic;
 using ManageProject.API.Models.Users;
 using ManageProject.Core.Entities;
 
@@ -17,6 +18,7 @@ namespace ManageProject.API.Models.Post
 		public DateTime Created { get; set; }
 		public UserDto User { get; set; }
 		public DepartmentDto Department { get; set; }
+		public TopicDto Topic { get; set; }
 
 	}
 }

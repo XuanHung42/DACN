@@ -20,15 +20,15 @@ namespace ManageProject.Data.Mappings
 
             builder.Property(p => p.Title)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(1000);
 
             builder.Property(p => p.ShortDescription)
                 .IsRequired()
-                .HasMaxLength(200);
+                .HasMaxLength(500);
 
             builder.Property(p => p.UrlSlug)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(500);
 
             builder.Property(p => p.File)
                 //.IsRequired()
