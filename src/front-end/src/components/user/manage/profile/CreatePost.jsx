@@ -5,10 +5,10 @@ import { getPostById, updateAndAddNewPost } from "../../../../api/PostApi";
 import { getUserFilterDepartment } from "../../../../api/UserApi";
 import { Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileDownload } from "@fortawesome/free-solid-svg-icons";
 import { isEmptyOrSpaces } from "../../../../utils/Utils";
 
 import Layout from "../../common/Layout";
+import { faFileWord } from "@fortawesome/free-regular-svg-icons";
 
 const CreatePost = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -191,7 +191,7 @@ const CreatePost = () => {
                       >
                         Tải file xuống
                         <FontAwesomeIcon
-                          icon={faFileDownload}
+                          icon={faFileWord}
                           fontSize={50}
                           className="text-danger px-2"
                         />

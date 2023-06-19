@@ -15,7 +15,7 @@ export async function getDepartmentBySlug(urlSlug = ''){
 
 export function getFilterDepartment(
   name = '',
-  pageSize = 10,
+  pageSize = 3,
   pageNumber = 1,
   sortColumn = '',
   sortOrder = ''
@@ -44,5 +44,25 @@ export async function updateDepartment(id = 0, formData) {
 export async function deleteDepartment(id = 0) {
   return delete_api(`https://localhost:7284/api/departments/${id}`);
 }
+
+
+// lấy ra giảng viên thuộc khoa qua slug của khoa
+export function getUserByDepartmentSlug(slug) {
+  return get_api(
+    `https://localhost:7284/api/departments/user/${slug}?PageSize=11&PageNumber=1`
+  );
+}
+
+
+// lấy ra giảng viên thuộc khoa qua slug của khoa
+export function getPostByDepartmentSlug(slug) {
+  return get_api(
+    `https://localhost:7284/api/departments/post/${slug}?PageSize=11&PageNumber=1`
+  );
+}
+
+
+// test code
+
 
 

@@ -21,6 +21,7 @@ using ManageProject.Services.Media;
 using ManageProject.Services.Manage.Roles;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ManageProject.API.Models.Departments;
+using ManageProject.Services.Manage.Posts;
 
 namespace ManageProject.API.Endpoints
 {
@@ -50,7 +51,13 @@ namespace ManageProject.API.Endpoints
             routeGroupBuilder.MapGet("projects/{slug:regex(^[a-z0-9_-]+$)}", GetProjectByUserSlug)
                 .WithName("GetProjectByUserSlug")
                  .Produces<ApiResponse<PaginationResult<ProjectDto>>>();
-            routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/role", GetRoleByUserSlug)
+
+			routeGroupBuilder.MapGet("posts/{slug:regex(^[a-z0-9_-]+$)}", GetPostByUserSlug)
+		   .WithName("GetPostByUserSlug")
+			.Produces<ApiResponse<PaginationResult<PostDto>>>();
+
+
+			routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/role", GetRoleByUserSlug)
                 .WithName("GetRoleByUserSlug")
                  .Produces<ApiResponse<PaginationResult<RoleDto>>>();
             routeGroupBuilder.MapPost("/", AddOrUpdateUser)
@@ -216,6 +223,23 @@ namespace ManageProject.API.Endpoints
               ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Ko tồn tại slug '{slug}'"))
               : Results.Ok(ApiResponse.Success(paginationResult));
         }
+
+        private static async Task<IResult> GetPostByUserSlug([FromRoute] string slug,
+            [AsParameters] PagingModel pagingModel, IUserRepository userRepository)
+        {
+            var postQuery = new PostQuery()
+            {
+                UserSlug = slug
+            };
+            var postLits = await userRepository.GetPagedPostAsync(
+                postQuery,
+                pagingModel,
+                post => post.ProjectToType<PostDto>());
+            var paginationResult = new PaginationResult<PostDto>(postLits);
+            return postLits == null
+			    ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Ko tồn tại slug '{slug}'"))
+			  : Results.Ok(ApiResponse.Success(paginationResult));
+		}
         private static async Task<IResult> GetRoleByUserSlug([FromRoute] string slug,
            [AsParameters] PagingModel pagingModel, IUserRepository userRepository)
         {
@@ -305,6 +329,7 @@ namespace ManageProject.API.Endpoints
 
         }
        
+        
     }
 }
 

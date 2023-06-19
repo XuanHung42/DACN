@@ -9,7 +9,7 @@ export async function getAllProject(){
 // 
 export function getFilterProject(
   name = '',
-  pageSize = 5,
+  pageSize = 4,
   pageNumber = 1,
   sortColumn = '',
   sortOrder = ''
@@ -52,4 +52,20 @@ export async function getProcessListCombobox() {
 
 export async function getTopicListCombobox() {
   return get_api(`https://localhost:7284/api/topics/combobox`);
+}
+
+
+// lấy ra dự án qua slug của nhà khoa học
+export function getProjectByResearchSlug(slug) {
+  return get_api(
+    `https://localhost:7284/api/projects?UserSlug=${slug}&PageSize=10&PageNumber=1`
+  );
+}
+
+
+
+export function getProjectByResearchId(id) {
+  return get_api(
+    `https://localhost:7284/api/projects?UserId=${id}&PageSize=10&PageNumber=1`
+  );
 }

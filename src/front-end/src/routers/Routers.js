@@ -8,7 +8,6 @@ import Contact from "../pages/user/Contact";
 import PostDetail from "../pages/user/PostDetail";
 import SearchPost from "../components/user/search/SearchPost";
 import ResearcherDetail from "../pages/user/ResearcherDetail";
-import LayoutAdmin from "../components/admin/layout/LayoutAd";
 import ResearchAdmin from "../pages/admin/researchers/ResearcherAd";
 import ProjectAdmin from "../pages/admin/projects/ProjectAd";
 import DepartmentAdmin from "../pages/admin/departments/DepartmentAd";
@@ -26,6 +25,7 @@ import ProcessAdmin from "../pages/admin/process/ProcessAd";
 import ProcessEditAdmin from "../pages/admin/process/ProcessAdEdit";
 import TopicAdmin from "../pages/admin/topics/TopicAd";
 import TopicAdminEdit from "../pages/admin/topics/TopicAdEdit";
+import DepartmentDetail from "../components/user/manage/departments/DepartmentDetail";
 
 
 const Routers = () => {
@@ -37,41 +37,27 @@ const Routers = () => {
         <Route path="/:slug" element={<PostDetail />} />
         <Route path="/home" element={<Home />} />
         <Route path="/home/:slug" element={<ResearcherDetail />} />
-        
         <Route path="/profile/:id" element={<Profile/>}/>
         <Route path="/profile/edit/:id" element={<EditProfile/>}/>
-
-
         <Route path="/department" element={<Department />} />
-        <Route
-          path="/department/researcher/:slug"
-          element={<ResearcherDetail />}
-        />
+        <Route path="/department/:slug" element={<DepartmentDetail />} />
+        <Route path="/department/researcher/:slug" element={<ResearcherDetail />}/>
         <Route path="/department/:slug" element={<PostDetail />} />
         <Route path="/research" element={<Research />} />
         <Route path="/research/:slug" element={<PostDetail />} />
-        <Route
-          path="/research/researcher/:slug"
-          element={<ResearcherDetail />}
-        />
         <Route path="/records" element={<Record />} />
         <Route path="/records/department" element={<Department />} />
-        <Route
-          path="/records/researcher/:slug"
-          element={<ResearcherDetail />}
-        />
+        <Route path="records/:slug" element={<ResearcherDetail />}/>
         <Route path="/contact" element={<Contact />} />
-
         <Route path="/search" element={<SearchPost />} />
         <Route path="/home/search" element={<SearchPost />} />
-
         {/* router auth button login end register */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
 
-        {/* routers admin */}
 
+        {/* routers admin */}
         <Route path="/admin" element={<DashboardAdmin />} />
         <Route path="/admin/researcher" element={<ResearchAdmin />} />
         <Route path="/admin/researcher/edit" element={<ResearchEditAdmin />} />

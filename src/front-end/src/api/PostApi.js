@@ -68,4 +68,8 @@ export async function deletePost(id = 0) {
 }
 
 
-
+export function getPostByResearchSlug(slug) {
+  return get_api(
+    `https://localhost:7284/api/users/posts/${slug}?PageSize=11&PageNumber=1`
+  );
+}

@@ -8,3 +8,11 @@
   margin-top: 1rem;
   width: 60%;
 }
+
+.image_slide{
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  object-fit: cover;
+  cursor: grab;
+}

@@ -7,7 +7,8 @@ import { Table } from "react-bootstrap";
 import "./styles/style.scss"
 import { format } from 'date-fns'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faFileDownload } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faFileWord } from "@fortawesome/free-regular-svg-icons";
 
 
 const PostDetail = () => {
@@ -65,7 +66,7 @@ const PostDetail = () => {
                       >
                         Tải file xuống
                         <FontAwesomeIcon
-                          icon={faFileDownload}
+                          icon={faFileWord}
                           fontSize={50}
                           className="text-danger px-2"
                         />
@@ -80,7 +81,12 @@ const PostDetail = () => {
                 <tr>
                   <td className="post-lable w-25">Đăng bởi tác giả: </td>
                   <td className="post-value">
-                    <p>{postDetail.user.name}</p>
+                    <p>
+                      <Link to={`/records/${postDetail.user.urlSlug}`} className="text-decoration-none text-danger">
+                        {postDetail.user.name}
+                      </Link>
+                    
+                    </p>
                     <p className="post-link">
                       <Link to={`mailto:${postDetail.user.email}`} >
                         <div>{postDetail.user.email}</div>
@@ -90,7 +96,11 @@ const PostDetail = () => {
                 </tr>
                 <tr>
                   <td className="post-lable w-25">Thuộc khoa</td>
-                  <td className="post-value">{postDetail.department.name}</td>
+                  <td className="post-value">
+                    <Link to={`/department/${postDetail.department.urlSlug}`} className="text-decoration-none text-danger">
+                      {postDetail.department.name}
+                    </Link>
+                  </td>
                 </tr>
               </tbody>
             </Table>

@@ -20,7 +20,7 @@ const ResearchResult = () => {
 
   let { id } = useParams,
     p = 1,
-    ps = 2;
+    ps = 4;
 
   useEffect(() => {
     document.title = "Kết quả nghiên cứu";
@@ -63,14 +63,14 @@ const ResearchResult = () => {
             {getPost.length > 0 ? (
               getPost.map((item, index) => (
                 <div className="col-6" key={index}>
-                  <div className="card-content mt-1">
-                    <Link className="text-decoration-none" to={item.urlSlug}>
-                      <h3>{item.title}</h3>
+                  <div className="card-content mt-3">
+                    <Link className="text-decoration-none text-none textline" to={item.urlSlug}>
+                      <h5>{item.title}</h5>
                     </Link>
-                    <p className="card-shortdesc">{item.shortDescription}</p>
+                    <p className="card-shortdesc mt-3">{item.shortDescription}</p>
                     <div className="card-author">
                       <span className="card-author-title">Đăng bởi: </span>
-                      <Link className="text-decoration-none">
+                      <Link className="text-decoration-none" to={`/records/${item.user.urlSlug}`}>
                         <span className="card-author-name">
                           {item.user.name}
                         </span>

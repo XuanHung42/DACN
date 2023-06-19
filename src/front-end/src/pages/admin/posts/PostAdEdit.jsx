@@ -7,8 +7,8 @@ import { useSnackbar } from "notistack";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { isEmptyOrSpaces } from "../../../utils/Utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileDownload } from "@fortawesome/free-solid-svg-icons";
 import { getUserFilterDepartment } from "../../../api/UserApi";
+import { faFileWord } from "@fortawesome/free-regular-svg-icons";
 
 const PostAdminEdit = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -215,7 +215,7 @@ const PostAdminEdit = () => {
                       >
                         Tải file xuống
                         <FontAwesomeIcon
-                          icon={faFileDownload}
+                          icon={faFileWord}
                           fontSize={50}
                           className="text-danger px-2"
                         />
@@ -299,6 +299,25 @@ const PostAdminEdit = () => {
                 </div>
               </div>
 
+              <div className="row mb-3">
+              <div className="col-sm-10 offset-sm-2">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    name="status"
+                    checked={post.status}
+                    title="Trạng thái"
+                    onChange={(e) =>
+                      setPost({ ...post, status: e.target.checked })
+                    }
+                  />
+                  <Form.Label className="form-check-label">
+                    Xuất bản
+                  </Form.Label>
+                </div>
+              </div>
+            </div>
               <div className="text-center">
                 <Button variant="success" type="submit">
                   Lưu các thay đổi

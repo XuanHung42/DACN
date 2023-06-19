@@ -117,7 +117,7 @@ const PostAdmin = ({postQuery}) => {
                     <th>Mô tả</th>
                     <th>Ngày đăng</th>
                     <th>Đăng bởi</th>
-                    {/* <th>Trạng thái</th> */}
+                    <th>Trạng thái</th>
                     <th>Sửa</th>
                     <th>Xoá</th>
                   </tr>
@@ -130,11 +130,11 @@ const PostAdmin = ({postQuery}) => {
                         <td>{item.shortDescription}</td>
                         <td>{format(new Date(item.created), "dd/MM/yyyy")}</td>
                         <td>{item.user?.name}</td>
-                        {/* <td>{item.status ? (
+                        <td>{item.status ? (
                           <div className="text-success">Đã phê duyệt</div>
                         ): (
                           <div className="text-danger">Chưa phê duyệt</div>
-                        )}</td> */}
+                        )}</td>
                         <td className="text-center">
                           <Link to={`/admin/post/edit/${item.id}`}>
                             <FontAwesomeIcon icon={faEdit} />
