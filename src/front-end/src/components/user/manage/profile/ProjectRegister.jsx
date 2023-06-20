@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getProjectByResearchId } from "../../../../api/ProjectApi";
 import { format } from "date-fns";
 import { Table } from "react-bootstrap";
@@ -40,7 +40,14 @@ const ProjectRegister = () => {
           {project.length > 0 ? (
             project.map((item, index) => (
               <tr key={index}>
-                <td>{item.name}</td>
+                <td>
+                  <Link
+                    to={`/project/${item.urlSlug}`}
+                    className="text-decoration-none text-danger"
+                  >
+                    {item.name}
+                  </Link>
+                </td>
                 <td>{item.shortDescription}</td>
                 <td>{item.costProject} VNĐ</td>
                 <td>{format(new Date(item.startDate), "dd/MM/yyyy")}</td>
@@ -52,12 +59,13 @@ const ProjectRegister = () => {
                     </div>
                   ))}
                 </td>
-                <td>
-                  {item.register ? (
+                <td className="text-success">
+                  {item.process.name}
+                  {/* {item.register ? (
                     <div className="text-success">Đã đăng ký</div>
                   ) : (
                     <div className="text-danger">Chưa đăng ký</div>
-                  )}
+                  )} */}
                 </td>
               </tr>
             ))

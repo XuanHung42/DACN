@@ -15,7 +15,7 @@ export async function getAllPostByViewCount(){
 
 
 export async function getAllLimitNewPost(){
-  return get_api (`https://localhost:7284/api/posts/newPost/2`)
+  return get_api (`https://localhost:7284/api/posts/newPost/3`)
 }
 
 export async function getPostDetailBySlug(urlSlug = ''){
@@ -26,7 +26,7 @@ export async function getPostDetailBySlug(urlSlug = ''){
 export function getFilterPost(
   title = '',
   shortDescription = '',
-  pageSize = 2,
+  pageSize = 5,
   pageNumber = 1,
   sortColumn = '',
   sortOrder = ''

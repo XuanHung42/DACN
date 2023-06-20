@@ -3,7 +3,7 @@ import { Button, Table } from "react-bootstrap";
 import Loading from "../Loading";
 import { getFilterProject } from "../../../api/ProjectApi";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ProjectFilter from "../filter/ProjectFilterModel";
 import {
   addProjectsToUser,
@@ -128,7 +128,7 @@ const Project = () => {
                 {/* <th>Kinh phí dự án</th> */}
                 <th>Ngày bắt đầu</th>
                 <th>Ngày kết thúc</th>
-                <th>Chủ đề</th>
+                {/* <th>Chủ đề</th> */}
                 <th>Số thành viên</th>
                 <th>Người thực hiện</th>
                 <th>Đăng ký</th>
@@ -138,17 +138,23 @@ const Project = () => {
               {getProject.length > 0 ? (
                 getProject.map((item, index) => (
                   <tr key={index}>
-                    <td>{item.name}</td>
+                    <td>
+                      <Link to={`/project/${item.urlSlug}`} className="text-decoration-none text-danger">
+                        {item.name}
+                      </Link>
+                    </td>
                     <td>{item.shortDescription}</td>
                     {/* <td>{item.costProject} VNĐ</td> */}
                     <td>{format(new Date(item.startDate), "dd/MM/yyyy")}</td>
                     <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
-                    <td>{item.topic.name}</td>
+                    {/* <td>{item.topic.name}</td> */}
                     <td>{item.userNumber}</td>
                     <td>
                       {item.users.map((item, index) => (
                         <div className="text-danger" key={index}>
-                          {item.name}
+                          <Link to={`project-user/${item.urlSlug}`} className="text-decoration-none">
+                            {item.name}
+                          </Link>
                         </div>
                       ))}
                     </td>

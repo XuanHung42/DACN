@@ -20,7 +20,7 @@ const ResearchResult = () => {
 
   let { id } = useParams,
     p = 1,
-    ps = 4;
+    ps = 5;
 
   useEffect(() => {
     document.title = "Kết quả nghiên cứu";

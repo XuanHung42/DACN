@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../components/user/common/Header";
-import Footer from "../../components/user/common/Footer";
 import { Link, useParams } from "react-router-dom";
 import { getPostDetailBySlug } from "../../api/PostApi";
 import { Table } from "react-bootstrap";
@@ -9,6 +7,7 @@ import { format } from 'date-fns'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faFileWord } from "@fortawesome/free-regular-svg-icons";
+import Layout from "../../components/user/common/Layout";
 
 
 const PostDetail = () => {
@@ -31,9 +30,8 @@ const PostDetail = () => {
   if (postDetail) {
     return (
       <>
-        <Header />
-        <div className="container">
-          <div className="department-title py-3">
+        <Layout>
+        <div className="department-title py-3">
             <h1 className="text-danger text-center">Chi tiết bài viết</h1>
           </div>
           <div className="post-detail">
@@ -105,8 +103,7 @@ const PostDetail = () => {
               </tbody>
             </Table>
           </div>
-        </div>
-        <Footer />
+        </Layout>
       </>
     );
   } else <></>;

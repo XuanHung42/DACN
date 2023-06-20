@@ -69,3 +69,8 @@ export function getProjectByResearchId(id) {
     `https://localhost:7284/api/projects?UserId=${id}&PageSize=10&PageNumber=1`
   );
 }
+
+export async function getProjectDetailBySlug(urlSlug = ''){
+  return get_api (`https://localhost:7284/api/projects/byslug/${urlSlug}`)
+
+}

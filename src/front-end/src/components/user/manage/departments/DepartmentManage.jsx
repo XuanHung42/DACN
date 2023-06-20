@@ -26,7 +26,7 @@ const DepartmentManage = () => {
 
   let { id } = useParams,
     p = 1,
-    ps = 4;
+    ps = 5;
   function updatePageNumber(inc) {
     setPageNumber((currentVal) => currentVal + inc);
   }
@@ -69,7 +69,7 @@ const DepartmentManage = () => {
               {departmentManage.length > 0 ? (
                 departmentManage.map((item, index) => (
                   <div className="col-6" key={index}>
-                    <div className="card mt-3 card-content d-flex flex-row justify-content-between">
+                    <div className="mt-3 card-content d-flex flex-row justify-content-between">
                       <div className="d-flex">
                         <FontAwesomeIcon
                           icon={faHome}

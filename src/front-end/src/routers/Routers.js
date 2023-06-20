@@ -26,6 +26,7 @@ import ProcessEditAdmin from "../pages/admin/process/ProcessAdEdit";
 import TopicAdmin from "../pages/admin/topics/TopicAd";
 import TopicAdminEdit from "../pages/admin/topics/TopicAdEdit";
 import DepartmentDetail from "../components/user/manage/departments/DepartmentDetail";
+import ProjectDetail from "../pages/user/ProjectDetail";
 
 
 const Routers = () => {
@@ -37,6 +38,8 @@ const Routers = () => {
         <Route path="/:slug" element={<PostDetail />} />
         <Route path="/home" element={<Home />} />
         <Route path="/home/:slug" element={<ResearcherDetail />} />
+        <Route path="/project/:slug" element={<ProjectDetail />} />
+        <Route path="/project-user/:slug" element={<ResearcherDetail />} />
         <Route path="/profile/:id" element={<Profile/>}/>
         <Route path="/profile/edit/:id" element={<EditProfile/>}/>
         <Route path="/department" element={<Department />} />

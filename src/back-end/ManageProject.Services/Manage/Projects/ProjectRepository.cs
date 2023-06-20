@@ -138,7 +138,8 @@ namespace ManageProject.Services.Manage.Projects
         {
             IQueryable<Project> projectQuery = _context.Set<Project>()
                 .Include(pr => pr.Users)
-                .Include(pr => pr.Process);
+                .Include(pr => pr.Process)
+                .Include(pr => pr.Topic);
 
             if (!string.IsNullOrEmpty(slug))
             {

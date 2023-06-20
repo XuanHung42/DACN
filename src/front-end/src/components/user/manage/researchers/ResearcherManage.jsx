@@ -69,7 +69,7 @@ const ResearcherManage = () => {
               {userManage.length > 0 ? (
                 userManage.map((item, index) => (
                   <div className="col-6 " key={index}>
-                    <div className="card mt-3 card-content d-flex flex-row justify-content-between">
+                    <div className="mt-3 card-content d-flex flex-row justify-content-between">
                       <div className="d-flex">
                         <FontAwesomeIcon
                           icon={faUser}

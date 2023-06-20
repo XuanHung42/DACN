@@ -30,7 +30,7 @@ const DepartmentAdmin = () => {
 
   let { id } = useParams,
     p = 1,
-    ps = 3;
+    ps = 5;
     function updatePageNumber(inc) {
       setPageNumber((currentVal) => currentVal + inc);
     }
@@ -41,7 +41,7 @@ const DepartmentAdmin = () => {
         setGetDepartment(props.items);
         setMetadata(props.metadata);
       }
-      getFilterDepartment(departmentFilter.name, 3,pageNumber).then((data) => {
+      getFilterDepartment(departmentFilter.name, ps,pageNumber).then((data) => {
         if (data) {
           setData(data);
         } else {
