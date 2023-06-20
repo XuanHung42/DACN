@@ -193,30 +193,31 @@ const EditProfile = () => {
 
           <div className="row justify-content-center">
             <div className="col-sm-6">
-              <Form.Label className="col-sm-6 col-form-label">
+              {/* <Form.Label className="col-sm-6 col-form-label">
                 Vai trò
-              </Form.Label>
+              </Form.Label> */}
 
               <div className="col-sm-12">
-                <Form.Select
+                <Form.Control
+                  type="hidden"
                   name="roleId"
                   title="role Id"
                   value={user.roleId}
-                  required
-                  onChange={(e) =>
-                    setUser({
-                      ...user,
-                      roleId: e.target.value,
-                    })
-                  }
+                  // required
+                  // onChange={(e) =>
+                  //   setUser({
+                  //     ...user,
+                  //     roleId: e.target.value,
+                  //   })
+                  // }
                 >
-                  {filterRole.roleList.length > 0 &&
+                  {/* {filterRole.roleList.length > 0 &&
                     filterRole.roleList.map((item, index) => (
                       <option key={index} value={item.value}>
                         {item.text}
                       </option>
-                    ))}
-                </Form.Select>
+                    ))} */}
+                </Form.Control>
                 <Form.Control.Feedback type="invalid">
                   Không được bỏ trống.
                 </Form.Control.Feedback>

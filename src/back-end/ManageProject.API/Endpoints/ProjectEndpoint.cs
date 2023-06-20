@@ -99,7 +99,7 @@ public static class ProjectEndpoint
 	private static async Task<IResult> GetDetailProjectById(
 		int id, IProjectRepository projectRepository, IMapper mapper)
 	{
-		var project = await projectRepository.GetCachedProjectByIdAsync(id, true);
+		var project = await projectRepository.GetProjectByIdAsync(id);
 
 		var projectQuery = mapper.Map<ProjectDto>(project);
 

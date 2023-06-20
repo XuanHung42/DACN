@@ -164,7 +164,7 @@ namespace ManageProject.Services.Manage.Projects
             if (project.Id > 0)
             {
                 _context.Update(project);
-                //_memoryCache.Remove($"Project.by-id.${project.Id}");
+                _memoryCache.Remove($"Project.by-id.${project.Id}");
             }
             else
             {
