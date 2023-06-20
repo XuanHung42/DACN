@@ -47,7 +47,7 @@ const PostResearcher = () => {
                       </Link>
                       <span className="px-5">
                         Đăng ngày:{" "}
-                        {format(new Date(item.created), "dd/MM/yyyy hh:mm")}
+                        {format(new Date(item.created), "dd/MM/yyyy")}
                       </span>
                       <span>
                         Lượt xem:

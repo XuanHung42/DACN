@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManageProject.Data.Migrations
 {
     [DbContext(typeof(ManageDbContext))]
-    [Migration("20230610142742_InitialCreate")]
+    [Migration("20230620030611_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -154,7 +154,6 @@ namespace ManageProject.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Note")
-                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
@@ -172,7 +171,7 @@ namespace ManageProject.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("TopicId")
+                    b.Property<int>("TopicId")
                         .HasColumnType("int");
 
                     b.Property<string>("UrlSlug")
@@ -392,7 +391,9 @@ namespace ManageProject.Data.Migrations
 
                     b.HasOne("ManageProject.Core.Entities.Topic", "Topic")
                         .WithMany("Projects")
-                        .HasForeignKey("TopicId");
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Process");
 
