@@ -138,7 +138,7 @@ namespace ManageProject.Data.Seeders
 					Email="nhism@gmail.com",
 					Role= roles[1],
 					BirthDate= new DateTime(2006,03,16),
-					UrlSlug= "lam-dinh-khoa",
+					UrlSlug= "tran-thai-linh",
 					Department = departments[2],
 
 				}
