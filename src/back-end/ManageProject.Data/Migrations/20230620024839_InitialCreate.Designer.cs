@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManageProject.Data.Migrations
 {
     [DbContext(typeof(ManageDbContext))]
-    [Migration("20230619191524_InitialCreate")]
+    [Migration("20230620024839_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -382,7 +382,6 @@ namespace ManageProject.Data.Migrations
                     b.HasOne("ManageProject.Core.Entities.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK_Posts_Users");
 
