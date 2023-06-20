@@ -113,8 +113,8 @@ const PostAdmin = ({postQuery}) => {
               <Table striped responsive bordered>
                 <thead>
                   <tr>
-                    <th>Tên bài đăng</th>
-                    <th>Mô tả</th>
+                    <th className="w-25">Tên bài đăng</th>
+                    <th className="w-25">Mô tả</th>
                     <th>Ngày đăng</th>
                     <th>Đăng bởi</th>
                     <th>Trạng thái</th>

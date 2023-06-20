@@ -27,8 +27,8 @@ const ProjectRegister = () => {
       <Table striped responsive bordered>
         <thead>
           <tr>
-            <th>Tên dự án</th>
-            <th>Mô tả ngắn</th>
+            <th className="w-25">Tên dự án</th>
+            <th className="w-15">Mô tả ngắn</th>
             <th>Kinh phí thực hiện</th>
             <th>Ngày bắt đầu</th>
             <th>Ngày kết thúc</th>

@@ -28,7 +28,7 @@ const ProjectAdmin = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   let { id } = useParams,
     p = 1,
-    ps = 4;
+    ps = 5;
 
   useEffect(() => {
     loadProject();
@@ -143,9 +143,9 @@ const ProjectAdmin = () => {
                 <Table striped responsive bordered>
                   <thead>
                     <tr>
-                      <th>Tên dự án</th>
-                      <th>Mô tả ngắn</th>
-                      <th>Kinh phí thực hiện</th>
+                      <th className="w-25">Tên dự án</th>
+                      <th className="w-15">Mô tả ngắn</th>
+                      {/* <th>Kinh phí thực hiện</th> */}
                       <th>Ngày bắt đầu</th>
                       <th>Ngày kết thúc</th>
                       <th>Người thực hiện</th>
@@ -160,7 +160,7 @@ const ProjectAdmin = () => {
                         <tr key={index}>
                           <td>{item.name}</td>
                           <td>{item.shortDescription}</td>
-                          <td>{item.costProject} VNĐ</td>
+                          {/* <td>{item.costProject} VNĐ</td> */}
                           <td>
                             {format(new Date(item.startDate), "dd/MM/yyyy")}
                           </td>
@@ -175,11 +175,14 @@ const ProjectAdmin = () => {
                             ))}
                           </td>
                           <td>
-                            {item.register ? (
+                            {/* {item.register ? (
                               <div className="text-success">Đã đăng ký</div>
                             ) : (
                               <div className="text-danger">Chưa đăng ký</div>
-                            )}
+                            )} */}
+                            <div className="text-danger">
+                              {item.process.name}
+                            </div>
                           </td>
                           <td className="text-center">
                             <Link to={`/admin/project/edit/${item.id}`}>

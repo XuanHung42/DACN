@@ -32,7 +32,7 @@ const ResearchAdmin = () => {
 
   let { id } = useParams,
     p = 1,
-    ps = 2;
+    ps = 5;
 
   useEffect(() => {
     loadResearch();

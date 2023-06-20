@@ -28,7 +28,6 @@ const Project = () => {
   let p = 1;
   let ps = 3;
 
-  
   const handleRegister = (projectId, index) => {
     console.log("user:", user);
     console.log("projectId:", projectId);
@@ -71,14 +70,11 @@ const Project = () => {
   };
 
   useEffect(() => {
-
     loadProject();
-    async function loadProject(){
+    async function loadProject() {
       function setData(props) {
         setGetProject(props.items);
         setMetadata(props.metadata);
-
-        
       }
       getFilterProject(projectFilter.name, ps, pageNumber).then((data) => {
         if (data) {
@@ -89,7 +85,7 @@ const Project = () => {
               return localStorage.getItem(key) === "true";
             })
           );
-  
+
           if (user && user.result) {
             getUserResearchertById(user.result.id).then((userData) => {
               if (userData && userData.projects) {
@@ -114,7 +110,6 @@ const Project = () => {
     }
   }, [projectFilter, ps, p, user, pageNumber]);
 
-  
   function updatePageNumber(inc) {
     setPageNumber((currentVal) => currentVal + inc);
   }
@@ -128,13 +123,14 @@ const Project = () => {
           <Table striped responsive bordered>
             <thead>
               <tr>
-                <th>Tên đề tài</th>
-                <th>Mô tả ngắn</th>
-                <th>Kinh phí dự án</th>
+                <th className="w-25">Tên đề tài</th>
+                <th className="w-15">Mô tả ngắn</th>
+                {/* <th>Kinh phí dự án</th> */}
                 <th>Ngày bắt đầu</th>
                 <th>Ngày kết thúc</th>
                 <th>Chủ đề</th>
                 <th>Số thành viên</th>
+                <th>Người thực hiện</th>
                 <th>Đăng ký</th>
               </tr>
             </thead>
@@ -144,11 +140,18 @@ const Project = () => {
                   <tr key={index}>
                     <td>{item.name}</td>
                     <td>{item.shortDescription}</td>
-                    <td>{item.costProject} VNĐ</td>
+                    {/* <td>{item.costProject} VNĐ</td> */}
                     <td>{format(new Date(item.startDate), "dd/MM/yyyy")}</td>
                     <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
                     <td>{item.topic.name}</td>
                     <td>{item.userNumber}</td>
+                    <td>
+                      {item.users.map((item, index) => (
+                        <div className="text-danger" key={index}>
+                          {item.name}
+                        </div>
+                      ))}
+                    </td>
                     <td className="text-center">
                       <Button
                         className="btn-success"

@@ -21,6 +21,7 @@ if (user) {
   // Nếu token đã được lưu trữ trong Local Storage
   store.dispatch(loginSuccess(user)); // Sử dụng action loginSuccess để khôi phục trạng thái đăng nhập
 }
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
