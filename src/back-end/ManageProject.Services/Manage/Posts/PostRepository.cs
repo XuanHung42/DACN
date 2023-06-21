@@ -67,6 +67,7 @@ namespace ManageProject.Services.Manage.Posts
 					User = p.User,
 					Created = p.Created,
 					ViewCount= p.ViewCount,
+					Status = p.Status,
 					//File = p.File,
 					//Department = p.Department,
 

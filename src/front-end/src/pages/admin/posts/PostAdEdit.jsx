@@ -15,16 +15,17 @@ const PostAdminEdit = () => {
   const navigate = useNavigate();
 
   const initialState = {
-    id: 0,
-    title: "",
-    urlSlug: "",
-    shortDescription: "",
-    status: false,
-    created: "",
-    file: "",
-    userId: 0,
-    departmentId: 0,
-  },  [filterDepartment, setFilterDepartment] = useState({ departmentList: [] });
+      id: 0,
+      title: "",
+      urlSlug: "",
+      shortDescription: "",
+      status: false,
+      created: "",
+      file: "",
+      userId: 0,
+      departmentId: 0,
+    },
+    [filterDepartment, setFilterDepartment] = useState({ departmentList: [] });
   const [post, setPost] = useState(initialState);
   let { id } = useParams();
   id = id ?? 0;
@@ -41,7 +42,6 @@ const PostAdminEdit = () => {
       }
     });
 
-
     // filter department
     getUserFilterDepartment().then((data) => {
       if (data) {
@@ -51,7 +51,7 @@ const PostAdminEdit = () => {
       } else {
         setFilterDepartment({ departmentList: [] });
       }
-    })
+    });
   }, []);
 
   const [validated, setValidated] = useState(false);
@@ -61,6 +61,8 @@ const PostAdminEdit = () => {
       setValidated(true);
     } else {
       let form = new FormData(e.target);
+      form.append('status', post.status);
+
       updateAndAddNewPost(form).then((data) => {
         if (data) {
           enqueueSnackbar("Đã lưu thành công", {
@@ -85,7 +87,9 @@ const PostAdminEdit = () => {
           <Sidebar />
         </div>
         <div className="col-10">
-          <h3 className="text-success py-3">Thêm/cập nhật đăng bài công trình khoa học</h3>
+          <h3 className="text-success py-3">
+            Thêm/cập nhật đăng bài công trình khoa học
+          </h3>
           <div className="post-content">
             <Form
               method="post"
@@ -300,24 +304,25 @@ const PostAdminEdit = () => {
               </div>
 
               <div className="row mb-3">
-              <div className="col-sm-10 offset-sm-2">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    name="status"
-                    checked={post.status}
-                    title="Trạng thái"
-                    onChange={(e) =>
-                      setPost({ ...post, status: e.target.checked })
-                    }
-                  />
-                  <Form.Label className="form-check-label">
-                    Xuất bản
-                  </Form.Label>
+                <div className="col-sm-10 offset-sm-2">
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      name="status"
+                      checked={post.status}
+                      title="Trạng thái"
+                      onChange={(e) => {
+                        setPost({ ...post, status: e.target.checked });
+                        console.log(e.target.checked)
+                      }}
+                    />
+                    <Form.Label className="form-check-label">
+                      Xuất bản
+                    </Form.Label>
+                  </div>
                 </div>
               </div>
-            </div>
               <div className="text-center">
                 <Button variant="success" type="submit">
                   Lưu các thay đổi

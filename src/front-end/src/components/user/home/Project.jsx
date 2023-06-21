@@ -26,7 +26,7 @@ const Project = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   let p = 1;
-  let ps = 3;
+  let ps = 5;
 
   const handleRegister = (projectId, index) => {
     console.log("user:", user);

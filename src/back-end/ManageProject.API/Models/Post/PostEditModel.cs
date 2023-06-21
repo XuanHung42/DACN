@@ -22,7 +22,7 @@
 				Title = (form["Title"]),
 				Created= DateTime.Now,
 				UrlSlug= (form["UrlSlug"]),
-				Status= (form["Status"]) != "false",
+				Status= form["Status"] != "false",
 				ShortDescription = (form["ShortDescription"]),
 				UserId = int.Parse(form["UserId"]),
 

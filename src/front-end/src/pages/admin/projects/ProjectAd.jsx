@@ -14,6 +14,8 @@ import { useSnackbar } from "notistack";
 import Pager from "../../../components/pager/Pager";
 import { format } from "date-fns";
 import { getAllDashboard } from "../../../api/DashboardApi";
+import LayoutAdmin from "../../../components/admin/layout/LayoutAd";
+import ProjectFilterAdmin from "../../../components/user/filter/ProjectFilterAdmin";
 
 const ProjectAdmin = () => {
   const { querySearch, params } = "";
@@ -50,6 +52,9 @@ const ProjectAdmin = () => {
 
       getFilterProject(
         projectFilter.name,
+        projectFilter.processId,
+        projectFilter.monthList,
+        projectFilter.yearList,
         parameters.pageSize,
         pageNumber
       ).then((data) => {
@@ -104,117 +109,106 @@ const ProjectAdmin = () => {
   }, []);
   return (
     <>
-      <div className="row">
-        <Navbar />
-        <div className="col-2">
-          <Sidebar />
+      <LayoutAdmin>
+        <div className="title py-3 text-danger">
+          <h3>Quản lý dự án</h3>
         </div>
-        <div className="col-10">
-          <div className="title py-3 text-danger">
-            <h3>Quản lý dự án</h3>
-          </div>
-          <div className="project-content">
-            <ProjectFilter />
-            <div className="d-flex align-items-center justify-content-between">
-              <Link className="btn btn-success mb-2" to={`/admin/project/edit`}>
-                Thêm mới <FontAwesomeIcon icon={faAdd} />
-              </Link>
-              <div className="">
-                <div className="px-2 text-danger">
-                  Dự án chưa đăng ký:
-                  <span className="px-1">
-                    {dashboardItem.countProjectNotRegister}
-                  </span>
-                  dự án
-                </div>
-                <div className="px-2 text-success">
-                  Dự án đã đăng ký:
-                  <span className="px-1">
-                    {dashboardItem.countProjectRegister}
-                  </span>
-                  dự án
-                </div>
+        <div className="project-content">
+          {/* <ProjectFilterAdmin/> */}
+          <ProjectFilter/>
+          <div className="d-flex align-items-center justify-content-between">
+            <Link className="btn btn-success mb-2" to={`/admin/project/edit`}>
+              Thêm mới <FontAwesomeIcon icon={faAdd} />
+            </Link>
+            <div className="">
+              <div className="px-2 text-danger">
+                Dự án chưa đăng ký:
+                <span className="px-1">
+                  {dashboardItem.countProjectNotRegister}
+                </span>
+                dự án
+              </div>
+              <div className="px-2 text-success">
+                Dự án đã đăng ký:
+                <span className="px-1">
+                  {dashboardItem.countProjectRegister}
+                </span>
+                dự án
               </div>
             </div>
-            {isVisibleLoading ? (
-              <Loading />
-            ) : (
-              <>
-                <Table striped responsive bordered>
-                  <thead>
-                    <tr>
-                      <th className="w-25">Tên dự án</th>
-                      <th className="w-15">Mô tả ngắn</th>
-                      {/* <th>Kinh phí thực hiện</th> */}
-                      <th>Ngày bắt đầu</th>
-                      <th>Ngày kết thúc</th>
-                      <th>Người thực hiện</th>
-                      <th>Trạng thái</th>
-                      <th>Sửa</th>
-                      <th>Xoá</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {getProject.length > 0 ? (
-                      getProject.map((item, index) => (
-                        <tr key={index}>
-                          <td>{item.name}</td>
-                          <td>{item.shortDescription}</td>
-                          {/* <td>{item.costProject} VNĐ</td> */}
-                          <td>
-                            {format(new Date(item.startDate), "dd/MM/yyyy")}
-                          </td>
-                          <td>
-                            {format(new Date(item.endDate), "dd/MM/yyyy")}
-                          </td>
-                          <td>
-                            {item.users.map((item, index) => (
-                              <div className="text-danger" key={index}>
-                                {item.name}
-                              </div>
-                            ))}
-                          </td>
-                          <td>
-                            {/* {item.register ? (
+          </div>
+          {isVisibleLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <Table striped responsive bordered>
+                <thead>
+                  <tr>
+                    <th className="w-25">Tên dự án</th>
+                    <th className="w-15">Mô tả ngắn</th>
+                    {/* <th>Kinh phí thực hiện</th> */}
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
+                    <th>Người thực hiện</th>
+                    <th>Trạng thái</th>
+                    <th>Sửa</th>
+                    <th>Xoá</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getProject.length > 0 ? (
+                    getProject.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.name}</td>
+                        <td>{item.shortDescription}</td>
+                        {/* <td>{item.costProject} VNĐ</td> */}
+                        <td>
+                          {format(new Date(item.startDate), "dd/MM/yyyy")}
+                        </td>
+                        <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
+                        <td>
+                          {item.users.map((item, index) => (
+                            <div className="text-danger" key={index}>
+                              {item.name}
+                            </div>
+                          ))}
+                        </td>
+                        <td>
+                          {/* {item.register ? (
                               <div className="text-success">Đã đăng ký</div>
                             ) : (
                               <div className="text-danger">Chưa đăng ký</div>
                             )} */}
-                            <div className="text-danger">
-                              {item.process.name}
-                            </div>
-                          </td>
-                          <td className="text-center">
-                            <Link to={`/admin/project/edit/${item.id}`}>
-                              <FontAwesomeIcon icon={faEdit} />
-                            </Link>
-                          </td>
-                          <td className="text-center">
-                            <div
-                              onClick={(e) => handleDeleteProject(e, item.id)}
-                            >
-                              <FontAwesomeIcon icon={faTrash} color="red" />
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={7}>
-                          <h4 className="text-danger text-center">
-                            Không tìm thấy dự án nào
-                          </h4>
+                          <div className="text-danger">{item.process.name}</div>
+                        </td>
+                        <td className="text-center">
+                          <Link to={`/admin/project/edit/${item.id}`}>
+                            <FontAwesomeIcon icon={faEdit} />
+                          </Link>
+                        </td>
+                        <td className="text-center">
+                          <div onClick={(e) => handleDeleteProject(e, item.id)}>
+                            <FontAwesomeIcon icon={faTrash} color="red" />
+                          </div>
                         </td>
                       </tr>
-                    )}
-                  </tbody>
-                </Table>
-              </>
-            )}
-            <Pager metadata={metadata} onPageChange={updatePageNumber} />
-          </div>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={7}>
+                        <h4 className="text-danger text-center">
+                          Không tìm thấy dự án nào
+                        </h4>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </Table>
+            </>
+          )}
+          <Pager metadata={metadata} onPageChange={updatePageNumber} />
         </div>
-      </div>
+      </LayoutAdmin>
     </>
   );
 };

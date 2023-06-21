@@ -67,6 +67,9 @@ public static class ProjectEndpoint
 			.Produces(401)
 			.Produces<ApiResponse<string>>();
 
+		routeGroupBuilder.MapGet("month/get-filter", GetFilterMonth)
+		   .WithName("GetFilterMonth")
+		   .Produces<ApiResponse<ProjectFilterModel>>();
 
 		return app;
 	}
@@ -203,4 +206,13 @@ public static class ProjectEndpoint
 			""));
     }
 
+
+	private static async Task<IResult> GetFilterMonth()
+	{
+		var model = new ProjectFilterModel();
+		{
+
+		};
+		return Results.Ok(ApiResponse.Success(model));
+	}
 }

@@ -105,6 +105,27 @@ namespace ManageProject.Services.Manage.Projects
             {
                 projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.Id == query.UserId));
             }
+            if (query.ProcessId > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.ProcessId == query.ProcessId);
+            }
+            if (query.MonthStart > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.StartDate.Month == query.MonthStart);
+            }
+            if (query.MonthEnd > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.EndDate.Month == query.MonthEnd);
+            }
+            if (query.YearStart > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.StartDate.Year == query.YearStart);
+            }
+            if (query.YearEnd > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.EndDate.Year == query.YearEnd);
+            }
+
 
             return projectQuery;
 

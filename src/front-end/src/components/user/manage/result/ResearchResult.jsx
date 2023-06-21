@@ -61,36 +61,46 @@ const ResearchResult = () => {
         <>
           <div className="row">
             {getPost.length > 0 ? (
-              getPost.map((item, index) => (
-                <div className="col-6" key={index}>
-                  <div className="card-content mt-3">
-                    <Link className="text-decoration-none text-none textline" to={item.urlSlug}>
-                      <h5>{item.title}</h5>
-                    </Link>
-                    <p className="card-shortdesc mt-3">{item.shortDescription}</p>
-                    <div className="card-author">
-                      <span className="card-author-title">Đăng bởi: </span>
-                      <Link className="text-decoration-none" to={`/records/${item.user.urlSlug}`}>
-                        <span className="card-author-name">
-                          {item.user.name}
-                        </span>
+              getPost
+                .filter((item) => item.status == true)
+                .map((item, index) => (
+                  <div className="col-6" key={index}>
+                    <div className="card-content mt-3">
+                      <Link
+                        className="text-decoration-none text-none textline"
+                        to={item.urlSlug}
+                      >
+                        <h5>{item.title}</h5>
                       </Link>
-                      <span className="px-5">
-                        Đăng ngày:{" "}
-                        {format(new Date(item.created), "dd/MM/yyyy")}
-                      </span>
-                      <span>
-                        Lượt xem:
-                        {item.viewCount}
-                        <FontAwesomeIcon
-                          icon={faEye}
-                          className="text-danger px-1"
-                        />
-                      </span>
+                      <p className="card-shortdesc mt-3">
+                        {item.shortDescription}
+                      </p>
+                      <div className="card-author">
+                        <span className="card-author-title">Đăng bởi: </span>
+                        <Link
+                          className="text-decoration-none"
+                          to={`/records/${item.user.urlSlug}`}
+                        >
+                          <span className="card-author-name">
+                            {item.user.name}
+                          </span>
+                        </Link>
+                        <span className="px-5">
+                          Đăng ngày:{" "}
+                          {format(new Date(item.created), "dd/MM/yyyy")}
+                        </span>
+                        <span>
+                          Lượt xem:
+                          {item.viewCount}
+                          <FontAwesomeIcon
+                            icon={faEye}
+                            className="text-danger px-1"
+                          />
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))
             ) : (
               <>
                 <h2 className="text-warning text-center py-3">
