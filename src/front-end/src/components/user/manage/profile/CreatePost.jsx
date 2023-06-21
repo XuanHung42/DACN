@@ -61,14 +61,15 @@ const CreatePost = () => {
       setValidated(true);
     } else {
       let form = new FormData(e.target);
+      form.append('status', post.status);
       updateAndAddNewPost(form).then((data) => {
         if (data) {
-          enqueueSnackbar("Đã lưu thành công", {
+          enqueueSnackbar("Chờ đợi quản trị phê duyệt", {
             variant: "success",
           });
           navigate(`/research`);
         } else {
-          enqueueSnackbar("Đã xảy ra lỗi", {
+          enqueueSnackbar("Đã xảy ra lỗi đăng bài", {
             variant: "error",
             closeSnackbar,
           });

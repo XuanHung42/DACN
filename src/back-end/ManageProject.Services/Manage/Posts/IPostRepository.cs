@@ -20,6 +20,7 @@ namespace ManageProject.Services.Manage.Posts
 			IPagingParams pagingParams,
 			string title = null,
 			string shortDescription = null,
+			bool? status = null,
 			CancellationToken cancellationToken = default);
 
 		// get details by slug

@@ -26,7 +26,8 @@ export async function getPostDetailBySlug(urlSlug = ''){
 export function getFilterPost(
   title = '',
   shortDescription = '',
-  pageSize = 5,
+  status = '',
+  pageSize = '',
   pageNumber = 1,
   sortColumn = '',
   sortOrder = ''
@@ -34,8 +35,9 @@ export function getFilterPost(
   let url = new URL(`https://localhost:7284/api/posts/filter`);
   title !== '' && url.searchParams.append('Title', title);
   shortDescription !== '' && url.searchParams.append('ShortDescription', shortDescription);
+  status !== '' && url.searchParams.append('Status', status);
   sortColumn !== '' && url.searchParams.append('SortColumn', sortColumn);
-  sortOrder !== '' && url.searchParams.append('SortOrder', sortColumn);
+  sortOrder !== '' && url.searchParams.append('SortOrder', sortOrder);
   url.searchParams.append('PageSize', pageSize);
   url.searchParams.append('PageNumber', pageNumber);
 

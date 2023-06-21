@@ -29,44 +29,65 @@ const PostAdmin = ({postQuery}) => {
 
   let { id } = useParams,
     p = 1,
-    ps = 10;
+    ps = 5;
     function updatePageNumber(inc){
       setPageNumber((curentVal)=> curentVal+ inc)
     }
   
   useEffect(() => {
-   loadPost();
-   async function loadPost(){
-    const parameters = new URLSearchParams({
-       pageNumber: Object.fromEntries(querySearch|| '').length> 0 ? 1: pageNumber||1,
+  //  loadPost();
+  //  async function loadPost(){
+  //   const parameters = new URLSearchParams({
+  //      pageNumber: Object.fromEntries(querySearch|| '').length> 0 ? 1: pageNumber||1,
       
-      pageSize: 2,
-      ...Object.fromEntries(querySearch||""),
-      ...params
-    });
-    function setData(props){
-      setGetPost(
-        props.items
-      );
-       setMetadata(props.metadata);
+  //     pageSize: 10,
+  //     ...Object.fromEntries(querySearch||""),
+  //     ...params
+  //   });
+  //   function setData(props){
+  //     setGetPost(
+  //       props.items
+  //     );
+  //      setMetadata(props.metadata);
 
-    }
-    getFilterPost(parameters.title, parameters.shortDescription, parameters.pageSize, pageNumber).then(
-      (data) => {
-        if (data) {
+  //   }
+  //   getFilterPost(parameters.title, parameters.shortDescription, parameters.pageSize, pageNumber).then(
+  //     (data) => {
+  //       if (data) {
           
-         setData(data);
-        } else {
-          setGetPost([]);
-        }
+  //        setData(data);
+  //       } else {
+  //         setGetPost([]);
+  //       }
         
-        setIsVisibleLoading(false);
+  //       setIsVisibleLoading(false);
+  //     }
+  //   );
+
+  //   console.log(getPost);
+  //  }
+
+  loadResearch();
+    async function loadResearch() {
+      function setData(props) {
+        setGetPost(props.items);
+        setMetadata(props.metadata);
       }
-    );
-
-    console.log(getPost);
-   }
-
+      getFilterPost(
+        postFilter.title,
+        postFilter.shortDescription,
+        '',
+        ps,
+        pageNumber
+      ).then((data) => {
+        if (data) {
+          setData(data);
+        } else {
+          setData([]);
+        }
+        setIsVisibleLoading(false);
+      });
+    }
 
     
   }, [postFilter, ps, p, reRender, pageNumber,params]);

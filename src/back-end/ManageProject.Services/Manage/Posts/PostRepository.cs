@@ -48,7 +48,7 @@ namespace ManageProject.Services.Manage.Posts
 
 			return await mapper(post).ToListAsync(cancellationToken);
 		}
-		public async Task<IPagedList<PostItem>> GetPostPagedFilterAsync(IPagingParams pagingParams, string title = null, string shortDescription = null, CancellationToken cancellationToken = default)
+		public async Task<IPagedList<PostItem>> GetPostPagedFilterAsync(IPagingParams pagingParams, string title = null, string shortDescription = null, bool? status = null, CancellationToken cancellationToken = default)
 		{
 			return await _context.Set<Post>()
 				.Include(p => p.User)
@@ -58,6 +58,7 @@ namespace ManageProject.Services.Manage.Posts
 				x => x.Title.Contains(title))
 				.WhereIf(!string.IsNullOrWhiteSpace(shortDescription),
 				x => x.Title.Contains(shortDescription))
+				.WhereIf(status != null, x => x.Status == status)
 				.Select(p => new PostItem()
 				{
 					Id = p.Id,

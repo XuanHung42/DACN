@@ -20,7 +20,7 @@ const ResearchResult = () => {
 
   let { id } = useParams,
     p = 1,
-    ps = 5;
+    ps = 4;
 
   useEffect(() => {
     document.title = "Kết quả nghiên cứu";
@@ -33,6 +33,7 @@ const ResearchResult = () => {
       getFilterPost(
         postFilter.title,
         postFilter.shortDescription,
+        true,
         ps,
         pageNumber
       ).then((data) => {
@@ -62,7 +63,7 @@ const ResearchResult = () => {
           <div className="row">
             {getPost.length > 0 ? (
               getPost
-                .filter((item) => item.status == true)
+                
                 .map((item, index) => (
                   <div className="col-6" key={index}>
                     <div className="card-content mt-3">

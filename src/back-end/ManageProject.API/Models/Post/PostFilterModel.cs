@@ -4,6 +4,7 @@
 	{
 		public string Title { get; set; }
 		public string ShortDescription { get; set; }
+		public bool? Status { get; set; }
 		//public string UrlSlug { get; set; }
 		//public DateTime Created { get; set; }
 
