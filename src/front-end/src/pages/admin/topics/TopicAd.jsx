@@ -62,7 +62,7 @@ const TopicAdmin = () => {
       {isVisibleLoading ? (
           <Loading/>
         ) : (
-          <Table striped responsive bordered>
+          <Table  responsive bordered>
             <thead>
               <tr>
                 <th>Tên chủ đề</th>
@@ -76,7 +76,7 @@ const TopicAdmin = () => {
                   <tr key={index}>
                     <td>{item.name}</td>
                     <td className="text-center">
-                      <Link to={`/admin/topic/edit/${item.id}`}>
+                      <Link to={`/admin/topic/edit/${item.id}`} className="text-warning">
                         <FontAwesomeIcon icon={faEdit} />
                       </Link>
                     </td>

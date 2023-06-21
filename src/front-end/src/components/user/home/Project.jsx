@@ -120,7 +120,7 @@ const Project = () => {
         <Loading />
       ) : (
         <>
-          <Table striped responsive bordered>
+          <Table  responsive bordered>
             <thead>
               <tr>
                 <th className="w-25">Tên đề tài</th>

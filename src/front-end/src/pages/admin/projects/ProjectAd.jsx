@@ -1,7 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import Navbar from "../../../components/admin/navbar/Navbar";
-import Sidebar from "../../../components/admin/sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { deleteProject, getFilterProject } from "../../../api/ProjectApi";
@@ -52,9 +50,9 @@ const ProjectAdmin = () => {
 
       getFilterProject(
         projectFilter.name,
-        projectFilter.processId,
-        projectFilter.monthList,
-        projectFilter.yearList,
+        // projectFilter.processId,
+        // projectFilter.monthList,
+        // projectFilter.yearList,
         parameters.pageSize,
         pageNumber
       ).then((data) => {
@@ -141,16 +139,15 @@ const ProjectAdmin = () => {
             <Loading />
           ) : (
             <>
-              <Table striped responsive bordered>
+              <Table  responsive bordered>
                 <thead>
                   <tr>
                     <th className="w-25">Tên dự án</th>
-                    <th className="w-15">Mô tả ngắn</th>
-                    {/* <th>Kinh phí thực hiện</th> */}
                     <th>Ngày bắt đầu</th>
                     <th>Ngày kết thúc</th>
                     <th>Người thực hiện</th>
                     <th>Trạng thái</th>
+                    <th>Tiến trình</th>
                     <th>Sửa</th>
                     <th>Xoá</th>
                   </tr>
@@ -160,29 +157,27 @@ const ProjectAdmin = () => {
                     getProject.map((item, index) => (
                       <tr key={index}>
                         <td>{item.name}</td>
-                        <td>{item.shortDescription}</td>
-                        {/* <td>{item.costProject} VNĐ</td> */}
                         <td>
                           {format(new Date(item.startDate), "dd/MM/yyyy")}
                         </td>
                         <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
                         <td>
                           {item.users.map((item, index) => (
-                            <div className="text-danger" key={index}>
+                            <div className="text-primary" key={index}>
                               {item.name}
                             </div>
                           ))}
                         </td>
-                        <td>
-                          {/* {item.register ? (
-                              <div className="text-success">Đã đăng ký</div>
-                            ) : (
-                              <div className="text-danger">Chưa đăng ký</div>
-                            )} */}
-                          <div className="text-danger">{item.process.name}</div>
+                        <td>{item.register ? (
+                          <span className="text-success">Đã phê duyệt</span>
+                        ): (
+                          <span className="text-danger">Chưa phê duyệt</span>
+                        )}</td>
+                        <td className="text-primary">
+                          {item.process.name}
                         </td>
                         <td className="text-center">
-                          <Link to={`/admin/project/edit/${item.id}`}>
+                          <Link to={`/admin/project/edit/${item.id}`} className="text-warning">
                             <FontAwesomeIcon icon={faEdit} />
                           </Link>
                         </td>

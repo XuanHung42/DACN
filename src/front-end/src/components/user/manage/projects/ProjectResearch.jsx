@@ -27,7 +27,7 @@ const ProjectResearch = () => {
             Dự án nhà khoa học đã đăng ký
           </h2>
         </div>
-        <Table striped responsive bordered>
+        <Table  responsive bordered>
           <thead>
             <tr>
               <th>Tên dự án</th>

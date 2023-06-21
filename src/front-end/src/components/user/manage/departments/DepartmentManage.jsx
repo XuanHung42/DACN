@@ -26,7 +26,7 @@ const DepartmentManage = () => {
 
   let { id } = useParams,
     p = 1,
-    ps = 5;
+    ps = 4;
   function updatePageNumber(inc) {
     setPageNumber((currentVal) => currentVal + inc);
   }

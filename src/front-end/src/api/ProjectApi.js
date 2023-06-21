@@ -9,9 +9,9 @@ export async function getAllProject(){
 // 
 export function getFilterProject(
   name = '',
-  processId= '',
-  monthPerform = '',
-  yearPerform = '',
+  // processId= '',
+  // monthPerform = '',
+  // yearPerform = '',
   pageSize = 5,
   pageNumber = 1,
   sortColumn = '',
@@ -19,9 +19,9 @@ export function getFilterProject(
 ) {
   let url = new URL(`https://localhost:7284/api/projects`);
   name !== '' && url.searchParams.append('Name', name);
-  processId !== '' && url.searchParams.append('ProcessId', processId);
-  monthPerform !== '' && url.searchParams.append('MonthPerform', monthPerform);
-  yearPerform !== '' && url.searchParams.append('YearPerform', yearPerform);
+  // processId !== '' && url.searchParams.append('ProcessId', processId);
+  // monthPerform !== '' && url.searchParams.append('MonthPerform', monthPerform);
+  // yearPerform !== '' && url.searchParams.append('YearPerform', yearPerform);
   sortColumn !== '' && url.searchParams.append('SortColumn', sortColumn);
   sortOrder !== '' && url.searchParams.append('SortOrder', sortColumn);
   url.searchParams.append('PageSize', pageSize);

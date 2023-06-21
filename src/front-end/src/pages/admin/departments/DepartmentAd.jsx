@@ -13,10 +13,9 @@ import DepartmentFilter from "../../../components/user/filter/DepartmentFilterMo
 import { useSnackbar } from "notistack";
 import LayoutAdmin from "../../../components/admin/layout/LayoutAd"; // layout admin
 
-import { current } from "@reduxjs/toolkit";
+// import { current } from "@reduxjs/toolkit";
 import Pager from "../../../components/pager/Pager";
-import Navbar from "../../../components/admin/navbar/Navbar";
-import Sidebar from "../../../components/admin/sidebar/Sidebar";
+
 
 const DepartmentAdmin = () => {
   const [getDepartment, setGetDepartment] = useState([]);
@@ -31,9 +30,9 @@ const DepartmentAdmin = () => {
   let { id } = useParams,
     p = 1,
     ps = 5;
-    function updatePageNumber(inc) {
-      setPageNumber((currentVal) => currentVal + inc);
-    }
+  function updatePageNumber(inc) {
+    setPageNumber((currentVal) => currentVal + inc);
+  }
   useEffect(() => {
     loadDepartment();
     async function loadDepartment() {
@@ -41,16 +40,18 @@ const DepartmentAdmin = () => {
         setGetDepartment(props.items);
         setMetadata(props.metadata);
       }
-      getFilterDepartment(departmentFilter.name, ps,pageNumber).then((data) => {
-        if (data) {
-          setData(data);
-        } else {
-          setData([]);
+      getFilterDepartment(departmentFilter.name, ps, pageNumber).then(
+        (data) => {
+          if (data) {
+            setData(data);
+          } else {
+            setData([]);
+          }
+          setIsVisibleLoading(false);
         }
-        setIsVisibleLoading(false);
-      });
+      );
     }
-  }, [departmentFilter, ps, p, reRender,pageNumber]);
+  }, [departmentFilter, ps, p, reRender, pageNumber]);
 
   const handleDeleteDepartment = (e, id) => {
     e.preventDefault();
@@ -74,73 +75,65 @@ const DepartmentAdmin = () => {
 
   return (
     <>
-      <div className="row">
-        <Navbar />
-        <div className="col-2">
-          <Sidebar />
+      <LayoutAdmin>
+        <div className="title py-3 text-danger">
+          <h3>Quản lý phòng khoa</h3>
         </div>
-        <div className="col-10">
-          <div className="title py-3 text-danger">
-            <h3>Quản lý phòng khoa</h3>
-          </div>
-          <div className="department-content">
-            <DepartmentFilter />
-            <Link
-              className="btn btn-success mb-2"
-              to={`/admin/department/edit`}
-            >
-              Thêm mới <FontAwesomeIcon icon={faAdd} />
-            </Link>
+        <div className="department-content">
+          <DepartmentFilter />
+          <Link className="btn btn-success mb-2" to={`/admin/department/edit`}>
+            Thêm mới <FontAwesomeIcon icon={faAdd} />
+          </Link>
 
-            {isVisibleLoading ? (
-              <Loading />
-            ) : (
-              <Table striped responsive bordered>
-                <thead>
-                  <tr>
-                    <th>Tên khoa</th>
-                    <td>Số thành viên</td>
-                    <th>Sửa</th>
-                    <th>Xoá</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {getDepartment.length > 0 ? (
-                    getDepartment.map((item, index) => (
-                      <tr key={index}>
-                        <td>{item.name}</td>
-                        <td>{item.countUser}</td>
-                        <td className="text-center">
-                          <Link to={`/admin/department/edit/${item.id}`}>
-                            <FontAwesomeIcon icon={faEdit} />
-                          </Link>
-                        </td>
-                        <td className="text-center">
-                          <div
-                            onClick={(e) => handleDeleteDepartment(e, item.id)}
-                          >
-                            <FontAwesomeIcon icon={faTrash} color="red" />
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3}>
-                        <h4 className="text-danger text-center">
-                          Không tìm thấy phòng khoa nào
-                        </h4>
+          {isVisibleLoading ? (
+            <Loading />
+          ) : (
+            <Table responsive bordered>
+              <thead>
+                <tr>
+                  <th>Tên khoa</th>
+                  <td>Số thành viên</td>
+                  <th>Sửa</th>
+                  <th>Xoá</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getDepartment.length > 0 ? (
+                  getDepartment.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.name}</td>
+                      <td className="text-danger">
+                        {item.countUser} Thành viên
+                      </td>
+                      <td className="text-center">
+                        <Link to={`/admin/department/edit/${item.id}`} className="text-warning">
+                          <FontAwesomeIcon icon={faEdit} />
+                        </Link>
+                      </td>
+                      <td className="text-center">
+                        <div
+                          onClick={(e) => handleDeleteDepartment(e, item.id)}
+                        >
+                          <FontAwesomeIcon icon={faTrash} color="red" />
+                        </div>
                       </td>
                     </tr>
-                  )}
-                </tbody>
-              </Table>
-            )}
-            <Pager metadata={metadata} onPageChange={updatePageNumber} />
-          </div>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={3}>
+                      <h4 className="text-danger text-center">
+                        Không tìm thấy phòng khoa nào
+                      </h4>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          )}
+          <Pager metadata={metadata} onPageChange={updatePageNumber} />
         </div>
-      </div>
-      
+      </LayoutAdmin>
     </>
   );
 };

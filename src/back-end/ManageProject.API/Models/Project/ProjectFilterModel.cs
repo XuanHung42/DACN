@@ -9,9 +9,9 @@ namespace ManageProject.API.Models.Project
 		public string Name { get; set; }
 		public int? UserId { get; set; }
 		public string UserSlug { get; set; }
-		public int? ProcessId { get; set; }
-		public int? MonthPerform { get; set; }
-		public int? YearPerform { get; set; }
+		//public int? ProcessId { get; set; }
+		//public int? MonthPerform { get; set; }
+		//public int? YearPerform { get; set; }
 
 		public IEnumerable<SelectListItem> ProcessList { get; set; }
 		public IEnumerable<SelectListItem> MonthList { get; set; }

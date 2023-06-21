@@ -24,7 +24,7 @@ const ProjectRegister = () => {
       <div className="department-title py-3">
         <h2 className="text-danger text-center">Dự án của bạn đã đăng ký</h2>
       </div>
-      <Table striped responsive bordered>
+      <Table  responsive bordered>
         <thead>
           <tr>
             <th className="w-25">Tên dự án</th>

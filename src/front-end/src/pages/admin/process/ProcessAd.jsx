@@ -61,7 +61,7 @@ const ProcessAdmin = () => {
         {isVisibleLoading ? (
           <Loading/>
         ) : (
-          <Table striped responsive bordered>
+          <Table  responsive bordered>
             <thead>
               <tr>
                 <th>Tên tiến độ</th>
@@ -77,7 +77,7 @@ const ProcessAdmin = () => {
                     <td>{item.name}</td>
                     <td>{item.countProject} {item.name}</td>
                     <td className="text-center">
-                      <Link to={`/admin/process/edit/${item.id}`}>
+                      <Link to={`/admin/process/edit/${item.id}`} className="text-warning">
                         <FontAwesomeIcon icon={faEdit} />
                       </Link>
                     </td>
