@@ -374,12 +374,12 @@ const ProjectAdminEdit = () => {
                   type="checkbox"
                   name="register"
                   checked={project.register}
-                  title="Đăng ký"
+                  title="Phê duyệt dự án"
                   onChange={(e) =>
                     setProject({ ...project, register: e.target.checked })
                   }
                 />
-                <Form.Label className="form-check-label">Đăng ký</Form.Label>
+                <Form.Label className="form-check-label">Phê duyệt dự án</Form.Label>
               </div>
             </div>
           </div>

@@ -113,21 +113,21 @@ const ProjectAdmin = () => {
         </div>
         <div className="project-content">
           {/* <ProjectFilterAdmin/> */}
-          <ProjectFilter/>
+          <ProjectFilter />
           <div className="d-flex align-items-center justify-content-between">
             <Link className="btn btn-success mb-2" to={`/admin/project/edit`}>
               Thêm mới <FontAwesomeIcon icon={faAdd} />
             </Link>
             <div className="">
               <div className="px-2 text-danger">
-                Dự án chưa đăng ký:
+                Dự án chưa phê duyệt:
                 <span className="px-1">
                   {dashboardItem.countProjectNotRegister}
                 </span>
                 dự án
               </div>
               <div className="px-2 text-success">
-                Dự án đã đăng ký:
+                Dự án đã phê duyệt:
                 <span className="px-1">
                   {dashboardItem.countProjectRegister}
                 </span>
@@ -139,7 +139,7 @@ const ProjectAdmin = () => {
             <Loading />
           ) : (
             <>
-              <Table  responsive bordered>
+              <Table responsive bordered>
                 <thead>
                   <tr>
                     <th className="w-25">Tên dự án</th>
@@ -162,22 +162,31 @@ const ProjectAdmin = () => {
                         </td>
                         <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
                         <td>
-                          {item.users.map((item, index) => (
-                            <div className="text-primary" key={index}>
-                              {item.name}
-                            </div>
-                          ))}
+                          {item.users.length === 0 ? (
+                            <div className="text-danger">Chưa có</div>
+                          ) : (
+                            <>
+                              {item.users.map((item, index) => (
+                                <div className="text-primary" key={index}>
+                                  {item.name}
+                                </div>
+                              ))}
+                            </>
+                          )}
                         </td>
-                        <td>{item.register ? (
-                          <span className="text-success">Đã phê duyệt</span>
-                        ): (
-                          <span className="text-danger">Chưa phê duyệt</span>
-                        )}</td>
-                        <td className="text-primary">
-                          {item.process.name}
+                        <td>
+                          {item.register ? (
+                            <span className="text-success">Đã phê duyệt</span>
+                          ) : (
+                            <span className="text-danger">Chưa phê duyệt</span>
+                          )}
                         </td>
+                        <td className="text-primary">{item.process.name}</td>
                         <td className="text-center">
-                          <Link to={`/admin/project/edit/${item.id}`} className="text-warning">
+                          <Link
+                            to={`/admin/project/edit/${item.id}`}
+                            className="text-warning"
+                          >
                             <FontAwesomeIcon icon={faEdit} />
                           </Link>
                         </td>

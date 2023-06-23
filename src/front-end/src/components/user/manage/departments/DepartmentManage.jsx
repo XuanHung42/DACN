@@ -31,7 +31,7 @@ const DepartmentManage = () => {
     setPageNumber((currentVal) => currentVal + inc);
   }
   useEffect(() => {
-    document.title = "Hồ sơ khoa học";
+    document.title = "Thông tin phòng khoa";
     loadResearch();
     async function loadResearch() {
       function setData(props) {

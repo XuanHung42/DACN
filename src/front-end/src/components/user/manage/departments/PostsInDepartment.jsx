@@ -18,7 +18,6 @@ const PostInDepartment = () => {
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
 
   useEffect(() => {
-    document.title = "Chi tiết khoa - Công trình khoa học";
     window.scroll(0, 0);
 
     getPostByDepartmentSlug(slug).then((data) => {

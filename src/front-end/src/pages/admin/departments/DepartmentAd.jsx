@@ -34,6 +34,8 @@ const DepartmentAdmin = () => {
     setPageNumber((currentVal) => currentVal + inc);
   }
   useEffect(() => {
+    document.title = "Quản lý phòng khoa"
+
     loadDepartment();
     async function loadDepartment() {
       function setData(props) {

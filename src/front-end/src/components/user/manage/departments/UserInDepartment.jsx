@@ -16,9 +16,7 @@ const UserInDepartment = () => {
 
   
   useEffect(() => {
-    document.title = "Chi tiết khoa";
     window.scroll(0, 0);
-
     getUserByDepartmentSlug(slug).then((data) => {
       if (data) {
         setUserDepartment(data.items);

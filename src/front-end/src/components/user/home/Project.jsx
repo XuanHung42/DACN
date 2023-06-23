@@ -150,13 +150,21 @@ const Project = () => {
                     {/* <td>{item.topic.name}</td> */}
                     <td>{item.userNumber}</td>
                     <td>
-                      {item.users.map((item, index) => (
-                        <div className="text-danger" key={index}>
-                          <Link to={`project-user/${item.urlSlug}`} className="text-decoration-none">
-                            {item.name}
-                          </Link>
+                      {item.users.length === 0 ? (
+                        <div className="text-danger">
+                          Chưa có 
                         </div>
-                      ))}
+                      ): (
+                        <>
+                          {item.users.map((item, index) => (
+                            <div className="text-danger" key={index}>
+                              <Link to={`project-user/${item.urlSlug}`} className="text-decoration-none">
+                                {item.name}
+                              </Link>
+                            </div>
+                          ))}
+                        </>
+                      )}
                     </td>
                     <td className="text-center">
                       <Button

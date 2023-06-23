@@ -35,10 +35,10 @@ const Departments = () => {
           {getPost.map((item, index) => (
             <div className="card-content mt-3" key={index}>
               <Link className="text-decoration-none textline" to={`/${item.urlSlug}`}>
-                <h5 className="text-success">{item.title}</h5>
+                <span className="text-success post-title">{item.title}</span>
               </Link>
-              <div className="card-shortdesc mt-3">{item.shortDescription}</div>
-              <div className="card-author row mt-2">
+              <div className="card-shortdesc pt-3">{item.shortDescription}</div>
+              <div className="card-author row pt-2">
                 <div className="card-author-title col">
                   Đăng bởi:
                   <Link

@@ -35,7 +35,7 @@ const PostResearcher = () => {
                 <div className="col-6" key={index}>
                   <div className="card-content mt-3">
                     <Link className="text-decoration-none textline" to={`/research/${item.urlSlug}`}>
-                      <h5>{item.title}</h5>
+                      <span className="post-title text-success">{item.title}</span>
                     </Link>
                     <p className="card-shortdesc mt-3">{item.shortDescription}</p>
                     <div className="card-author">

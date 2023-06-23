@@ -30,6 +30,7 @@ const ResearchAdmin = () => {
     ps = 5;
 
   useEffect(() => {
+    document.title = "Quản lý giảng viên, nhà khoa học"
     loadResearch();
     async function loadResearch() {
       function setData(props) {

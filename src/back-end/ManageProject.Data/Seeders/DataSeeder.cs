@@ -431,7 +431,7 @@ namespace ManageProject.Data.Seeders
 			{
 				Title="Nghiên cứu phát triển du lịch cộng đồng tại huyện Đơn Dương, tỉnh Lâm Đồng",
 				ShortDescription="Phát triển du lịch cộng đồng",
-				Status= false,
+				Status= true,
 				User= users[2], // người đăng bài
                 UrlSlug="phat-trien-du-lich",
 				  Created= DateTime.Now,
@@ -451,7 +451,7 @@ namespace ManageProject.Data.Seeders
 			{
 				Title="Quá trình chuyển biến về kinh tế – xã hội của Thành phố Đà Lạt từ 1986 đến năm 2000 ",
 				ShortDescription="Chuyển biến về kinh tế - xã hội của Đà Lạt",
-				Status= false,
+				Status= true,
 				User= users[3],
 				UrlSlug="chuyen-bien-kinh-te-xa-hoi",
 				  Created= DateTime.Now,
@@ -470,7 +470,7 @@ namespace ManageProject.Data.Seeders
 			{
 				Title="Xây dựng ứng dụng chatbot hỗ trợ tuyển sinh trường Đại học Đà Lạt ",
 				ShortDescription="Ứng dụng chatbot tuyển sinh",
-				Status= false,
+				Status= true,
 				User= users[1],
 				UrlSlug="chat-bot-tuyen-sinh",
 				Created= DateTime.Now,
@@ -490,7 +490,7 @@ namespace ManageProject.Data.Seeders
 			{
 				Title="Các yếu tố ảnh hưởng đến việc thi hành Bộ luật hình sự",
 				ShortDescription="Yếu tố ảnh hưởng đến việc thi hành Bộ luật hình sự",
-				Status= false,
+				Status= true,
 				User= users[4],
 				UrlSlug="toi-pham-hien-nay",
 				Created= DateTime.Now,
@@ -507,7 +507,7 @@ namespace ManageProject.Data.Seeders
 			{
 				Title="Xu hướng phát triển của các quy định về tội phạm ",
 				ShortDescription="Quy định về tội phạm hiện nay",
-				Status= false,
+				Status= true,
 				User= users[4],
 				UrlSlug="toi-pham-hien-nay",
 				Created= DateTime.Now,
@@ -524,7 +524,7 @@ namespace ManageProject.Data.Seeders
 			{
 				Title="Hoa trà vàng: Đánh giá về thành phần hóa học và hoạt tính sinh học",
 				ShortDescription="Hoa trà vàng, thành phần hoá học và tính sinh học",
-				Status= false,
+				Status= true,
 				User= users[5],
 				UrlSlug="hoa-tra-vang-thanh-phan-hoa-hoc",
 				Created= DateTime.Now,

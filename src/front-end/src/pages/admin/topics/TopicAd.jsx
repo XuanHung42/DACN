@@ -16,7 +16,7 @@ const TopicAdmin = () => {
    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
    useEffect(() => {
-      document.title = "Quản lý chủ đề"
+      document.title = "Quản lý lĩnh vực"
       getAllTopic().then((data) => {
         if (data) {
           setGetTopic(data);
@@ -53,7 +53,7 @@ const TopicAdmin = () => {
   return (
     <LayoutAdmin>
       <div className="title py-3 text-danger">
-        <h3>Quản lý chủ đề dự án</h3>
+        <h3>Quản lý lĩnh vực đề tài dự án</h3>
       </div>
       <Link className="btn btn-success mb-2" to={`/admin/topic/edit`}>
         Thêm mới <FontAwesomeIcon icon={faAdd} />

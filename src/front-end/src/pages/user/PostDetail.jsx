@@ -17,6 +17,7 @@ const PostDetail = () => {
   const { slug } = params;
 
   useEffect(() => {
+    document.title = "Chi tiết bài báo khoa học"
     getPostDetailBySlug(slug).then((data) => {
       if (data) {
         console.log("data check detail: ", data);
@@ -77,7 +78,7 @@ const PostDetail = () => {
                   <td className="post-value">{format(new Date(postDetail.created), 'dd/MM/yyyy')}</td>
                 </tr>
                 <tr>
-                  <td className="post-lable w-25">Đăng bởi tác giả: </td>
+                  <td className="post-lable w-25">Đăng bởi tác giả </td>
                   <td className="post-value">
                     <p>
                       <Link to={`/records/${postDetail.user.urlSlug}`} className="text-decoration-none text-danger">

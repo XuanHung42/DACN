@@ -71,7 +71,7 @@ const ResearchResult = () => {
                         className="text-decoration-none text-none textline"
                         to={item.urlSlug}
                       >
-                        <h5>{item.title}</h5>
+                        <span className="post-title text-success">{item.title}</span>
                       </Link>
                       <p className="card-shortdesc mt-3">
                         {item.shortDescription}

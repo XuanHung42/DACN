@@ -13,6 +13,7 @@ const DashboardAdmin = () => {
   const [dashboardItem, setDashboardItem] = useState({});
 
   useEffect(() => {
+    document.title = "Trang quản trị hệ thống"
     getDashboard();
     async function getDashboard() {
       const response = await getAllDashboard();
@@ -69,7 +70,7 @@ const DashboardAdmin = () => {
         </div>
         <div className="card-body">
           <div className="text-success">
-            <h5>Dự án chưa đăng ký</h5>
+            <h5>Dự án chưa phê duyệt</h5>
             <FontAwesomeIcon icon={faBook} fontSize={30} />
             <span className="text-danger px-5 display-5">
               {dashboardItem.countProjectNotRegister}
@@ -78,7 +79,7 @@ const DashboardAdmin = () => {
         </div>
         <div className="card-body">
           <div className="text-success">
-            <h5>Dự án đã đăng ký</h5>
+            <h5>Dự án đã phê duyệt</h5>
             <FontAwesomeIcon icon={faBook} fontSize={30} />
             <span className="text-danger px-5 display-5">
               {dashboardItem.countProjectRegister}

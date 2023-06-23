@@ -55,12 +55,8 @@ const ProjectResearch = () => {
                       </div>
                     ))}
                   </td>
-                  <td>
-                    {item.register ? (
-                      <div className="text-success">Đã đăng ký</div>
-                    ) : (
-                      <div className="text-danger">Chưa đăng ký</div>
-                    )}
+                  <td className="text-success">
+                    {item.process.name}
                   </td>
                 </tr>
               ))

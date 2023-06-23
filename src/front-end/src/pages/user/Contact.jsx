@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Header from "../../components/user/common/Header";
 import Footer from "../../components/user/common/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +15,9 @@ const Contact = () => {
 
   const form = useRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  useEffect(() => {
+    document.title = "Liên hệ"
+  }, [])
 
   const sendEmail = (e) => {
     e.preventDefault();
