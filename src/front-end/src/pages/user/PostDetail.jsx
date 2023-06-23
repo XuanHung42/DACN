@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getPostDetailBySlug } from "../../api/PostApi";
+import { getPostDetailBySlug, increaseView } from "../../api/PostApi";
 import { Table } from "react-bootstrap";
 import "./styles/style.scss"
 import { format } from 'date-fns'
@@ -13,6 +13,7 @@ import Layout from "../../components/user/common/Layout";
 const PostDetail = () => {
   const params = useParams();
   const [postDetail, setPostDetail] = useState(null);
+  const [reRender, setRender] = useState(false);
 
   const { slug } = params;
 
@@ -26,7 +27,9 @@ const PostDetail = () => {
         setPostDetail({});
       }
     });
-  }, [slug]);
+    setRender();
+    increaseView(slug);
+  }, [slug, reRender]);
 
   if (postDetail) {
     return (

@@ -6,6 +6,7 @@ using ManageProject.Core.Collections;
 using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
 using ManageProject.Services.Manage.Posts;
+using ManageProject.Services.Manage.Topics;
 using ManageProject.Services.Media;
 using Mapster;
 using MapsterMapper;
@@ -64,6 +65,10 @@ namespace ManageProject.API.Endpoints
 				.Produces(401)
 				.Produces<ApiResponse<string>>();
 
+			// incresase view count
+			routeGroupBuilder.MapPost("/viewCount/{slug:regex(^[a-z0-9_-]+$)}", IncreaseViewPostAsync)
+				.WithName("IncreaseViewPostAsync")
+				.Produces<ApiResponse<string>>();
 
 			return app;
 		}
@@ -189,5 +194,13 @@ namespace ManageProject.API.Endpoints
 				: Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Khong tim thay bai dang "));
 		}
 
+		// increase view count
+		private static async Task<IResult> IncreaseViewPostAsync(
+			string slug,
+			IPostRepository postRepository)
+		{
+			await postRepository.IncreaseViewCountAsync(slug);
+			return Results.Ok(ApiResponse.Success($"Bài đăng slug có {slug} đã tăng view thành công"));
+		}
 	}
 }

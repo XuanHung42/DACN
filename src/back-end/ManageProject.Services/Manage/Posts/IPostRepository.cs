@@ -25,7 +25,7 @@ namespace ManageProject.Services.Manage.Posts
 
 		// get details by slug
 		Task<Post> GetPostDetailBySlug(string slug, CancellationToken cancellationToken = default);
-		Task IncreaseViewCountAsync(int postId, CancellationToken cancellationToken);
+		Task<bool> IncreaseViewCountAsync(string slug, CancellationToken cancellationToken = default);
 
 		// get n limit view count 
 		Task<IList<T>> GetNLimitTopViewCount<T>(int n, Func<IQueryable<Post>,

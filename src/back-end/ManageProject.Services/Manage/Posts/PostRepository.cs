@@ -87,13 +87,15 @@ namespace ManageProject.Services.Manage.Posts
 				return await postQuery.FirstOrDefaultAsync(cancellationToken);
 			}
 		}
-        public async Task IncreaseViewCountAsync(int postId, CancellationToken cancellationToken)
+        public async Task<bool> IncreaseViewCountAsync(string slug, CancellationToken cancellationToken = default)
         {
 
-            await _context.Set<Post>()
-                    .Where(x => x.Id == postId)
-                    .ExecuteUpdateAsync(p =>
-                    p.SetProperty(p => p.ViewCount, x => x.ViewCount + 1), cancellationToken);
+			var postView = await _context.Set<Post>()
+				 .Where(p => p.UrlSlug == slug)
+				 .FirstOrDefaultAsync(cancellationToken);
+			postView.ViewCount = postView.ViewCount + 1;
+			_context.Update(postView);
+			return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
 		public async Task<IList<T>> GetNLimitTopViewCount<T>(int n, Func<IQueryable<Post>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)

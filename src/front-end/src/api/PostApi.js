@@ -75,3 +75,7 @@ export function getPostByResearchSlug(slug) {
     `https://localhost:7284/api/users/posts/${slug}?PageSize=11&PageNumber=1`
   );
 }
+
+export function increaseView(slug){
+  return post_api(`https://localhost:7284/api/posts/viewCount/${slug}`)
+}
