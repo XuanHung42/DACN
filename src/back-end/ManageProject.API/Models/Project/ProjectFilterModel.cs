@@ -9,6 +9,7 @@ namespace ManageProject.API.Models.Project
 		public string Name { get; set; }
 		public int? UserId { get; set; }
 		public string UserSlug { get; set; }
+		public bool? Register { get; set; }
 		//public int? ProcessId { get; set; }
 		//public int? MonthPerform { get; set; }
 		//public int? YearPerform { get; set; }

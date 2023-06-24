@@ -90,9 +90,9 @@ const ProcessAdmin = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={3}>
+                  <td colSpan={4}>
                     <h4 className="text-danger text-center">
-                      Không tìm thấy phòng khoa nào
+                      Không tìm thấy tiến độ nào
                     </h4>
                   </td>
                 </tr>

@@ -19,6 +19,8 @@ namespace ManageProject.Core.DTO
 		public int? YearStart { get; set; }
 		public int? YearEnd { get; set; }
 		public int? ProcessId { get; set; }
+		public bool Register { get; set; }
+		public bool NotRegister { get; set; }
 
 	}
 

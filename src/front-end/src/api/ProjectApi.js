@@ -12,6 +12,7 @@ export function getFilterProject(
   // processId= '',
   // monthPerform = '',
   // yearPerform = '',
+  register = '',
   pageSize = 5,
   pageNumber = 1,
   sortColumn = '',
@@ -22,6 +23,7 @@ export function getFilterProject(
   // processId !== '' && url.searchParams.append('ProcessId', processId);
   // monthPerform !== '' && url.searchParams.append('MonthPerform', monthPerform);
   // yearPerform !== '' && url.searchParams.append('YearPerform', yearPerform);
+  register !== '' && url.searchParams.append('Register', register);
   sortColumn !== '' && url.searchParams.append('SortColumn', sortColumn);
   sortOrder !== '' && url.searchParams.append('SortOrder', sortColumn);
   url.searchParams.append('PageSize', pageSize);

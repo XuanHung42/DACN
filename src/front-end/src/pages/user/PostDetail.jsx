@@ -13,7 +13,7 @@ import Layout from "../../components/user/common/Layout";
 const PostDetail = () => {
   const params = useParams();
   const [postDetail, setPostDetail] = useState(null);
-  const [reRender, setRender] = useState(false);
+  // const [reRender, setRender] = useState(false);
 
   const { slug } = params;
 
@@ -27,9 +27,8 @@ const PostDetail = () => {
         setPostDetail({});
       }
     });
-    setRender();
     increaseView(slug);
-  }, [slug, reRender]);
+  }, [slug]);
 
   if (postDetail) {
     return (

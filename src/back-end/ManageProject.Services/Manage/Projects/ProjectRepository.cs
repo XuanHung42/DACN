@@ -125,6 +125,11 @@ namespace ManageProject.Services.Manage.Projects
             {
                 projectQuery = projectQuery.Where(pr => pr.EndDate.Year == query.YearEnd);
             }
+			
+            if (query.Register == false)
+            {
+                projectQuery = projectQuery.Where(p => !p.Register);
+            }
 
 
             return projectQuery;

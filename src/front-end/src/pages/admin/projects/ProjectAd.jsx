@@ -53,6 +53,7 @@ const ProjectAdmin = () => {
         // projectFilter.processId,
         // projectFilter.monthList,
         // projectFilter.yearList,
+        true,
         parameters.pageSize,
         pageNumber
       ).then((data) => {
@@ -145,6 +146,7 @@ const ProjectAdmin = () => {
                     <th className="w-25">Tên dự án</th>
                     <th>Ngày bắt đầu</th>
                     <th>Ngày kết thúc</th>
+                    <th>Số người</th>
                     <th>Người thực hiện</th>
                     <th>Trạng thái</th>
                     <th>Tiến trình</th>
@@ -161,6 +163,7 @@ const ProjectAdmin = () => {
                           {format(new Date(item.startDate), "dd/MM/yyyy")}
                         </td>
                         <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
+                        <td>{item.userNumber}</td>
                         <td>
                           {item.users.length === 0 ? (
                             <div className="text-danger">Chưa có</div>
@@ -199,7 +202,7 @@ const ProjectAdmin = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={7}>
+                      <td colSpan={9}>
                         <h4 className="text-danger text-center">
                           Không tìm thấy dự án nào
                         </h4>

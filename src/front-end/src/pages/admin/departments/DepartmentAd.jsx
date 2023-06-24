@@ -123,7 +123,7 @@ const DepartmentAdmin = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={3}>
+                    <td colSpan={4}>
                       <h4 className="text-danger text-center">
                         Không tìm thấy phòng khoa nào
                       </h4>

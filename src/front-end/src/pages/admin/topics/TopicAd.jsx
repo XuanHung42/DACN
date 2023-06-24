@@ -91,7 +91,7 @@ const TopicAdmin = () => {
                 <tr>
                   <td colSpan={3}>
                     <h4 className="text-danger text-center">
-                      Không tìm thấy phòng khoa nào
+                      Không tìm thấy chủ đề nào
                     </h4>
                   </td>
                 </tr>

@@ -26,7 +26,7 @@ const Project = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   let p = 1;
-  let ps = 5;
+  let ps = 3;
 
   const handleRegister = (projectId, index) => {
     console.log("user:", user);
@@ -57,7 +57,7 @@ const Project = () => {
                 return newState;
               });
               localStorage.setItem(`isRegistered_${projectId}`, true);
-              enqueueSnackbar("Đăng ký thành công", { variant: "success" });
+              enqueueSnackbar("Đăng ký thành công, chờ đợi phê duyệt", { variant: "success" });
             });
           }
         }
@@ -76,7 +76,7 @@ const Project = () => {
         setGetProject(props.items);
         setMetadata(props.metadata);
       }
-      getFilterProject(projectFilter.name, ps, pageNumber).then((data) => {
+      getFilterProject(projectFilter.name,false, ps, pageNumber).then((data) => {
         if (data) {
           setData(data);
           setIsRegistered(
@@ -125,10 +125,8 @@ const Project = () => {
               <tr>
                 <th className="w-25">Tên đề tài</th>
                 <th className="w-15">Mô tả ngắn</th>
-                {/* <th>Kinh phí dự án</th> */}
                 <th>Ngày bắt đầu</th>
                 <th>Ngày kết thúc</th>
-                {/* <th>Chủ đề</th> */}
                 <th>Số thành viên</th>
                 <th>Người thực hiện</th>
                 <th>Đăng ký</th>
@@ -179,7 +177,7 @@ const Project = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={8}>
+                  <td colSpan={7}>
                     <h4 className="text-danger text-center">
                       Không tìm thấy dự án nào
                     </h4>
