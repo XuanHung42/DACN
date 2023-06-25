@@ -32,6 +32,7 @@ namespace ManageProject.Services.Manage.Topics
 					Id = t.Id,
 					Name = t.Name,
 					UrlSlug = t.UrlSlug,
+					CountProject = t.Projects.Count()
 				}).ToListAsync(cancellationToken);
 			
 		}

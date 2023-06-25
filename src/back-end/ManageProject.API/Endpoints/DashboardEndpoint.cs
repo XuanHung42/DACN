@@ -35,7 +35,8 @@ namespace ManageProject.API.Endpoints
 				CountProjectNotRegister = await projectRepository.CountTotalProjectNotRegisterAsync(),
 				CountProjectRegister = await projectRepository.CountTotalProjectRegister(),
 				CountUser = await userRepository.CountTotalUserAsync(),
-
+				CountPostApprove = await postRepository.CountPostApprove(),
+				CountPostNotApprove = await postRepository.CountPostNotApprove(),
 			};
 
 			return Results.Ok(ApiResponse.Success(result));

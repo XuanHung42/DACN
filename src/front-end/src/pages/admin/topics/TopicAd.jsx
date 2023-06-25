@@ -66,6 +66,7 @@ const TopicAdmin = () => {
             <thead>
               <tr>
                 <th>Tên chủ đề</th>
+                <th>Dự án có chủ đề</th>
                 <th>Sửa</th>
                 <th>Xoá</th>
               </tr>
@@ -75,6 +76,7 @@ const TopicAdmin = () => {
                 getTopic.map((item, index) => (
                   <tr key={index}>
                     <td>{item.name}</td>
+                    <td className="w-25 text-success">{item.countProject} Dự án có chủ đề {item.name}</td>
                     <td className="text-center">
                       <Link to={`/admin/topic/edit/${item.id}`} className="text-warning">
                         <FontAwesomeIcon icon={faEdit} />

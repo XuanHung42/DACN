@@ -3,7 +3,7 @@ import { Button, Table } from "react-bootstrap";
 import Loading from "../Loading";
 import { getFilterProject } from "../../../api/ProjectApi";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ProjectFilter from "../filter/ProjectFilterModel";
 import {
   addProjectsToUser,
@@ -25,6 +25,8 @@ const Project = () => {
   const [metadata, setMetadata] = useState({});
   const { id } = useParams();
   const dispatch = useDispatch();
+  const naviagate = useNavigate();
+
   let p = 1;
   let ps = 3;
 
@@ -66,6 +68,7 @@ const Project = () => {
       enqueueSnackbar("Bạn cần đăng nhập để đăng ký dự án", {
         variant: "error",
       });
+      naviagate(`/login`)
     }
   };
 
@@ -156,7 +159,7 @@ const Project = () => {
                         <>
                           {item.users.map((item, index) => (
                             <div className="text-danger" key={index}>
-                              <Link to={`project-user/${item.urlSlug}`} className="text-decoration-none">
+                              <Link to={`/records/${item.urlSlug}`} className="text-decoration-none">
                                 {item.name}
                               </Link>
                             </div>

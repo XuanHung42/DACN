@@ -121,6 +121,16 @@ namespace ManageProject.Services.Manage.Posts
 		{
 			return await _context.Set<Post>().CountAsync(cancellationToken);
 		}
+		public async Task<int> CountPostApprove(CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Post>().CountAsync(p => p.Status, cancellationToken);
+		}
+
+		public async Task<int> CountPostNotApprove(CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Post>().CountAsync(p => !p.Status, cancellationToken);
+		}
+
 		public async Task<bool> DeletePostAsync(int id, CancellationToken cancellationToken = default)
 		{
 			return await _context.Posts.Where(p => p.Id == id).ExecuteDeleteAsync(cancellationToken) > 0;

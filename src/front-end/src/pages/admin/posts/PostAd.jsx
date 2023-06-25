@@ -13,6 +13,7 @@ import { getFilterPost } from "../../../api/PostApi";
 import { useSnackbar } from "notistack";
 import Pager from "../../../components/pager/Pager";
 import LayoutAdmin from "../../../components/admin/layout/LayoutAd";
+import { getAllDashboard } from "../../../api/DashboardApi";
 
 const PostAdmin = ({ postQuery }) => {
   const { querySearch, params } = "";
@@ -112,6 +113,21 @@ const PostAdmin = ({ postQuery }) => {
     }
   };
 
+  const [dashboardItem, setDashboardItem] = useState({});
+
+  useEffect(() => {
+    getDashboard();
+    async function getDashboard() {
+      const response = await getAllDashboard();
+      if (response) {
+        console.log("response check: ", response);
+        setDashboardItem(response);
+      } else {
+        setDashboardItem({});
+      }
+    }
+  }, []);
+
   return (
     <LayoutAdmin>
       <div className="title py-3 text-danger">
@@ -119,9 +135,25 @@ const PostAdmin = ({ postQuery }) => {
       </div>
       <div className="post-content">
         <PostFilter />
-        <Link className="btn btn-success mb-2" to={`/admin/post/edit`}>
-          Thêm mới <FontAwesomeIcon icon={faAdd} />
-        </Link>
+        <div className="d-flex align-items-center justify-content-between">
+          <Link className="btn btn-success mb-2" to={`/admin/post/edit`}>
+            Thêm mới <FontAwesomeIcon icon={faAdd} />
+          </Link>
+          <div className="">
+            <div className="px-2 text-danger">
+              Dự án chưa phê duyệt:
+              <span className="px-1">
+                {dashboardItem.countPostNotApprove}
+              </span>
+              dự án
+            </div>
+            <div className="px-2 text-success">
+              Dự án đã phê duyệt:
+              <span className="px-1">{dashboardItem.countPostApprove}</span>
+              dự án
+            </div>
+          </div>
+        </div>
         {isVisibleLoading ? (
           <Loading />
         ) : (
@@ -153,7 +185,10 @@ const PostAdmin = ({ postQuery }) => {
                       )}
                     </td>
                     <td className="text-center">
-                      <Link to={`/admin/post/edit/${item.id}`} className="text-warning">
+                      <Link
+                        to={`/admin/post/edit/${item.id}`}
+                        className="text-warning"
+                      >
                         <FontAwesomeIcon icon={faEdit} />
                       </Link>
                     </td>

@@ -8,6 +8,9 @@
 		public int CountProjectNotRegister { get; set; }
 		public int CountProjectRegister { get; set; }
 		public int CountUser { get; set; }
+		public int CountPostApprove { get; set; }
+		public int CountPostNotApprove { get; set; }
+
 
 
 	}

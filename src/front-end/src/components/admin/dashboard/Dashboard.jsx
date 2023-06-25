@@ -1,5 +1,6 @@
 import {
   faBook,
+  faBridge,
   faHome,
   faPen,
   faUser,
@@ -28,17 +29,7 @@ const DashboardAdmin = () => {
 
   return (
     <LayoutAdmin>
-      <div className="d-flex mt-5">
-        <div className="card-body">
-          <div className="text-success">
-            <h5>Người dùng</h5>
-            <FontAwesomeIcon icon={faUser} fontSize={30} />
-            <span className="text-danger px-5 display-5">
-              {dashboardItem.countUser}
-            </span>
-          </div>
-        </div>
-
+      <div className="d-flex mt-5 ">
         <div className="card-body">
           <div className="text-success">
             <h5>Đăng bài</h5>
@@ -50,10 +41,19 @@ const DashboardAdmin = () => {
         </div>
         <div className="card-body">
           <div className="text-success">
-            <h5>Phòng khoa</h5>
-            <FontAwesomeIcon icon={faHome} fontSize={30} />
+            <h5>Bài đăng chưa phê duyệt</h5>
+            <FontAwesomeIcon icon={faPen} fontSize={30} />
             <span className="text-danger px-5 display-5">
-              {dashboardItem.countDepartment}
+              {dashboardItem.countPostNotApprove}
+            </span>
+          </div>
+        </div>
+        <div className="card-body">
+          <div className="text-success">
+            <h5>Bài đăng đã phê duyệt</h5>
+            <FontAwesomeIcon icon={faPen} fontSize={30} />
+            <span className="text-danger px-5 display-5">
+              {dashboardItem.countPostApprove}
             </span>
           </div>
         </div>
@@ -83,6 +83,38 @@ const DashboardAdmin = () => {
             <FontAwesomeIcon icon={faBook} fontSize={30} />
             <span className="text-danger px-5 display-5">
               {dashboardItem.countProjectRegister}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="d-flex mt-5">
+        <div className="card-body">
+          <div className="text-success">
+            <h5>Người dùng</h5>
+            <FontAwesomeIcon icon={faUser} fontSize={30} />
+            <span className="text-danger px-5 display-5">
+              {dashboardItem.countUser}
+            </span>
+          </div>
+        </div>
+        
+        <div className="card-body">
+          <div className="text-success">
+            <h5>Phòng khoa</h5>
+            <FontAwesomeIcon icon={faHome} fontSize={30} />
+            <span className="text-danger px-5 display-5">
+              {dashboardItem.countDepartment}
+            </span>
+          </div>
+        </div>
+        
+        <div className="card-body">
+          <div className="text-success">
+            <h5>Lĩnh vực</h5>
+            <FontAwesomeIcon icon={faBridge} fontSize={30} />
+            <span className="text-danger px-5 display-5">
+              {/* {dashboardItem.countDepartment} */}
+              4
             </span>
           </div>
         </div>

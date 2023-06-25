@@ -17,7 +17,9 @@ const Login = (props) => {
   const dispatch = useDispatch();
   const naviagate = useNavigate();
 
- 
+ useEffect(() => {
+  window.scroll(0, 0);
+ })
 
   const hanldeLogin = (e) => {
     e.preventDefault();

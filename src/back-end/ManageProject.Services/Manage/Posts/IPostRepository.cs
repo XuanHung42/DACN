@@ -35,6 +35,10 @@ namespace ManageProject.Services.Manage.Posts
 			IQueryable<T>> mapper, CancellationToken cancellationToken = default);
 
 		Task<int> CountTotalPostAsync(CancellationToken cancellationToken = default);
+		Task<int> CountPostApprove(CancellationToken cancellationToken = default);
+		Task<int> CountPostNotApprove(CancellationToken cancellationToken = default);
+
+
 
 		Task<bool> DeletePostAsync(int id, CancellationToken cancellationToken = default);
 		Task<bool> CreateOrUpdatePostAsync(Post post, CancellationToken cancellationToken = default);
