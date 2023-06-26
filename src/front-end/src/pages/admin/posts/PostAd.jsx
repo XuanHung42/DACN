@@ -141,14 +141,14 @@ const PostAdmin = ({ postQuery }) => {
           </Link>
           <div className="">
             <div className="px-2 text-danger">
-              Dự án chưa phê duyệt:
+              Bài viết chưa phê duyệt:
               <span className="px-1">
                 {dashboardItem.countPostNotApprove}
               </span>
               dự án
             </div>
             <div className="px-2 text-success">
-              Dự án đã phê duyệt:
+              Bài viết đã phê duyệt:
               <span className="px-1">{dashboardItem.countPostApprove}</span>
               dự án
             </div>
