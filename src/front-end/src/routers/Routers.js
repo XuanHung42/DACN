@@ -27,12 +27,14 @@ import TopicAdmin from "../pages/admin/topics/TopicAd";
 import TopicAdminEdit from "../pages/admin/topics/TopicAdEdit";
 import DepartmentDetail from "../components/user/manage/departments/DepartmentDetail";
 import ProjectDetail from "../pages/user/ProjectDetail";
+import NotFound from "../components/user/common/NotFound";
 
 
 const Routers = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='/*' element={<NotFound />} />
         {/* routers user */}
         <Route path="/" element={<Home />} />
         <Route path="/:slug" element={<PostDetail />} />
@@ -50,7 +52,7 @@ const Routers = () => {
         <Route path="/research/:slug" element={<PostDetail />} />
         <Route path="/records" element={<Record />} />
         <Route path="/records/department" element={<Department />} />
-        <Route path="records/:slug" element={<ResearcherDetail />}/>
+        <Route path="/records/:slug" element={<ResearcherDetail />}/>
         <Route path="/contact" element={<Contact />} />
         <Route path="/search" element={<SearchPost />} />
         <Route path="/home/search" element={<SearchPost />} />
@@ -81,9 +83,7 @@ const Routers = () => {
         <Route path="/admin/topic/edit" element={<TopicAdminEdit />}/>
         <Route path="/admin/topic/edit/:id" element={<TopicAdminEdit />}/>
 
-
-
-
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
