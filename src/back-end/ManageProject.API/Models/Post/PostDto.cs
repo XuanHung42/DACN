@@ -15,7 +15,9 @@ namespace ManageProject.API.Models.Post
 		public DateTime Created { get; set; }
 		//public DepartmentDto Department { get; set; }
 		public UserDto User { get; set; }
+		public DepartmentDto Department { get; set; }
+        public int ViewCount { get; set; }
 
 
-	}
+    }
 }

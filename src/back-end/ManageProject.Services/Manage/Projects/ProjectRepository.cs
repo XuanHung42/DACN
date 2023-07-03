@@ -3,6 +3,7 @@ using ManageProject.Core.DTO;
 using ManageProject.Core.Entities;
 using ManageProject.Data.Contexts;
 using ManageProject.Services.Extensions;
+using ManageProject.Services.Manage.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.Extensions.Caching.Memory;
@@ -20,12 +21,16 @@ namespace ManageProject.Services.Manage.Projects
     {
         private readonly ManageDbContext _context;
         private readonly IMemoryCache _memoryCache;
+        private IUserRepository userRepository;
 
-        public ProjectRepository(ManageDbContext context, IMemoryCache memoryCache)
+        public ProjectRepository(ManageDbContext context, IMemoryCache memoryCache, IUserRepository userRepository)
         {
             _context = context;
             _memoryCache = memoryCache;
+            this.userRepository = userRepository;
         }
+
+
         //// cach lay ra het thuoc tinh cua user
         //public async Task<IList<ProjectItem>> GetProjectAsync(CancellationToken cancellationToken = default)
         //{
@@ -91,20 +96,41 @@ namespace ManageProject.Services.Manage.Projects
                 );
             }
 
-            //if (!string.IsNullOrWhiteSpace(query.UserSlug))
-            //{
-            //	projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.UrlSlug == query.UserSlug));
-            //}
+            if (!string.IsNullOrWhiteSpace(query.UserSlug))
+            {
+                projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.UrlSlug == query.UserSlug));
+            }
 
-            //if (query.UserId > 0)
-            //{
-            //	projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.Id == query.UserId));
-            //}
-            //if (query.UserId > 0)
-            //{
-            //	projectQuery = projectQuery.Include(pr => pr.Users)
-            //		.Where(u => u.Users.Any(u => u.Id == query.UserId));
-            //}
+            if (query.UserId > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.Users.Any(u => u.Id == query.UserId));
+            }
+            if (query.ProcessId > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.ProcessId == query.ProcessId);
+            }
+            if (query.MonthStart > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.StartDate.Month == query.MonthStart);
+            }
+            if (query.MonthEnd > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.EndDate.Month == query.MonthEnd);
+            }
+            if (query.YearStart > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.StartDate.Year == query.YearStart);
+            }
+            if (query.YearEnd > 0)
+            {
+                projectQuery = projectQuery.Where(pr => pr.EndDate.Year == query.YearEnd);
+            }
+			
+            if (query.Register == false)
+            {
+                projectQuery = projectQuery.Where(p => !p.Register);
+            }
+
 
             return projectQuery;
 
@@ -138,7 +164,8 @@ namespace ManageProject.Services.Manage.Projects
         {
             IQueryable<Project> projectQuery = _context.Set<Project>()
                 .Include(pr => pr.Users)
-                .Include(pr => pr.Process);
+                .Include(pr => pr.Process)
+                .Include(pr => pr.Topic);
 
             if (!string.IsNullOrEmpty(slug))
             {
@@ -187,5 +214,48 @@ namespace ManageProject.Services.Manage.Projects
                 .Where(p => p.Id == projectId)
                 .ExecuteDeleteAsync(cancellationToken) > 0;
         }
-    }
+
+		public async Task<int> CountTotalProjectAsync(CancellationToken cancellationToken = default)
+		{
+            return await _context.Set<Project>().CountAsync(cancellationToken);
+
+		}
+        public async Task<bool> AddUsersToProjectAsync(List<int> userIds, int projectId, CancellationToken cancellationToken = default)
+        {
+            var project = await _context.Projects.FindAsync(projectId);
+            if (project == null)
+            {
+                throw new ArgumentException($"Project with id {projectId} not found");
+            }
+
+            var users = await _context.Users.Where(u => userIds.Contains(u.Id)).ToListAsync(cancellationToken);
+            if (users.Count != userIds.Count)
+            {
+                throw new ArgumentException("One or more users not found");
+            }
+            if(users.Count>= project.UserNumber)
+            {
+                throw new ArgumentException("Quá số người đăng ký");
+            }
+
+            foreach (var user in users)
+            {
+                project.Users.Add(user);
+
+            }
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return true;
+        }
+
+		public async Task<int> CountTotalProjectNotRegisterAsync(CancellationToken cancellationToken = default)
+		{
+            return await _context.Set<Project>().CountAsync(p => !p.Register, cancellationToken);
+		}
+
+		public async Task<int> CountTotalProjectRegister(CancellationToken cancellationToken = default)
+		{
+            return await _context.Set<Project>().CountAsync(p => p.Register, cancellationToken);
+		}
+	}
 }

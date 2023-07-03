@@ -15,11 +15,10 @@ namespace ManageProject.Services.Manage.Processes
 
 		// get process by id
 		Task<Process> GetProcessByIdAsync(int processId);
-		
-		// add or update process
 		Task<bool> AddOrUpdateProcessAsync(Process process, CancellationToken cancellationToken = default);
-
 		// delete process by id
 		Task<bool> DeleteProcessById(int processId, CancellationToken cancellationToken = default);
+
+		Task<IList<ProcessItem>> GetProcessListCombobox(CancellationToken cancellationToken = default);
 	}
 }

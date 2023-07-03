@@ -2,6 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   name: "",
+  processId: '',
+  year: '',
+  month: '',
 };
 
 
@@ -20,6 +23,26 @@ const projectFilterReducer = createSlice({
       };
     },
 
+    updateProcessId: (state, action) => {
+      return {
+        ...state,
+        processId: action.payload
+      }
+    },
+
+    updateYear: (state, action) => {
+      return {
+        ...state,
+        year: action.payload,
+      }
+    },
+
+    updateMonth: (state, action) => {
+      return {
+        ...state,
+        month: action.payload
+      }
+    }
 
   },
 });
@@ -28,6 +51,9 @@ const projectFilterReducer = createSlice({
 export const {
   reset, 
   updateName,
+  updateProcessId,
+  updateYear,
+  updateMonth,
   
 } = projectFilterReducer.actions;
 

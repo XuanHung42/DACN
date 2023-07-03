@@ -1,0 +1,15 @@
+﻿using ManageProject.Core.DTO;
+using ManageProject.Core.Entities;
+
+namespace ManageProject.API.Models.Account
+{
+	public class UserTokenModel
+	{
+		public int Id { get; set; }
+		public int Role { get; set; }
+		public string Name { get; set; }
+		//public string Email { get; set; }
+		public string Token { get; set; }
+		public DateTime Expired { get; set; }
+	}
+}

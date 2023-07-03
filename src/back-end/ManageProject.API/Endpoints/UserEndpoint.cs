@@ -18,6 +18,10 @@ using ManageProject.API.Models.Role;
 using SlugGenerator;
 using Microsoft.Extensions.Hosting;
 using ManageProject.Services.Media;
+using ManageProject.Services.Manage.Roles;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ManageProject.API.Models.Departments;
+using ManageProject.Services.Manage.Posts;
 
 namespace ManageProject.API.Endpoints
 {
@@ -28,16 +32,16 @@ namespace ManageProject.API.Endpoints
             var routeGroupBuilder = app.MapGroup("/api/users");
             routeGroupBuilder.MapGet("/getAll", GetUserList)
                 .WithName("GetAllUsers")
-                .Produces<ApiResponse<UserItem>>();
+                .Produces<ApiResponse<UserDetail>>();
             routeGroupBuilder.MapGet("/", GetUsers)
                 .WithName("GetUsers")
                 .Produces<ApiResponse<PaginationResult<UserItem>>>();
             routeGroupBuilder.MapGet("/{id:int}", GetUserDetail)
                .WithName("GetUserById")
-               .Produces<ApiResponse<UserItem>>();
+               .Produces<ApiResponse<UserDetail>>();
             routeGroupBuilder.MapGet("/slug", GetUserBySlug)
        .WithName("GetUserBySlug")
-       .Produces<ApiResponse<UserItem>>();
+       .Produces<ApiResponse<UserDetail>>();
             routeGroupBuilder.MapPut("/{id:int}", UpdateUser)
             .WithName("UpdateAnUser")
             .AddEndpointFilter<ValidatorFilter<UserEditModel>>()
@@ -47,7 +51,13 @@ namespace ManageProject.API.Endpoints
             routeGroupBuilder.MapGet("projects/{slug:regex(^[a-z0-9_-]+$)}", GetProjectByUserSlug)
                 .WithName("GetProjectByUserSlug")
                  .Produces<ApiResponse<PaginationResult<ProjectDto>>>();
-            routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/role", GetRoleByUserSlug)
+
+			routeGroupBuilder.MapGet("posts/{slug:regex(^[a-z0-9_-]+$)}", GetPostByUserSlug)
+		   .WithName("GetPostByUserSlug")
+			.Produces<ApiResponse<PaginationResult<PostDto>>>();
+
+
+			routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/role", GetRoleByUserSlug)
                 .WithName("GetRoleByUserSlug")
                  .Produces<ApiResponse<PaginationResult<RoleDto>>>();
             routeGroupBuilder.MapPost("/", AddOrUpdateUser)
@@ -57,10 +67,11 @@ namespace ManageProject.API.Endpoints
          .Accepts<UserEditModel>("multipart/form-data")
 
                  .Produces<ApiResponse<UserItem>>();
+
             routeGroupBuilder.MapGet("/slugDetail/{slug:regex(^[a-z0-9_-]+$)}", GetDetailUserBySlugAsync)
                 .WithName("GetDetailUserBySlugAsync")
-                .Produces<ApiResponse<UserDto>>();
-            routeGroupBuilder.MapDelete("/", DeleteUser)
+			.Produces<ApiResponse<UserDetail>>();
+            routeGroupBuilder.MapDelete("/{id:int}", DeleteUser)
             .WithName("DeleteAnAuthor")
             .Produces(401)
             .Produces<ApiResponse<string>>();
@@ -69,7 +80,21 @@ namespace ManageProject.API.Endpoints
          .Accepts<IFormFile>("multipart/form-data")
          .Produces<string>()
          .Produces(400);
-            return app;
+            routeGroupBuilder.MapPost("/addProjects", AddProjectsToUser)
+                .WithName("AddProjectToUser")
+                .Produces(401)
+                .Produces<ApiResponse<User>>();
+
+
+			// get filter role 
+			routeGroupBuilder.MapGet("/get-filter", GetFilterRoleAsync)
+				.WithName("GetFilterRoleAsync")
+				.Produces<ApiResponse<UserFilterModel>>();
+
+            routeGroupBuilder.MapGet("/filterDepartment", GetFilterDepartment)
+				.WithName("GetFilterDepartment")
+				.Produces<ApiResponse<UserFilterModel>>();
+			return app;
         }
 
         public static async Task<IResult> GetUserList(IUserRepository userRepository)
@@ -82,7 +107,7 @@ namespace ManageProject.API.Endpoints
             [AsParameters] UserFilterModel model,
             IUserRepository userRepository)
         {
-            var userList = await userRepository.GetPagedUserAsync(model, model.Name);
+            var userList = await userRepository.GetPagedUserAsync(model, model.Name, model.Email);
             var paginationResult = new PaginationResult<UserItem>(userList);
             return Results.Ok(ApiResponse.Success(paginationResult));
         }
@@ -91,7 +116,7 @@ namespace ManageProject.API.Endpoints
             var user = await userRepository.GetUserByIdAsync(id);
             return user == null
                ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy người dùng có mã số {id}"))
-               : Results.Ok(ApiResponse.Success(mapper.Map<UserItem>(user)));
+               : Results.Ok(ApiResponse.Success(mapper.Map<UserDetail>(user)));
         }
 
         private static async Task<IResult> UpdateUser(int id, UserEditModel model, IValidator<UserEditModel> validator,
@@ -155,7 +180,7 @@ namespace ManageProject.API.Endpoints
             user.UrlSlug = model.UrlSlug;
             user.DepartmentId = model.DepartmentId;
             user.Email = model.Email;
-            user.BirthDate = DateTime.Now;
+            user.BirthDate =model.BirthDate;
             user.UrlSlug = model.Name.GenerateSlug();
             user.RoleId = model.RoleId;
             user.Password = model.Password;
@@ -198,6 +223,23 @@ namespace ManageProject.API.Endpoints
               ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Ko tồn tại slug '{slug}'"))
               : Results.Ok(ApiResponse.Success(paginationResult));
         }
+
+        private static async Task<IResult> GetPostByUserSlug([FromRoute] string slug,
+            [AsParameters] PagingModel pagingModel, IUserRepository userRepository)
+        {
+            var postQuery = new PostQuery()
+            {
+                UserSlug = slug
+            };
+            var postLits = await userRepository.GetPagedPostAsync(
+                postQuery,
+                pagingModel,
+                post => post.ProjectToType<PostDto>());
+            var paginationResult = new PaginationResult<PostDto>(postLits);
+            return postLits == null
+			    ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Ko tồn tại slug '{slug}'"))
+			  : Results.Ok(ApiResponse.Success(paginationResult));
+		}
         private static async Task<IResult> GetRoleByUserSlug([FromRoute] string slug,
            [AsParameters] PagingModel pagingModel, IUserRepository userRepository)
         {
@@ -220,7 +262,7 @@ namespace ManageProject.API.Endpoints
             var user = await userRepository.GetUserBySlugAsync(slug);
             return user==null
                 ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound))
-                :Results.Ok(ApiResponse.Success(mapper.Map<UserItem>(user)));
+                :Results.Ok(ApiResponse.Success(mapper.Map<UserDetail>(user)));
         }
         private static async Task<IResult> SetUserPicture(
           int id,
@@ -245,6 +287,49 @@ namespace ManageProject.API.Endpoints
             ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy slug = {slug}"))
             : Results.Ok(ApiResponse.Success(mapper.Map<UserDetail>(user)));
         }
+
+        // get filter role
+        private static async Task<IResult> GetFilterRoleAsync(
+            IRoleRepository roleRepository)
+        {
+            var model = new UserFilterModel()
+            {
+                RoleList = (await roleRepository.GetRoleNotRequired())
+                .Select(r => new SelectListItem()
+                {
+                    Text = r.Name,
+                    Value = r.Id.ToString()
+                })
+            };
+            return Results.Ok(ApiResponse.Success(model));
+        }
+
+        // get filter department
+        private static async Task<IResult> GetFilterDepartment(
+            IDepartmentRepository departmentRepository)
+        {
+            var model = new UserFilterModel()
+            {
+                DepartmentList =  (await departmentRepository.GetDepartmentNotRequired())
+                .Select(r => new SelectListItem()
+                {
+                    Text = r.Name,
+                    Value = r.Id.ToString()
+                })
+            };
+            return Results.Ok(ApiResponse.Success(model));
+        }
+
+        // test
+        private static async Task<IResult> AddProjectsToUser(int userId, List<int> projectId,IUserRepository userRepository)
+        {
+            return await userRepository.AddProjectsToUserAsync(projectId, userId)
+            ? Results.Ok(ApiResponse.Success("Projects đã được thêm vào User", HttpStatusCode.Created))
+            : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Đã xảy ra lỗi" + ""));
+
+        }
+       
+        
     }
 }
 

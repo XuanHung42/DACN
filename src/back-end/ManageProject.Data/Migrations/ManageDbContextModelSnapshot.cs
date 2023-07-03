@@ -56,7 +56,7 @@ namespace ManageProject.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("DepartmentId")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("File")
@@ -86,6 +86,11 @@ namespace ManageProject.Data.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ViewCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
@@ -103,35 +108,16 @@ namespace ManageProject.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Complete")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("ExcutionTime")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<bool>("Start")
+                    b.Property<string>("UrlSlug")
+                        .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool>("StartMaking")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool>("WriteReport")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("False");
 
                     b.HasKey("Id");
 
@@ -156,10 +142,17 @@ namespace ManageProject.Data.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<int>("ProcessId")
                         .HasColumnType("int");
@@ -171,6 +164,12 @@ namespace ManageProject.Data.Migrations
 
                     b.Property<string>("ShortDescription")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UrlSlug")
                         .IsRequired()
@@ -188,6 +187,8 @@ namespace ManageProject.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProcessId");
+
+                    b.HasIndex("TopicId");
 
                     b.ToTable("Project", (string)null);
                 });
@@ -215,6 +216,30 @@ namespace ManageProject.Data.Migrations
                     b.ToTable("Roles", (string)null);
                 });
 
+            modelBuilder.Entity("ManageProject.Core.Entities.Topic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("UrlSlug")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("False");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Topics", (string)null);
+                });
+
             modelBuilder.Entity("ManageProject.Core.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -230,7 +255,6 @@ namespace ManageProject.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -251,8 +275,14 @@ namespace ManageProject.Data.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UrlSlug")
+                    b.Property<string>("RoleString")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)")
+                        .HasDefaultValue("user");
+
+                    b.Property<string>("UrlSlug")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -263,6 +293,37 @@ namespace ManageProject.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("ManageProject.Core.Entities.UserToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Expired")
+                        .HasColumnType("datetime");
+
+                    b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Token")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserToken", (string)null);
                 });
 
             modelBuilder.Entity("PostProject", b =>
@@ -300,12 +361,14 @@ namespace ManageProject.Data.Migrations
                     b.HasOne("ManageProject.Core.Entities.Department", "Department")
                         .WithMany("Posts")
                         .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_Post_Department");
 
                     b.HasOne("ManageProject.Core.Entities.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK_Posts_Users");
 
@@ -323,7 +386,15 @@ namespace ManageProject.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Process_Project");
 
+                    b.HasOne("ManageProject.Core.Entities.Topic", "Topic")
+                        .WithMany("Projects")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Process");
+
+                    b.Navigation("Topic");
                 });
 
             modelBuilder.Entity("ManageProject.Core.Entities.User", b =>
@@ -345,6 +416,17 @@ namespace ManageProject.Data.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("ManageProject.Core.Entities.UserToken", b =>
+                {
+                    b.HasOne("ManageProject.Core.Entities.User", "User")
+                        .WithOne("UserToken")
+                        .HasForeignKey("ManageProject.Core.Entities.UserToken", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PostProject", b =>
@@ -394,9 +476,16 @@ namespace ManageProject.Data.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("ManageProject.Core.Entities.Topic", b =>
+                {
+                    b.Navigation("Projects");
+                });
+
             modelBuilder.Entity("ManageProject.Core.Entities.User", b =>
                 {
                     b.Navigation("Posts");
+
+                    b.Navigation("UserToken");
                 });
 #pragma warning restore 612, 618
         }

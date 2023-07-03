@@ -12,7 +12,7 @@ namespace ManageProject.Services.Manage.Users
     public interface IUserRepository
     {
         Task<IList<UserItem>> GetUserAsync(CancellationToken cancellationToken = default);
-        Task<IPagedList<UserItem>> GetPagedUserAsync(IPagingParams pagingParams, string name = null, CancellationToken cancellationToken = default);
+        Task<IPagedList<UserItem>> GetPagedUserAsync(IPagingParams pagingParams, string name = null, string email = null, CancellationToken cancellationToken = default);
 
         Task<User> GetUserBySlugAsync(string slug, CancellationToken cancellationToken = default);
         Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken = default);
@@ -30,6 +30,12 @@ namespace ManageProject.Services.Manage.Users
        Func<IQueryable<Project>,
        IQueryable<T>> mapper,
        CancellationToken cancellationToken = default);
+
+        Task<IPagedList<T>> GetPagedPostAsync<T>(PostQuery query,
+            IPagingParams pagingParams,
+            Func<IQueryable<Post>,
+            IQueryable<T>> mapper,
+            CancellationToken cancellationToken = default);
         Task<IPagedList<T>> GetPageRolesAsync<T>(
             RoleQuery query,
             IPagingParams pagingParams,
@@ -40,5 +46,16 @@ namespace ManageProject.Services.Manage.Users
              int userId, string imageUrl,
              CancellationToken cancellationToken = default);
         Task<User> GetUserDetailBySlug(string slug, CancellationToken cancellationToken = default);
-    }
+
+        Task<int> CountTotalUserAsync(CancellationToken cancellationToken = default);
+
+
+		Task<bool> Register(string username, string password, string comfirmPassword, CancellationToken cancellationToken = default);
+		// login
+		Task<User> Login(string username, string password, CancellationToken cancellationToken = default);
+        Task<bool> AddProjectsToUserAsync(List<int> projectIds, int userId, CancellationToken cancellationToken = default);
+
+
+	}
+
 }

@@ -37,7 +37,7 @@ namespace ManageProject.API.Validations
 				.MaximumLength(100)
 				.WithMessage("CostProject tối đa 100 ký tự");
 
-			RuleFor(p => p.UseNumber)
+			RuleFor(p => p.UserNumber)
 				.NotEmpty()
 				.WithMessage("CostProject không được để trống");
 		}

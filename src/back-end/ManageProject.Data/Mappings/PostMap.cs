@@ -37,7 +37,7 @@ namespace ManageProject.Data.Mappings
             builder.Property(p => p.Status)
                 .IsRequired()
                 .HasDefaultValue(false);
-
+            builder.Property(p => p.ViewCount).IsRequired().HasDefaultValue(0);
             builder.Property(p => p.Created)
                 .HasColumnType("datetime");
 
@@ -45,9 +45,10 @@ namespace ManageProject.Data.Mappings
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.UserId)
                 .HasConstraintName("FK_Posts_Users")
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(p => p.Department)
                 .WithMany(d => d.Posts)
+                .HasForeignKey(p=> p.DepartmentId)
                 .HasConstraintName("FK_Post_Department");
 
             builder.HasMany(p => p.Projects)

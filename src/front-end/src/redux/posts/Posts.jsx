@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  name: "",
+  title: "",
+  shortDescription: ""
 };
 
 
@@ -19,7 +20,13 @@ const postFilterReducer = createSlice({
         title: action.payload,
       };
     },
-
+    
+    updateShortDescription: (state, action) => {
+      return {
+        ...state,
+        shortDescription: action.payload,
+      };
+    },
 
   },
 });
@@ -28,6 +35,7 @@ const postFilterReducer = createSlice({
 export const {
   reset, 
   updateTitle,
+  updateShortDescription,
   
 } = postFilterReducer.actions;
 
