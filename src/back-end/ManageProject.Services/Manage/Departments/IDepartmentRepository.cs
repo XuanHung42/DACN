@@ -49,6 +49,10 @@ namespace ManageProject.Services.Manage.Departments
 
 		// get department by slug
 		Task<Department> GetDetailDepartmentBySlug(string slug, CancellationToken cancellationToken = default);
-	
+
+		Task<IList<DepartmentItem>> GetDepartmentNotRequired(
+			CancellationToken cancellationToken = default);
+
+		Task<int> CountTotalDepartmentAsync(CancellationToken cancellationToken = default);
 	}
 }

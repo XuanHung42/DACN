@@ -35,7 +35,7 @@ namespace ManageProject.API.Models.Users
                 Password = (form["Password"]),
                 DepartmentId = int.Parse(form["DepartmentId"]),
                 RoleId = int.Parse(form["RoleId"]),
-                BirthDate = DateTime.Now
+                BirthDate = DateTime.Parse(form["BirthDate"])
                 //SelectProject= form["SelectedProject"]
                
             };

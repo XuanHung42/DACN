@@ -46,14 +46,22 @@ namespace ManageProject.Services.Manage.Projects
 
 		Task<User> GetUserSlugAsync(string slug, CancellationToken cancellationToken = default);
 
-		public Task<bool> CreateOrUpdateProjectAsync(
+		Task<bool> CreateOrUpdateProjectAsync(
 			Project project, CancellationToken cancellationToken = default);
 
 		
 		// delete project by id
 		Task<bool> DeleteProjectByIdAsync(int projectId, CancellationToken cancellationToken = default);
 
+        Task<int> CountTotalProjectAsync(CancellationToken cancellationToken = default);
+		Task<int> CountTotalProjectNotRegisterAsync(CancellationToken cancellationToken = default);
+
+        Task<int> CountTotalProjectRegister(CancellationToken cancellationToken = default);
+
+		Task<bool> AddUsersToProjectAsync(List<int> userIds, int projectId, CancellationToken cancellationToken = default);
 
 
-	}
+
+
+    }
 }

@@ -7,17 +7,18 @@ public class ProcessValidator : AbstractValidator<ProcessEditModel>
 {
 	public ProcessValidator()
 	{
-		RuleFor(p => p.ExcutionTime)
+		RuleFor(p => p.Name)
 			.NotEmpty()
-			.WithMessage("Thời gian thực hiện không để trống")
+			.WithMessage("Tên tiến trình thực hiện không để trống")
 			.MaximumLength(100)
-			.WithMessage("Thời gian thực hiện tối đa 100 ký tự");
+			.WithMessage("Tên tiến trình thực hiện tối đa 100 ký tự");
 
-		RuleFor(p => p.Start);
-		RuleFor(p => p.StartMaking);
-		RuleFor(p => p.WriteReport);
-		RuleFor(p => p.Complete);
-		RuleFor(p => p.Status);
+		RuleFor(p => p.UrlSlug)
+			.NotEmpty()
+			.WithMessage("UrlSlug không để trống")
+			.MaximumLength(100)
+			.WithMessage("UrlSlug tối đa 100 ký tự");
+
 
 	}
 }

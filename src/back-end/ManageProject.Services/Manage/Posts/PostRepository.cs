@@ -8,6 +8,8 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,7 +48,7 @@ namespace ManageProject.Services.Manage.Posts
 
 			return await mapper(post).ToListAsync(cancellationToken);
 		}
-		public async Task<IPagedList<PostItem>> GetPostPagedFilterAsync(IPagingParams pagingParams, string title = null, CancellationToken cancellationToken = default)
+		public async Task<IPagedList<PostItem>> GetPostPagedFilterAsync(IPagingParams pagingParams, string title = null, string shortDescription = null, bool? status = null, CancellationToken cancellationToken = default)
 		{
 			return await _context.Set<Post>()
 				.Include(p => p.User)
@@ -54,14 +56,20 @@ namespace ManageProject.Services.Manage.Posts
 				.AsNoTracking()
 				.WhereIf(!string.IsNullOrWhiteSpace(title),
 				x => x.Title.Contains(title))
+				.WhereIf(!string.IsNullOrWhiteSpace(shortDescription),
+				x => x.Title.Contains(shortDescription))
+				.WhereIf(status != null, x => x.Status == status)
 				.Select(p => new PostItem()
 				{
 					Id = p.Id,
 					Title = p.Title,
 					UrlSlug = p.UrlSlug,
 					ShortDescription = p.ShortDescription,
+					User = p.User,
+					Created = p.Created,
+					ViewCount= p.ViewCount,
+					Status = p.Status,
 					//File = p.File,
-					//User = p.User,
 					//Department = p.Department,
 
 				}).ToPagedListAsync(pagingParams, cancellationToken);
@@ -79,13 +87,82 @@ namespace ManageProject.Services.Manage.Posts
 				return await postQuery.FirstOrDefaultAsync(cancellationToken);
 			}
 		}
+        public async Task<bool> IncreaseViewCountAsync(string slug, CancellationToken cancellationToken = default)
+        {
 
+			var postView = await _context.Set<Post>()
+				 .Where(p => p.UrlSlug == slug)
+				 .FirstOrDefaultAsync(cancellationToken);
+			postView.ViewCount = postView.ViewCount + 1;
+			_context.Update(postView);
+			return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+		public async Task<IList<T>> GetNLimitTopViewCount<T>(int n, Func<IQueryable<Post>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+		{
+			var topViewCount = _context.Set<Post>()
+				.Include(p => p.User)
+				.OrderByDescending(p => p.ViewCount)
+				.Take(n);
+
+			return await mapper(topViewCount).ToListAsync(cancellationToken);
+		}
+
+		public async Task<IList<T>> GetNLimitByNewId<T>(int n, Func<IQueryable<Post>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+		{
+			var byNewId = _context.Set<Post>()
+				.Include(p => p.User)
+				.OrderByDescending(p => p.Id)
+				.Take(n);
+			return await mapper(byNewId).ToListAsync(cancellationToken);
+		}
+
+		public async Task<int> CountTotalPostAsync(CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Post>().CountAsync(cancellationToken);
+		}
+		public async Task<int> CountPostApprove(CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Post>().CountAsync(p => p.Status, cancellationToken);
+		}
+
+		public async Task<int> CountPostNotApprove(CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Post>().CountAsync(p => !p.Status, cancellationToken);
+		}
+
+		public async Task<bool> DeletePostAsync(int id, CancellationToken cancellationToken = default)
+		{
+			return await _context.Posts.Where(p => p.Id == id).ExecuteDeleteAsync(cancellationToken) > 0;
+		}
+
+		public async Task<bool> CreateOrUpdatePostAsync(Post post, CancellationToken cancellationToken = default)
+		{
+			if(post != null)
+			{
+				_context.Update(post);
+			}
+			else
+			{
+				_context.Add(post);
+			}
+			return await _context.SaveChangesAsync(cancellationToken) >0;
+		}
+		public async Task<bool> IsPostSlugIsExistedAsync(int id, string slug, CancellationToken cancellationToken= default)
+		{
+			return await _context.Posts.AnyAsync(x => x.Id != id && x.UrlSlug == slug, cancellationToken);
+		}
+		public async Task<Post> GetPostByIdAsync(int id, CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Post>().FindAsync(id);
+		}
+
+
+		public async Task<Post> GetPostById(int postId, CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Post>().FindAsync(postId);
+		}
+
+	
 	}
 }
-
-//public string ShortDescription { get; set; }
-//public string UrlSlug { get; set; }
-//public string File { get; set; }
-//public int UserId { get; set; }
-//public bool Status { get; set; }
-//public User User { get; set; }

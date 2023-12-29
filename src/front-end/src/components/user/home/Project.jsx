@@ -1,33 +1,121 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import Loading from "../Loading";
 import { getFilterProject } from "../../../api/ProjectApi";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ProjectFilter from "../filter/ProjectFilterModel";
+import {
+  addProjectsToUser,
+  getUserResearchertById,
+} from "../../../api/UserApi";
+import { useSnackbar } from "notistack";
+import { loginSuccess } from "../../../redux/account/Account";
+import { format } from "date-fns";
+import Pager from "../../pager/Pager";
 
 const Project = () => {
   const [getProject, setGetProject] = useState([]);
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+  const projectFilter = useSelector((state) => state.projectFilter);
+  const user = useSelector((state) => state.auth.login.currentUser);
+  const { enqueueSnackbar } = useSnackbar();
+  const [isRegistered, setIsRegistered] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [metadata, setMetadata] = useState({});
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const naviagate = useNavigate();
 
-  const [isVisibleLoading, setIsVisibleLoading] = useState(true),
-    projectFilter = useSelector((state) => state.projectFilter);
+  let p = 1;
+  let ps = 3;
 
-  let { id } = useParams,
-    p = 1,
-    ps = 10;
+  const handleRegister = (projectId, index) => {
+    console.log("user:", user);
+    console.log("projectId:", projectId);
+    console.log("index:", index);
+    if (user && user.result) {
+      getUserResearchertById(user.result.id).then((data) => {
+        if (data && data.projects) {
+          console.log(data);
+          const hasUserRegistered = data.projects.some(
+            (project) => project.id === projectId
+          );
+          console.log("hasUserRegister", hasUserRegistered);
+          if (hasUserRegistered) {
+            setIsRegistered((prevState) => {
+              const newState = [...prevState];
+              newState[index] = true;
+              return newState;
+            });
+            enqueueSnackbar("Bạn đã đăng ký dự án này rồi", {
+              variant: "warning",
+            });
+          } else {
+            addProjectsToUser(user.result.id, [projectId]).then(() => {
+              setIsRegistered((prevState) => {
+                const newState = [...prevState];
+                newState[index] = true;
+                return newState;
+              });
+              localStorage.setItem(`isRegistered_${projectId}`, true);
+              enqueueSnackbar("Đăng ký thành công, chờ đợi phê duyệt", { variant: "success" });
+            });
+          }
+        }
+      });
+    } else {
+      enqueueSnackbar("Bạn cần đăng nhập để đăng ký dự án", {
+        variant: "error",
+      });
+      naviagate(`/login`)
+    }
+  };
 
   useEffect(() => {
-    getFilterProject(projectFilter.name).then((data) => {
-      if (data) {
-        console.log("data check abc: ", data);
-        setGetProject(data.items);
-      } else {
-        setGetProject([]);
+    loadProject();
+    async function loadProject() {
+      function setData(props) {
+        setGetProject(props.items);
+        setMetadata(props.metadata);
       }
-      setIsVisibleLoading(false);
-    });
-  }, [projectFilter, ps, p]);
+      getFilterProject(projectFilter.name,false, ps, pageNumber).then((data) => {
+        if (data) {
+          setData(data);
+          setIsRegistered(
+            data.items.map((project) => {
+              const key = `isRegistered_${project.id}`;
+              return localStorage.getItem(key) === "true";
+            })
+          );
 
+          if (user && user.result) {
+            getUserResearchertById(user.result.id).then((userData) => {
+              if (userData && userData.projects) {
+                const registeredProjects = userData.projects.map(
+                  (project) => project.id
+                );
+                setIsRegistered((prevState) => {
+                  const newState = [...prevState];
+                  data.items.forEach((project, index) => {
+                    if (registeredProjects.includes(project.id)) {
+                      newState[index] = true;
+                    }
+                  });
+                  return newState;
+                });
+              }
+            });
+          }
+        }
+        setIsVisibleLoading(false);
+      });
+    }
+  }, [projectFilter, ps, p, user, pageNumber]);
+
+  function updatePageNumber(inc) {
+    setPageNumber((currentVal) => currentVal + inc);
+  }
   return (
     <div>
       <ProjectFilter />
@@ -35,13 +123,15 @@ const Project = () => {
         <Loading />
       ) : (
         <>
-          <Table striped responsive bordered>
+          <Table  responsive bordered>
             <thead>
               <tr>
-                <th>Tên đề tài</th>
-                <th>Mô tả ngắn</th>
-                <th>Chi phí</th>
-                <th>Số người</th>
+                <th className="w-25">Tên đề tài</th>
+                <th className="w-15">Mô tả ngắn</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+                <th>Số thành viên</th>
+                <th>Người thực hiện</th>
                 <th>Đăng ký</th>
               </tr>
             </thead>
@@ -49,19 +139,48 @@ const Project = () => {
               {getProject.length > 0 ? (
                 getProject.map((item, index) => (
                   <tr key={index}>
-                    <td>{item.name}</td>
-                    <td>{item.shortDescription}</td>
-                    <td>{item.costProject}</td>
-                    <td>{item.userNumber}</td>
-                    <td className="text-center">
-                      <Button className="btn-success">Đăng ký</Button>
+                    <td>
+                      <Link to={`/project/${item.urlSlug}`} className="text-decoration-none text-danger">
+                        {item.name}
+                      </Link>
                     </td>
-
+                    <td>{item.shortDescription}</td>
+                    {/* <td>{item.costProject} VNĐ</td> */}
+                    <td>{format(new Date(item.startDate), "dd/MM/yyyy")}</td>
+                    <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
+                    {/* <td>{item.topic.name}</td> */}
+                    <td>{item.userNumber}</td>
+                    <td>
+                      {item.users.length === 0 ? (
+                        <div className="text-danger">
+                          Chưa có 
+                        </div>
+                      ): (
+                        <>
+                          {item.users.map((item, index) => (
+                            <div className="text-danger" key={index}>
+                              <Link to={`/records/${item.urlSlug}`} className="text-decoration-none">
+                                {item.name}
+                              </Link>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </td>
+                    <td className="text-center">
+                      <Button
+                        className="btn-success"
+                        onClick={() => handleRegister(item.id, index)}
+                        disabled={isRegistered[index]}
+                      >
+                        {isRegistered[index] ? "Đã đăng ký" : "Đăng ký"}
+                      </Button>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5}>
+                  <td colSpan={7}>
                     <h4 className="text-danger text-center">
                       Không tìm thấy dự án nào
                     </h4>
@@ -72,7 +191,9 @@ const Project = () => {
           </Table>
         </>
       )}
+      <Pager metadata={metadata} onPageChange={updatePageNumber} />
     </div>
   );
 };
+
 export default Project;

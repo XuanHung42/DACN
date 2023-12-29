@@ -12,7 +12,16 @@ namespace ManageProject.Core.DTO
 	{
 		public string Name { get; set; } = "";
 		public string UserSlug { get; set; } = "";
-		public int UserId { get; set; }
+		public int? UserId { get; set; }
+		public int? DepartmentId { get; set; }
+		public int? MonthStart { get; set; }
+		public int? MonthEnd { get; set; }
+		public int? YearStart { get; set; }
+		public int? YearEnd { get; set; }
+		public int? ProcessId { get; set; }
+		public bool? Register { get; set; }
+		public bool NotRegister { get; set; }
+
 	}
 
 }

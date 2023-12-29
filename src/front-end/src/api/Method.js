@@ -18,20 +18,17 @@ export async function get_api(your_api) {
 }
 
 
-export async function post_api(your_api, formData){
+export async function post_api(your_api, formData) {
   try {
     const response = await axios.post(your_api, formData);
-
     const data = response.data;
-    if (data.isSuccess){
+    console.log("postdata", data);
+    if (data.isSuccess)
       return data.result;
-    }
-    else{
+    else
       return null;
-    }
-
   } catch (error) {
-    console.log("Error ", error.message);
+    console.log('Error', error.message);
     return null;
   }
 }

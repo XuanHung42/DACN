@@ -57,7 +57,8 @@ namespace ManageProject.Services.Manage.Departments
 				{
 					Id = d.Id,
 					Name = d.Name,
-					UrlSlug = d.UrlSlug
+					UrlSlug = d.UrlSlug,
+					CountUser = d.Users.Count(),
 				}).ToPagedListAsync(pagingParams, cancellationToken);
 		}
 
@@ -170,6 +171,22 @@ namespace ManageProject.Services.Manage.Departments
 				return await departmentsQuery.FirstOrDefaultAsync(cancellationToken);
 			}
 
+		}
+
+		public async Task<IList<DepartmentItem>> GetDepartmentNotRequired(CancellationToken cancellationToken = default)
+		{
+			IQueryable<Department> departments = _context.Set<Department>();
+			return await departments.OrderBy(d => d.Name).Select(d => new DepartmentItem()
+			{
+				Id = d.Id,
+				Name = d.Name,
+				UrlSlug = d.UrlSlug,
+			}).ToListAsync(cancellationToken);
+		}
+
+		public async Task<int> CountTotalDepartmentAsync(CancellationToken cancellationToken = default)
+		{
+			return await _context.Set<Department>().CountAsync(cancellationToken);
 		}
 	}
 }

@@ -107,5 +107,15 @@ namespace ManageProject.Services.Manage.Roles
                 .ExecuteDeleteAsync(cancellationToken) > 0;
         }
 
-    }
+		public async Task<IList<RoleItem>> GetRoleNotRequired(CancellationToken cancellationToken = default)
+		{
+            IQueryable<Role> user = _context.Set<Role>();
+            return await user.OrderBy(u => u.Name).Select(u => new RoleItem()
+            {
+                Id = u.Id,
+                Name = u.Name,
+
+            }).ToListAsync(cancellationToken);
+		}
+	}
 }

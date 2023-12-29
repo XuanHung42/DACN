@@ -4,130 +4,118 @@ import Tabs from "react-bootstrap/Tabs";
 import Loading from "../../Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useParams } from "react-router-dom";
-import { faHome, faUser } from "@fortawesome/free-solid-svg-icons";
-import {
-  getFilterDepartment,
-} from "../../../../api/DepartmentApi";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { getFilterResearch } from "../../../../api/UserApi";
 import { useSelector } from "react-redux";
 import ResearchFilter from "../../filter/ResearcherFilterModel";
-import DepartmentFilter from "../../filter/DepartmentFilterModel";
+
+import Pager from "../../../pager/Pager";
+import DepartmentManage from "../departments/DepartmentManage";
 
 const ResearcherManage = () => {
   const [userManage, setUserManage] = useState([]);
-  const [departmentManage, setDepartmentManage] = useState([]);
 
   const [isVisibleLoading, setIsVisibleLoading] = useState(true),
-    researcherFilter = useSelector((state) => state.researcherFilter),
-    departmentFilter = useSelector((state) => state.departmentFilter);
+    researcherFilter = useSelector((state) => state.researcherFilter);
+
+  const [metadata, setMetadata] = useState({});
+  const [pageNumber, setPageNumber] = useState(1);
 
   let { id } = useParams,
     p = 1,
-    ps = 10;
+    ps = 6;
 
   useEffect(() => {
-    getFilterResearch(researcherFilter.name, researcherFilter.email).then(
-      (data) => {
+    document.title = "Hồ sơ khoa học";
+    loadResearch();
+
+    async function loadResearch() {
+      function setData(props) {
+        setUserManage(props.items);
+        setMetadata(props.metadata);
+      }
+      getFilterResearch(
+        researcherFilter.name,
+        researcherFilter.email,
+        ps,
+        pageNumber
+      ).then((data) => {
         if (data) {
-          setUserManage(data.items);
+          setData(data);
         } else {
-          setUserManage([]);
+          setData([]);
         }
         setIsVisibleLoading(false);
-      }
-    );
-  }, [researcherFilter, ps, p]);
+      });
+    }
+  }, [researcherFilter, ps, p, pageNumber]);
 
-  useEffect(() => {
-    getFilterDepartment(departmentFilter.name).then((data) => {
-      if (data) {
-        setDepartmentManage(data.items);
-      } else {
-        setDepartmentManage([]);
-      }
-      setIsVisibleLoading(false);
-    });
-  }, [departmentFilter, ps, p]);
+  function updatePageNumber(inc) {
+    setPageNumber((currentVal) => currentVal + inc);
+  }
 
   return (
     <>
       <div className="researcher">
         <div className="researcher-title py-3">
-          <h1 className="text-danger text-center">Hồ sơ khoa học </h1>
+          <h1 className="text-danger text-center">Hồ sơ khoa học</h1>
         </div>
-        <Tabs className="mb-3">
-          <Tab eventKey="users" title="Tất cả tác giả">
-            <ResearchFilter />
-            {isVisibleLoading ? (
-              <Loading />
-            ) : (
-              <div className="row">
-                {userManage.length > 0 ? (
-                  userManage.map((item, index) => (
-                    <div className="col-6" key={index}>
-                      <div className="card mt-3">
-                        <div className="d-flex card-content">
-                          <FontAwesomeIcon
-                            icon={faUser}
-                            fontSize={50}
-                            className="px-3 text-success"
-                          />
+        <ResearchFilter />
+        {isVisibleLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <div className="row">
+              {userManage.length > 0 ? (
+                userManage.map((item, index) => (
+                  <div className="col-6 " key={index}>
+                    <div className="mt-3 card-content d-flex flex-row justify-content-between">
+                      <div className="d-flex">
+                        <FontAwesomeIcon
+                          icon={faUser}
+                          fontSize={50}
+                          className="px-3 text-success"
+                        />
+                        <div className="d-flex flex-column">
                           <Link
                             className="text-success text-decoration-none"
-                            to={`researcher/${item.urlSlug}`}
+                            to={`${item.urlSlug}`}
                           >
                             <div className="text-name">Họ tên: {item.name}</div>
+                          </Link>
+
+                          {item.email === null ? (
                             <span className="text-danger">
-                              Email: {item.email}
+                              Email: Tác giả chưa cập nhật email
                             </span>
-                          </Link>
+                          ) : (
+                            <Link
+                              className="text-danger text-decoration-none"
+                              to={`mailto:${item.email}`}
+                            >
+                              Email: {item.email}
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                      <div className="text-danger d-flex align-items-center">
+                        Số bài đăng
+                        <div className="cicler text-white">
+                          {item.countPost}
                         </div>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <h2 className="text-warning text-center py-3">
-                    Không tìm thấy nhà khoa học
-                  </h2>
-                )}
-              </div>
-            )}
-          </Tab>
-          <Tab eventKey="post" title="Tất cả đơn vị khoa">
-            <DepartmentFilter/>
-            {isVisibleLoading ? (
-              <Loading />
-            ) : (
-              <div className="row">
-                {departmentManage.length > 0 ? (
-                  departmentManage.map((item, index) => (
-                    <div className="col-6" key={index}>
-                      <div className="card mt-3">
-                        <div className="d-flex card-content">
-                          <FontAwesomeIcon
-                            icon={faHome}
-                            fontSize={50}
-                            className="px-3 text-success"
-                          />
-                          <Link
-                            className="text-success text-decoration-none"
-                            to={item.urlSlug}
-                          >
-                            <div className="text-name">{item.name}</div>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <h2 className="text-warning text-center py-3">
-                    Không tìm thấy đơn vị khoa
-                  </h2>
-                )}
-              </div>
-            )}
-          </Tab>
-        </Tabs>
+                  </div>
+                ))
+              ) : (
+                <h2 className="text-warning text-center py-3">
+                  Không tìm thấy nhà khoa học
+                </h2>
+              )}
+            </div>
+            <Pager metadata={metadata} onPageChange={updatePageNumber} />
+          </>
+        )}
       </div>
     </>
   );

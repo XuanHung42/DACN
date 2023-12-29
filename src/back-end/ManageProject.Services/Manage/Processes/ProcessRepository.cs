@@ -25,16 +25,14 @@ namespace ManageProject.Services.Manage.Processes
 		public async Task<IList<ProcessItem>> GetProcessAsync(CancellationToken cancellationToken = default)
 		{
 			IQueryable<Process> progresses = _context.Set<Process>();
-			return await progresses.OrderBy(p => p.StartMaking)
+			return await progresses.OrderBy(p => p.Name)
 				.Select(p => new ProcessItem()
 				{
 					Id = p.Id,
-					ExcutionTime = p.ExcutionTime,
-					Start = p.Start,
-					StartMaking = p.StartMaking,
-					WriteReport= p.WriteReport,
-					Complete= p.Complete,
-					Status= p.Status
+					Name = p.Name,
+					UrlSlug = p.UrlSlug,
+					CountProject = p.Projects.Count(),
+					
 				}).ToListAsync(cancellationToken);
 		}
 
@@ -64,5 +62,15 @@ namespace ManageProject.Services.Manage.Processes
 				.ExecuteDeleteAsync(cancellationToken) > 0;
 		}
 
+		public async Task<IList<ProcessItem>> GetProcessListCombobox(CancellationToken cancellationToken = default)
+		{
+			IQueryable<Process> processes = _context.Set<Process>();
+			return await processes.OrderBy(pc => pc.Name)
+				.Select(pc => new ProcessItem()
+				{
+					Id = pc.Id,
+					Name = pc.Name,
+				}).ToListAsync(cancellationToken);
+		}
 	}
 }

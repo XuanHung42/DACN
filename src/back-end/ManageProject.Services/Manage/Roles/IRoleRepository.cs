@@ -27,5 +27,7 @@ namespace ManageProject.Services.Manage.Roles
         Task<bool> CheckNameExistedAsync(int roleId, string name, CancellationToken cancellationToken = default);
     Task<bool> DeleteRoletByIdAsync(int roleId, CancellationToken cancellationToken = default);
 
+        // get role note required
+        Task<IList<RoleItem>> GetRoleNotRequired(CancellationToken cancellationToken = default);
     }
 }

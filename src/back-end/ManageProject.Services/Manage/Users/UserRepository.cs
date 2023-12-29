@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Cryptography.X509Certificates;
 using SlugGenerator;
+using ManageProject.Data.Extensions;
+using ManageProject.Services.Manage.Processes;
+using ManageProject.Services.Manage.Projects;
 
 namespace ManageProject.Services.Manage.Users
 {
@@ -20,6 +23,7 @@ namespace ManageProject.Services.Manage.Users
     {
         private readonly ManageDbContext _context;
         private readonly IMemoryCache _memoryCache;
+        private IProjectRepository projectRepository;
 
         public UserRepository(ManageDbContext context, IMemoryCache memoryCache)
         {
@@ -42,17 +46,21 @@ namespace ManageProject.Services.Manage.Users
                     RoleId = u.Role.Id,
                     UrlSlug = u.UrlSlug,
                     Password = u.Password,
-                    Projects = u.Projects
+					//Projects = u.Projects
+					DepartmentName = u.Department.Name
 
-                })
+
+				})
                 .ToListAsync(cancellationToken);
         }
-        public async Task<IPagedList<UserItem>> GetPagedUserAsync(IPagingParams pagingParams, string name = null, CancellationToken cancellationToken = default)
+        public async Task<IPagedList<UserItem>> GetPagedUserAsync(IPagingParams pagingParams, string name = null, string email = null, CancellationToken cancellationToken = default)
         {
             return await _context.Set<User>()
                     .AsNoTracking()
                     .WhereIf(!string.IsNullOrEmpty(name),
                     x => x.Name.Contains(name))
+                    .WhereIf(!string.IsNullOrEmpty(email),
+                    x => x.Email.Contains(email))
                     .Select(u => new UserItem()
                     {
                         Id = u.Id,
@@ -63,6 +71,9 @@ namespace ManageProject.Services.Manage.Users
                         ImageUrl = u.ImageUrl,
                         UrlSlug = u.UrlSlug,
                         DepartmentId = u.Department.Id,
+                        BirthDate= u.BirthDate,
+                        DepartmentName = u.Department.Name,
+                        CountPost = u.Posts.Count()
 
                     })
                     .ToPagedListAsync(pagingParams, cancellationToken);
@@ -71,12 +82,15 @@ namespace ManageProject.Services.Manage.Users
         }
         public async Task<User> GetUserBySlugAsync(string slug, CancellationToken cancellationToken = default)
         {
-            return await _context.Set<User>().Include(u => u.Department)
+            return await _context.Set<User>().Include(u => u.Department).Include(u=> u.Projects)
                 .FirstOrDefaultAsync(a => a.UrlSlug == slug, cancellationToken);
         }
         public async Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _context.Set<User>().Include(u => u.Department).FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+            return await _context.Set<User>().Include(u => u.Department)
+                .Include(u=> u.Projects)
+                .Include(u => u.Posts)
+                .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
         }
 
         public async Task<User> GetUserByIdIsDetailAsync(int userId, bool isDetail = false, CancellationToken cancellationToken = default)
@@ -200,8 +214,18 @@ namespace ManageProject.Services.Manage.Users
 
         }
 
+        private IQueryable<Post> FilterPost(PostQuery query)
+        {
+            IQueryable<Post> postQuery = _context.Set<Post>();
+            if (!string.IsNullOrWhiteSpace(query.UserSlug))
+            {
+                postQuery = postQuery.Where(p => p.User.UrlSlug.Contains(query.UserSlug));
+            }
+            return postQuery;
+        }
 
 
+        
         public async Task<IPagedList<T>> GetPagedProjectsAsync<T>(ProjectQuery query,
         IPagingParams pagingParams,
         Func<IQueryable<Project>,
@@ -213,7 +237,16 @@ namespace ManageProject.Services.Manage.Users
             return await tQueryResult.ToPagedListAsync(pagingParams, cancellationToken);
         }
 
-        public async Task<IPagedList<T>> GetPageRolesAsync<T>(
+		public async Task<IPagedList<T>> GetPagedPostAsync<T>(PostQuery query, IPagingParams pagingParams, Func<IQueryable<Post>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+		{
+            IQueryable<Post> possFindQuery = FilterPost(query);
+            IQueryable<T> quertResult = mapper(possFindQuery);
+            return await quertResult.ToPagedListAsync(pagingParams, cancellationToken);
+        }
+
+
+
+		public async Task<IPagedList<T>> GetPageRolesAsync<T>(
             RoleQuery query,
             IPagingParams pagingParams,
             Func<IQueryable<Role>,
@@ -230,7 +263,8 @@ namespace ManageProject.Services.Manage.Users
         {
             IQueryable<User> userQuery = _context.Set<User>()
                 //.Include(p => p.Projects)
-                .Include(p => p.Posts);
+                .Include(p => p.Posts)
+                .Include(p => p.Department);
             {
                 if (!string.IsNullOrEmpty(slug))
                 {
@@ -239,5 +273,84 @@ namespace ManageProject.Services.Manage.Users
                 return await userQuery.FirstOrDefaultAsync(cancellationToken);
             }
         }
-    }
+
+        public async Task<int> CountTotalUserAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<User>().CountAsync(cancellationToken);
+        }
+
+        public async Task<bool> Register(string username, string password, string comfirmPassword, CancellationToken cancellationToken = default)
+        {
+            var user = _context.Set<User>().FirstOrDefault(x => x.Name == username);
+            if (user != null)
+            {
+                return false;
+            }
+            if (password != comfirmPassword)
+            {
+                return false;
+            }
+            _context.Add(new User()
+            {
+                Name = username,
+                UrlSlug = username.GenerateSlug(),
+                Password = password.EncodePasswordToBase64(),
+                // default info user register
+                //RoleString = "user",
+                RoleId = 2,
+                DepartmentId = 1,
+
+
+            });
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<User> Login(string username, string password, CancellationToken cancellationToken = default)
+        {
+            var user = _context.Set<User>().FirstOrDefault(x => x.Name == username);
+            if (user == null)
+            {
+                return null;
+
+            }
+            var decodePassword = user.Password.DecodeFrom64();
+            //var decodePassword = user.Password;
+
+            if (password != decodePassword)
+            {
+                return null;
+            }
+            return user;
+        }
+        public async Task<bool> AddProjectsToUserAsync(List<int> projectIds, int userId, CancellationToken cancellationToken = default)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                throw new ArgumentException($"User with id {userId} not found");
+            }
+
+            var projects = await _context.Projects.Where(p => projectIds.Contains(p.Id)).ToListAsync(cancellationToken);
+            if (projects.Count != projectIds.Count)
+            {
+                throw new ArgumentException("One or more projects not found");
+            }
+
+            foreach (var project in projects)
+            {
+                if (project.UserNumber <= project.Users.Count)
+                {
+                    throw new ArgumentException($"Project with id {project.Id} has reached maximum user capacity");
+                }
+                user.Projects.Add(project);
+            }
+            await AddOrUpdateAsync(user);
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return true;
+        }
+
+		
+	}
 }

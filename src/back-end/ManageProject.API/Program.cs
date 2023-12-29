@@ -28,6 +28,9 @@ var app = builder.Build();
     app.MapRoleEndpoints();
 
     app.MapPostEndpoints();
+    app.MapDashboardEndpoint();
+    app.MapAccountEndpoint();
+    app.MapTopicEndpoints();
 
 	using (var scope = app.Services.CreateScope())
     {
